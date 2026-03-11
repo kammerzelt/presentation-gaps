@@ -490,13 +490,17 @@ body {
     </div>
   </div>
   <div class="col-2" style="margin-top:1.5rem;">
-    <div class="screenshot-frame">
+    <div class="screenshot-frame" style="height:35vh; display:flex; flex-direction:column;">
       <div class="frame-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
-      <img src="images/ct-metered-article.png" alt="Cosmetics & Toiletries metered article with 1 view remaining">
+      <div style="flex:1; overflow:hidden; position:relative;">
+        <img src="images/ct-metered-article.png" alt="Cosmetics & Toiletries metered article with 1 view remaining" style="width:100%; height:100%; object-fit:cover; object-position:center bottom; display:block;">
+      </div>
     </div>
-    <div class="screenshot-frame">
+    <div class="screenshot-frame" style="height:35vh; display:flex; flex-direction:column;">
       <div class="frame-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
-      <img src="images/ct-full-gate.png" alt="Cosmetics & Toiletries article with full gate requiring registration">
+      <div style="flex:1; overflow:hidden; position:relative;">
+        <img src="images/ct-full-gate.png" alt="Cosmetics & Toiletries article with full gate requiring registration" style="width:100%; height:100%; object-fit:cover; object-position:center bottom; display:block;">
+      </div>
     </div>
   </div>
   <p style="text-align:center; font-size:0.95rem; color:var(--gray-300); margin-top:1rem;">Most publishers use <strong>combinations</strong>. The point is to have a strategy, not to gate everything or nothing.</p>
