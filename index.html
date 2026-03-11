@@ -175,6 +175,35 @@ body {
 .screenshot-frame .dot.g { background:#22c55e; }
 .screenshot-frame img { width:100%; display:block; }
 
+/* Scrolling screenshot */
+.scroll-container {
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:0 4px 20px rgba(0,0,0,0.15);
+}
+.scroll-container .frame-bar {
+  background:var(--gray-200); height:28px;
+  display:flex; align-items:center; gap:6px; padding:0 10px;
+}
+.scroll-viewport {
+  height:340px;
+  position:relative;
+  overflow:hidden;
+}
+.scroll-inner {
+  width:100%;
+  animation: scrollReport 14s ease-in-out 2s infinite;
+}
+.scroll-inner img {
+  width:100%;
+  display:block;
+}
+@keyframes scrollReport {
+  0%, 10% { transform: translateY(0); }
+  45%, 55% { transform: translateY(calc(-100% + 340px)); }
+  90%, 100% { transform: translateY(0); }
+}
+
 /* Mock spreadsheet */
 .mock-spreadsheet {
   background:var(--white); border-radius:8px; overflow:hidden;
@@ -201,7 +230,7 @@ body {
 <!-- SLIDE 1: Title -->
 <div class="slide gradient active" data-slide="1">
   <div style="margin-bottom:auto; padding-top:3vh;">
-    <span style="font-size:1.4rem; font-weight:700; color:var(--gray-300);"><span style="color:var(--blue-light);">{</span> <span style="color:var(--blue-light);">parameter</span> <span style="color:var(--gray-400);">:</span> <span style="color:var(--gray-400);">1</span> <span style="color:var(--blue-light);">}</span></span>
+    <img src="images/parameter1-logo.png" alt="Parameter1" style="height:40px; opacity:0.9;">
   </div>
   <div>
     <p style="font-size:clamp(0.8rem,1.2vw,1rem); font-weight:600; color:var(--orange); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:1rem;">Niche Media Publisher Conference</p>
@@ -310,15 +339,15 @@ body {
 </div>
 
 <!-- SLIDE 7: Reader Experience Comparison -->
-<div class="slide light" data-slide="7" style="padding:3vh 5vw;">
+<div class="slide light" data-slide="7">
   <div class="gap-label" style="color:var(--orange);">Gap #1 — The reader experience</div>
-  <h2 class="headline" style="font-size:clamp(1.4rem,2.5vw,2.2rem); margin-bottom:1rem;">Your readers <span class="hl">experience</span> your silos.</h2>
-  <div class="col-2" style="margin-top:0.5rem; align-items:start;">
+  <h2 class="headline" style="font-size:clamp(1.6rem,3vw,2.4rem);">Your readers <span class="hl">experience</span> your silos.</h2>
+  <div class="col-2" style="margin-top:1rem;">
     <div>
       <p style="font-weight:700; color:var(--red); margin-bottom:0.5rem; font-size:0.9rem;">❌ THE TYPICAL APPROACH</p>
       <div class="screenshot-frame">
         <div class="frame-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
-        <img src="images/competitor-popup.png" alt="Competitor popup example" style="max-height:42vh; width:100%; object-fit:cover; object-position:top;">
+        <img src="images/competitor-popup.png" alt="Competitor popup example showing multiple overlapping popups">
       </div>
       <p style="font-size:0.85rem; color:var(--gray-500); margin-top:0.5rem;">Popups stacked on popups. Content buried. The reader can't even see the article.</p>
     </div>
@@ -326,7 +355,7 @@ body {
       <p style="font-weight:700; color:var(--green); margin-bottom:0.5rem; font-size:0.9rem;">✅ WHEN YOUR SYSTEMS ARE CONNECTED</p>
       <div class="screenshot-frame">
         <div class="frame-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
-        <img src="images/feed-grain-form.png" alt="Feed & Grain prepopulated profile form" style="max-height:42vh; width:100%; object-fit:cover; object-position:top;">
+        <img src="images/feed-grain-form.png" alt="Feed & Grain prepopulated profile form">
       </div>
       <p style="font-size:0.85rem; color:var(--gray-500); margin-top:0.5rem;">Prepopulated. Intelligent. Only asks what we don't already know.</p>
     </div>
@@ -443,58 +472,58 @@ body {
 </div>
 
 <!-- SLIDE 12: Gating Spectrum -->
-<div class="slide dark" data-slide="12" style="padding:3vh 5vw;">
+<div class="slide dark" data-slide="12">
   <div class="gap-label">Gap #2 — Your options</div>
-  <h2 class="headline" style="font-size:clamp(1.4rem,2.5vw,2.2rem); margin-bottom:0.5rem;">Gating isn't all or nothing. <span class="hl">Pick your strategy.</span></h2>
-  <div class="spectrum" style="margin-top:0.8rem;">
-    <div class="spectrum-seg" style="padding:1rem;">
+  <h2 class="headline" style="font-size:clamp(1.6rem,3vw,2.4rem);">Gating isn't all or nothing. <span class="hl">Pick your strategy.</span></h2>
+  <div class="spectrum" style="margin-top:1.5rem;">
+    <div class="spectrum-seg">
       <div class="spectrum-label">Metered</div>
       <div class="spectrum-desc">X free articles, then gate.<br>Lowest friction.</div>
     </div>
-    <div class="spectrum-seg" style="padding:1rem;">
+    <div class="spectrum-seg">
       <div class="spectrum-label">Selective</div>
       <div class="spectrum-desc">Gate premium content or<br>specific sections only.</div>
     </div>
-    <div class="spectrum-seg" style="padding:1rem;">
+    <div class="spectrum-seg">
       <div class="spectrum-label">Full</div>
       <div class="spectrum-desc">All content requires<br>identification.</div>
     </div>
   </div>
-  <div class="col-2" style="margin-top:1rem;">
+  <div class="col-2" style="margin-top:1.5rem;">
     <div class="screenshot-frame">
       <div class="frame-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
-      <img src="images/ct-metered-article.png" alt="Cosmetics & Toiletries metered article" style="max-height:35vh; width:100%; object-fit:cover; object-position:bottom;">
+      <img src="images/ct-metered-article.png" alt="Cosmetics & Toiletries metered article with 1 view remaining">
     </div>
     <div class="screenshot-frame">
       <div class="frame-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
-      <img src="images/ct-full-gate.png" alt="Cosmetics & Toiletries full gate" style="max-height:35vh; width:100%; object-fit:cover; object-position:bottom;">
+      <img src="images/ct-full-gate.png" alt="Cosmetics & Toiletries article with full gate requiring registration">
     </div>
   </div>
-  <p style="text-align:center; font-size:0.9rem; color:var(--gray-300); margin-top:0.8rem;">Most publishers use <strong>combinations</strong>. The point is to have a strategy, not to gate everything or nothing.</p>
+  <p style="text-align:center; font-size:0.95rem; color:var(--gray-300); margin-top:1rem;">Most publishers use <strong>combinations</strong>. The point is to have a strategy, not to gate everything or nothing.</p>
 </div>
 
 <!-- SLIDE 13: Native vs Popup -->
-<div class="slide light" data-slide="13" style="padding:3vh 5vw;">
+<div class="slide light" data-slide="13">
   <div class="gap-label" style="color:var(--orange);">Gap #2 — The key differentiator</div>
-  <h2 class="headline" style="font-size:clamp(1.4rem,2.5vw,2.2rem); margin-bottom:0.3rem;">Control the experience. <span class="hl">Not a popup in sight.</span></h2>
-  <p class="subhead" style="margin-bottom:1rem; font-size:clamp(0.9rem,1.5vw,1.2rem);">When gating is built into the content layer, the whole dynamic changes. It's native, not bolted on.</p>
+  <h2 class="headline" style="font-size:clamp(1.6rem,3vw,2.4rem);">Control the experience. <span class="hl">Not a popup in sight.</span></h2>
+  <p class="subhead" style="margin-bottom:1.5rem;">When gating is built into the content layer, the whole dynamic changes. It's native, not bolted on.</p>
   <div class="col-2">
     <div>
       <p style="font-weight:700; color:var(--green); margin-bottom:0.5rem; font-size:0.9rem;">STEP 1: Email first — validated instantly</p>
       <div class="screenshot-frame">
         <div class="frame-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
-        <img src="images/ct-registration.png" alt="Cosmetics & Toiletries progressive registration form" style="max-height:38vh; width:100%; object-fit:cover; object-position:top;">
+        <img src="images/ct-registration.png" alt="Cosmetics & Toiletries progressive registration form">
       </div>
     </div>
     <div>
       <p style="font-weight:700; color:var(--green); margin-bottom:0.5rem; font-size:0.9rem;">STEP 2: Enrich progressively over time</p>
       <div class="screenshot-frame">
         <div class="frame-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
-        <img src="images/feed-grain-form.png" alt="Feed & Grain prepopulated profile form" style="max-height:38vh; width:100%; object-fit:cover; object-position:top;">
+        <img src="images/feed-grain-form.png" alt="Feed & Grain prepopulated profile form for returning user">
       </div>
     </div>
   </div>
-  <p style="text-align:center; color:var(--gray-500); font-size:0.9rem; margin-top:0.8rem;"><strong>Anonymous → email validated → name, title, company → newsletter subscriber → fully profiled.</strong> One interaction at a time.</p>
+  <p style="text-align:center; color:var(--gray-500); font-size:0.95rem; margin-top:1rem;"><strong>Anonymous → email validated → name, title, company → newsletter subscriber → fully profiled.</strong> One interaction at a time.</p>
 </div>
 
 <!-- SLIDE 14: Newsletter as Identity Engine -->
@@ -592,10 +621,10 @@ body {
 </div>
 
 <!-- SLIDE 17: Old vs New Report -->
-<div class="slide light" data-slide="17" style="padding:3vh 5vw;">
+<div class="slide light" data-slide="17">
   <div class="gap-label" style="color:var(--orange);">Gap #3 — The proof in action</div>
-  <h2 class="headline" style="font-size:clamp(1.4rem,2.5vw,2rem); margin-bottom:0.8rem;">Same advertiser. <span class="hl">Different story.</span></h2>
-  <div class="col-2" style="align-items:start;">
+  <h2 class="headline" style="font-size:clamp(1.4rem,2.5vw,2rem);">Same advertiser. <span class="hl">Different story.</span></h2>
+  <div class="col-2" style="margin-top:1rem;">
     <div>
       <p style="font-weight:700; color:var(--red); margin-bottom:0.5rem; font-size:0.9rem;">❌ THE OLD REPORT</p>
       <div class="mock-spreadsheet">
@@ -614,9 +643,13 @@ body {
     </div>
     <div>
       <p style="font-weight:700; color:var(--green); margin-bottom:0.5rem; font-size:0.9rem;">✅ THE UNIFIED REPORT</p>
-      <div class="screenshot-frame">
+      <div class="scroll-container">
         <div class="frame-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
-        <img src="images/advertiser-report.png" alt="Acme Products unified advertiser report" style="max-height:42vh; width:100%; object-fit:cover; object-position:top;">
+        <div class="scroll-viewport">
+          <div class="scroll-inner">
+            <img src="images/advertiser-report.png" alt="Acme Products unified advertiser report showing cross-channel performance">
+          </div>
+        </div>
       </div>
       <p style="font-size:0.8rem; color:var(--gray-500); margin-top:0.5rem;">Cross-channel. Self-service. Real-time. One report, one view.</p>
     </div>
@@ -624,20 +657,20 @@ body {
 </div>
 
 <!-- SLIDE 18: Audience Identity -->
-<div class="slide dark" data-slide="18" style="padding:3vh 5vw;">
+<div class="slide dark" data-slide="18">
   <div class="gap-label">Gap #3 — The deeper layer</div>
-  <h2 class="headline" style="font-size:clamp(1.4rem,2.5vw,2.2rem); margin-bottom:1rem;">You're not selling impressions.<br>You're selling a <span class="hl">verified, qualified audience.</span></h2>
-  <div class="col-2" style="margin-top:0.5rem;">
+  <h2 class="headline" style="font-size:clamp(1.6rem,3vw,2.4rem);">You're not selling impressions.<br>You're selling a <span class="hl">verified, qualified audience.</span></h2>
+  <div class="col-2" style="margin-top:1.5rem;">
     <div class="screenshot-frame">
       <div class="frame-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
-      <img src="images/audience-profiles.png" alt="Audience Profiles showing identified users and companies" style="max-height:40vh; width:100%; object-fit:cover; object-position:top;">
+      <img src="images/audience-profiles.png" alt="Audience Profiles showing identified users, companies, and email domains">
     </div>
     <div class="screenshot-frame">
       <div class="frame-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
-      <img src="images/leaders-performance.png" alt="Leaders Performance dashboard" style="max-height:40vh; width:100%; object-fit:cover; object-position:top;">
+      <img src="images/leaders-performance.png" alt="Leaders Performance dashboard showing unique users and category breakdown">
     </div>
   </div>
-  <p style="text-align:center; color:var(--gray-300); font-size:clamp(0.9rem,1.3vw,1.05rem); margin-top:1.2rem;">
+  <p style="text-align:center; color:var(--gray-300); font-size:clamp(0.9rem,1.3vw,1.05rem); margin-top:1.5rem;">
     <strong>"We reached [X] verified professionals across [X] properties. [X]% engaged with related content."</strong><br>
     <span style="color:var(--gray-400);">That commands premium pricing. Because you're selling access to a known, engaged audience.</span>
   </p>
@@ -792,8 +825,8 @@ body {
         <p style="font-size:0.8rem; color:var(--gray-400); margin-top:0.5rem;">Schedule a conversation</p>
       </div>
       <div style="text-align:left;">
-        <span style="font-size:1.4rem; font-weight:700; color:var(--gray-300);"><span style="color:var(--blue-light);">{</span> <span style="color:var(--blue-light);">parameter</span> <span style="color:var(--gray-400);">:</span> <span style="color:var(--gray-400);">1</span> <span style="color:var(--blue-light);">}</span></span>
-        <p style="font-size:1.5rem; font-weight:800; margin-top:0.8rem;">Eric Kammerzelt</p>
+        <img src="images/parameter1-logo.png" alt="Parameter1" style="height:30px; margin-bottom:0.8rem; opacity:0.9;">
+        <p style="font-size:1.5rem; font-weight:800;">Eric Kammerzelt</p>
         <p style="font-size:1rem; color:var(--gray-300);">CEO, Parameter1</p>
         <p style="font-size:1rem; color:var(--blue-light); margin-top:0.5rem;">parameter1.com</p>
         <p class="tagline" style="margin-top:0.8rem;">Your publishing partner. Your growth platform.</p>
