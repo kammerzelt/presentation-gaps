@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You Have the Data. So Why Isn't It Working?</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --navy: #0f172a;
+  --navy-mid: #1e293b;
+  --navy-light: #334155;
+  --blue: #3b82f6;
+  --blue-light: #60a5fa;
+  --blue-dark: #1d4ed8;
+  --orange: #f97316;
+  --orange-light: #fb923c;
+  --white: #ffffff;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-400: #94a3b8;
+  --gray-500: #64748b;
+  --green: #22c55e;
+  --red: #ef4444;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family:'Inter',system-ui,sans-serif;
+  background:#000;
+  overflow:hidden;
+  width:100vw; height:100vh;
+  display:flex; align-items:center; justify-content:center;
+}
+
+.deck { position:relative; width:100vw; height:100vh; overflow:hidden; }
+
+.slide {
+  position:absolute; top:0; left:0;
+  width:100%; height:100%;
+  display:none; flex-direction:column; justify-content:center;
+  padding:5vh 7vw;
+  opacity:0; transition: opacity 0.4s ease;
+}
+.slide.active { display:flex; opacity:1; }
+.slide.dark { background:var(--navy); color:var(--white); }
+.slide.light { background:var(--gray-100); color:var(--navy); }
+.slide.gradient { background:linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 50%, var(--blue-dark) 100%); color:var(--white); }
+.slide.accent { background:var(--blue); color:var(--white); }
+
+.headline {
+  font-size:clamp(2rem,4.5vw,3.5rem);
+  font-weight:800; line-height:1.15;
+  margin-bottom:1.5rem; letter-spacing:-0.02em;
+}
+.headline .hl { color:var(--blue-light); }
+.slide.light .headline .hl { color:var(--blue); }
+.slide.accent .headline .hl { color:var(--navy); }
+
+.subhead {
+  font-size:clamp(1.1rem,2vw,1.6rem);
+  font-weight:400; line-height:1.5;
+  color:var(--gray-300); max-width:70%;
+}
+.slide.light .subhead { color:var(--gray-500); }
+
+.big-number {
+  font-size:clamp(4rem,10vw,9rem);
+  font-weight:900; line-height:1;
+  color:var(--orange); letter-spacing:-0.03em;
+}
+.big-number-label {
+  font-size:clamp(1.2rem,2.2vw,1.8rem);
+  font-weight:500; margin-top:0.5rem; color:var(--gray-300);
+}
+
+.split { display:flex; gap:4vw; align-items:center; height:100%; }
+.split-left, .split-right { flex:1; }
+.col-2 { display:grid; grid-template-columns:1fr 1fr; gap:2rem; }
+.col-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:2rem; }
+
+.card {
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:12px; padding:2rem;
+}
+.slide.light .card {
+  background:var(--white);
+  border:1px solid var(--gray-200);
+  box-shadow:0 1px 3px rgba(0,0,0,0.08);
+}
+
+.check-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; margin-top:1rem; }
+.check-item {
+  display:flex; align-items:flex-start; gap:0.8rem;
+  font-size:clamp(0.85rem,1.5vw,1.15rem); line-height:1.4; color:var(--gray-200);
+}
+.check-box {
+  width:24px; height:24px; min-width:24px; border-radius:6px;
+  background:var(--blue); display:flex; align-items:center; justify-content:center;
+  margin-top:2px; font-size:14px; color:white;
+}
+
+.gap-label {
+  font-size:0.9rem; font-weight:700; letter-spacing:0.15em;
+  text-transform:uppercase; color:var(--orange); margin-bottom:0.5rem;
+}
+
+.point { display:flex; align-items:flex-start; gap:1rem; margin-bottom:1rem; }
+.point-icon { font-size:1.2rem; min-width:1.5rem; text-align:center; color:var(--blue-light); }
+.point-text { font-size:clamp(0.9rem,1.6vw,1.2rem); line-height:1.5; }
+
+.seq-flow { display:flex; align-items:center; justify-content:center; gap:1rem; margin:2rem 0; }
+.seq-step {
+  background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);
+  border-radius:12px; padding:1.2rem 1.8rem; text-align:center;
+}
+.seq-num { font-size:2rem; font-weight:800; }
+.seq-label { font-size:0.9rem; font-weight:600; margin-top:0.3rem; }
+.seq-arrow { font-size:1.5rem; color:var(--gray-500); }
+
+.spectrum { display:flex; border-radius:12px; overflow:hidden; margin-top:1rem; }
+.spectrum-seg { flex:1; padding:1.5rem; text-align:center; }
+.spectrum-seg:nth-child(1) { background:rgba(59,130,246,0.15); }
+.spectrum-seg:nth-child(2) { background:rgba(59,130,246,0.3); }
+.spectrum-seg:nth-child(3) { background:rgba(59,130,246,0.5); }
+.spectrum-label { font-weight:700; font-size:1rem; margin-bottom:0.3rem; }
+.spectrum-desc { font-size:0.8rem; color:var(--gray-300); }
+
+.pillar-box {
+  background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);
+  border-radius:12px; padding:1.5rem; text-align:center;
+}
+.pillar-icon {
+  width:48px; height:48px; background:var(--blue); border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 0.8rem; font-size:1.3rem;
+}
+.pillar-label { font-size:0.85rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:0.3rem; }
+.pillar-desc { font-size:0.75rem; color:var(--gray-400); line-height:1.4; }
+
+.ladder { display:flex; flex-direction:column; gap:0; align-items:center; }
+.ladder-rung { display:flex; align-items:center; gap:1.5rem; padding:1.2rem 2rem; border-radius:12px; width:100%; max-width:700px; }
+.ladder-rung .rung-num { font-size:2rem; font-weight:800; min-width:2.5rem; }
+.ladder-rung .rung-label { font-size:1.3rem; font-weight:700; }
+.ladder-rung .rung-desc { font-size:0.9rem; color:var(--gray-300); margin-top:0.2rem; }
+.ladder-arrow { font-size:1.5rem; color:var(--blue-light); margin:0.3rem 0; }
+
+.tagline { font-size:clamp(0.9rem,1.4vw,1.1rem); font-style:italic; color:var(--gray-400); margin-top:0.5rem; }
+
+.progress-bar { position:fixed; bottom:0; left:0; height:4px; background:var(--blue); transition:width 0.4s ease; z-index:100; }
+.slide-counter { position:fixed; bottom:12px; right:20px; font-size:0.75rem; color:var(--gray-500); z-index:100; }
+.nav-hint { position:fixed; bottom:12px; left:20px; font-size:0.7rem; color:var(--gray-500); z-index:100; }
+
+/* Screenshot styling */
+.screenshot {
+  width:100%; border-radius:8px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
+  object-fit:contain;
+}
+.screenshot-frame {
+  background:var(--white); border-radius:8px; overflow:hidden;
+  box-shadow:0 4px 24px rgba(0,0,0,0.3);
+}
+.screenshot-frame .frame-bar {
+  background:var(--gray-200); height:28px;
+  display:flex; align-items:center; gap:6px; padding:0 10px;
+}
+.screenshot-frame .dot { width:10px; height:10px; border-radius:50%; }
+.screenshot-frame .dot.r { background:#ef4444; }
+.screenshot-frame .dot.y { background:#f59e0b; }
+.screenshot-frame .dot.g { background:#22c55e; }
+.screenshot-frame img { width:100%; display:block; }
+
+/* Scrolling screenshot */
+.scroll-container {
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:0 4px 20px rgba(0,0,0,0.15);
+}
+.scroll-container .frame-bar {
+  background:var(--gray-200); height:28px;
+  display:flex; align-items:center; gap:6px; padding:0 10px;
+}
+.scroll-viewport {
+  height:340px;
+  position:relative;
+  overflow:hidden;
+}
+.scroll-inner {
+  width:100%;
+  animation: scrollReport 14s ease-in-out 2s infinite;
+}
+.scroll-inner img {
+  width:100%;
+  display:block;
+}
+@keyframes scrollReport {
+  0%, 10% { transform: translateY(0); }
+  45%, 55% { transform: translateY(calc(-100% + 340px)); }
+  90%, 100% { transform: translateY(0); }
+}
+
+/* Intelligence Report - Light theme matching original */
+.intel-report {
+  background:#ffffff;
+  border:1px solid #D1DCF0;
+  border-radius:12px;
+  overflow:hidden;
+  font-size:0.75rem;
+}
+.intel-header {
+  background:#1B3A6B;
+  padding:12px 20px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.intel-header-title { color:#fff; font-weight:700; font-size:0.85rem; }
+.intel-header-sub { color:#A8BFDF; font-size:0.7rem; margin-top:2px; }
+.intel-badge {
+  background:#2E7DD1; border-radius:6px; padding:4px 12px;
+  color:#fff; font-size:0.7rem; font-weight:600;
+}
+.intel-kpi-row {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  border-bottom:1px solid #D1DCF0;
+}
+.intel-kpi {
+  padding:12px 16px;
+  border-right:1px solid #D1DCF0;
+}
+.intel-kpi:last-child { border-right:none; }
+.intel-kpi-label { font-size:0.6rem; color:#6B7A99; text-transform:uppercase; letter-spacing:0.08em; }
+.intel-kpi-value { font-size:1.4rem; font-weight:700; color:#1B3A6B; margin:4px 0 2px; }
+.intel-kpi-sub { font-size:0.65rem; color:#2A9D6F; }
+.intel-table { padding:14px 20px; }
+.intel-table-title { font-weight:700; color:#1B3A6B; font-size:0.8rem; margin-bottom:10px; }
+.intel-table-header {
+  display:grid; grid-template-columns:2fr 1.5fr 0.8fr 1.2fr 0.8fr;
+  font-size:0.6rem; font-weight:700; color:#6B7A99;
+  text-transform:uppercase; letter-spacing:0.08em;
+  padding-bottom:8px; border-bottom:1px solid #D1DCF0;
+  margin-bottom:6px;
+}
+.intel-table-row {
+  display:grid; grid-template-columns:2fr 1.5fr 0.8fr 1.2fr 0.8fr;
+  align-items:center; padding:8px 0;
+  border-bottom:1px solid #EFF4FB;
+}
+.intel-table-row.critical { background:#FEF8F7; border-radius:4px; }
+.intel-seg-name { font-weight:600; color:#1B3A6B; font-size:0.75rem; }
+.intel-bar-wrap { padding-right:16px; }
+.intel-bar-labels { display:flex; justify-content:space-between; margin-bottom:3px; }
+.intel-bar-score { font-size:0.7rem; font-weight:700; color:#1B3A6B; }
+.intel-bar-articles { font-size:0.6rem; color:#6B7A99; }
+.intel-bar { background:#E8EEF7; border-radius:3px; height:6px; overflow:hidden; }
+.intel-bar-fill { height:100%; border-radius:3px; transition:width 0.6s; }
+.intel-trend { font-size:0.75rem; font-weight:600; }
+.intel-trend.up { color:#2A9D6F; }
+.intel-trend.down { color:#E05C3A; }
+.intel-content-type { font-size:0.7rem; color:#6B7A99; }
+.intel-gap {
+  display:inline-block; border-radius:4px; padding:2px 8px;
+  font-size:0.65rem; font-weight:700;
+}
+.intel-callout {
+  margin:0 20px 16px;
+  background:#EFF4FB;
+  border-left:4px solid #2E7DD1;
+  border-radius:0 8px 8px 0;
+  padding:12px 16px;
+}
+.intel-callout-title { font-weight:700; color:#1B3A6B; font-size:0.75rem; margin-bottom:4px; }
+.intel-callout-text { font-size:0.72rem; color:#334; line-height:1.6; }
+
+/* Architecture Comparison */
+.arch-compare { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
+.arch-panel { border-radius:16px; padding:1.5rem; display:flex; flex-direction:column; align-items:center; gap:10px; }
+.arch-panel.diy { background:#FFF8F6; border:1.5px solid #F0C4B8; }
+.arch-panel.unified { background:#F4F8FF; border:1.5px solid #D1DCF0; }
+.arch-panel-title { font-weight:700; font-size:0.9rem; }
+.arch-panel-sub { font-size:0.72rem; color:#6B7A99; margin-bottom:0.3rem; text-align:center; }
+
+.arch-icons { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.arch-icon-box {
+  display:flex; flex-direction:column; align-items:center; gap:4px; width:64px;
+}
+.arch-icon {
+  width:52px; height:52px; border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:22px;
+}
+.arch-icon-label { font-size:0.65rem; font-weight:600; color:#334; text-align:center; line-height:1.3; }
+
+.arch-arrows-row { display:flex; gap:10px; justify-content:center; }
+.arch-arrows-row .arr { width:64px; text-align:center; color:#ccc; font-size:16px; }
+
+.arch-block {
+  display:flex; align-items:center; gap:10px;
+  border-radius:12px; padding:10px 16px; width:100%;
+}
+.arch-block-icon { font-size:22px; }
+.arch-block-title { font-weight:700; font-size:0.78rem; }
+.arch-block-sub { font-size:0.68rem; color:#6B7A99; }
+
+.arch-block.warn { background:#FEF0EC; border:1.5px solid #F0C4B8; }
+.arch-block.warn .arch-block-title { color:#E05C3A; }
+.arch-block.purple { background:#F5F0FF; border:1.5px solid #C9B8F0; }
+.arch-block.purple .arch-block-title { color:#6B3FA0; }
+.arch-block.neutral { background:#EFF4FB; border:1.5px solid #D1DCF0; }
+.arch-block.neutral .arch-block-title { color:#1B3A6B; }
+.arch-block.good { background:#EAF7F2; border:1.5px solid #A8DFC8; }
+.arch-block.good .arch-block-title { color:#2A9D6F; }
+
+.arch-unified-box {
+  background:#fff; border:2px solid #2E7DD1; border-radius:16px;
+  padding:14px 16px; width:100%;
+}
+.arch-unified-label {
+  font-size:0.65rem; font-weight:700; color:#2E7DD1;
+  text-transform:uppercase; letter-spacing:0.08em;
+  text-align:center; margin-bottom:10px;
+}
+
+.arch-arrow-single { color:#ccc; font-size:16px; text-align:center; }
+.arch-arrow-single.good { color:#2A9D6F; }
+.mock-spreadsheet {
+  background:var(--white); border-radius:8px; overflow:hidden;
+  box-shadow:0 4px 20px rgba(0,0,0,0.15); font-size:0.75rem; color:var(--navy);
+}
+.mock-spreadsheet .ss-header {
+  background:#217346; color:white; padding:8px 12px;
+  font-weight:600; font-size:0.8rem;
+}
+.mock-spreadsheet table { width:100%; border-collapse:collapse; }
+.mock-spreadsheet th {
+  background:var(--gray-200); padding:6px 10px; text-align:left;
+  font-weight:600; font-size:0.7rem; border-bottom:2px solid var(--gray-300);
+}
+.mock-spreadsheet td {
+  padding:5px 10px; border-bottom:1px solid var(--gray-200); font-size:0.7rem;
+}
+.mock-spreadsheet tr:nth-child(even) td { background:var(--gray-100); }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<!-- SLIDE 1: Title -->
+<div class="slide gradient active" data-slide="1">
+  <div style="margin-bottom:auto; padding-top:3vh;">
+    <span style="font-size:1.4rem; font-weight:700; color:var(--gray-300);"><span style="color:var(--blue-light);">{</span> <span style="color:var(--blue-light);">parameter</span> <span style="color:var(--gray-400);">:</span> <span style="color:var(--gray-400);">1</span> <span style="color:var(--blue-light);">}</span></span>
+  </div>
+  <div>
+    <p style="font-size:clamp(0.8rem,1.2vw,1rem); font-weight:600; color:var(--orange); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:1rem;">Niche Media Publisher Conference</p>
+    <h1 class="headline" style="font-size:clamp(2.5rem,5.5vw,4.2rem); max-width:80%;">You Have the Data.<br>So Why Isn't It <span class="hl">Working</span>?</h1>
+    <p class="subhead" style="max-width:60%;">The execution gap in audience development — and how to close it.</p>
+  </div>
+  <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:flex-end;">
+    <div>
+      <p style="font-size:0.95rem; font-weight:600;">Eric Kammerzelt</p>
+      <p style="font-size:0.85rem; color:var(--gray-400);">CEO, Parameter1 / Mindful Platform</p>
+    </div>
+    <p class="tagline">Your publishing partner. Your growth platform.</p>
+  </div>
+</div>
+
+<!-- SLIDE 2: Credibility -->
+<div class="slide dark" data-slide="2">
+  <div style="text-align:center;">
+    <p style="font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:300; line-height:1.6; max-width:75%; margin:0 auto;">
+      Built by <span style="font-weight:800; color:var(--blue-light);">publishing experts</span><br>for publishers everywhere.
+    </p>
+    <p style="font-size:clamp(0.9rem,1.4vw,1.15rem); color:var(--gray-400); margin-top:2rem; max-width:60%; margin-left:auto; margin-right:auto; line-height:1.6;">
+      20+ years in B2B publishing. Hundreds of sites launched since 2009.<br>
+      We've lived the problems we solve.
+    </p>
+  </div>
+</div>
+
+<!-- SLIDE 3: Sound Familiar? -->
+<div class="slide dark" data-slide="3">
+  <p class="gap-label" style="color:var(--blue-light);">Before we start...</p>
+  <h2 class="headline">Sound <span class="hl">familiar</span>?</h2>
+  <div class="check-grid" style="max-width:90%; margin-top:1.5rem;">
+    <div class="check-item"><div class="check-box">✓</div><span>Your content, audience, and ad data live in separate systems</span></div>
+    <div class="check-item"><div class="check-box">✓</div><span>You can't prove advertiser ROI without stitching reports together</span></div>
+    <div class="check-item"><div class="check-box">✓</div><span>Most of your website traffic is anonymous and unmonetized</span></div>
+    <div class="check-item"><div class="check-box">✓</div><span>You're making editorial, audience, and revenue decisions without a complete picture</span></div>
+    <div class="check-item"><div class="check-box">✓</div><span>Your readers experience your silos — popups, redundant forms, junk data</span></div>
+    <div class="check-item"><div class="check-box">✓</div><span>You're paying more as you grow instead of benefiting from scale</span></div>
+  </div>
+  <p style="font-size:clamp(1rem,1.8vw,1.4rem); color:var(--gray-300); margin-top:2.5rem;">
+    Here's the thing: <span style="color:var(--white); font-weight:600;">you've already done the hard work.</span>
+  </p>
+  <p style="font-size:clamp(0.9rem,1.4vw,1.1rem); color:var(--gray-400); margin-top:0.5rem;">
+    Years of content. Subscriber history. Event data. Advertiser relationships. It's all there.<br>You just can't <em>access</em> it because it's trapped in five different systems.
+  </p>
+</div>
+
+<!-- SLIDE 4: The Execution Gap -->
+<div class="slide accent" data-slide="4">
+  <div style="text-align:center;">
+    <p style="font-size:clamp(1rem,1.5vw,1.2rem); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.6); margin-bottom:1rem;">The real issue</p>
+    <h2 style="font-size:clamp(2.5rem,6vw,4.5rem); font-weight:900; line-height:1.1;">
+      The problem isn't<br><span style="color:var(--navy);">strategy.</span><br>It's <span style="color:var(--navy);">execution.</span>
+    </h2>
+  </div>
+</div>
+
+<!-- SLIDE 5: Three Gaps -->
+<div class="slide dark" data-slide="5">
+  <h2 class="headline" style="text-align:center; margin-bottom:2.5rem;">Three execution gaps.<br><span class="hl">One connected solution.</span></h2>
+  <div class="seq-flow">
+    <div class="seq-step">
+      <div class="seq-num" style="color:var(--orange);">01</div>
+      <div class="seq-label">Your systems<br>don't talk</div>
+    </div>
+    <div class="seq-arrow">→</div>
+    <div class="seq-step">
+      <div class="seq-num" style="color:var(--orange);">02</div>
+      <div class="seq-label">You're afraid<br>to gate</div>
+    </div>
+    <div class="seq-arrow">→</div>
+    <div class="seq-step">
+      <div class="seq-num" style="color:var(--orange);">03</div>
+      <div class="seq-label">You can't prove<br>advertiser value</div>
+    </div>
+  </div>
+  <p style="text-align:center; color:var(--gray-400); font-size:clamp(0.9rem,1.3vw,1.1rem); margin-top:2rem;">Each gap feeds the next. Fix them in sequence.</p>
+</div>
+
+<!-- SLIDE 6: Frankenstein Stack -->
+<div class="slide dark" data-slide="6">
+  <div class="gap-label">Gap #1</div>
+  <h2 class="headline">Your systems don't talk to each other.<br><span class="hl" style="color:var(--orange);">And your readers can feel it.</span></h2>
+  <div class="col-2" style="margin-top:2rem;">
+    <div>
+      <div class="card" style="text-align:center;">
+        <p style="font-size:1rem; font-weight:700; margin-bottom:1.5rem; color:var(--red);">What most publishers are running</p>
+        <div style="display:flex; flex-wrap:wrap; gap:0.8rem; justify-content:center;">
+          <span style="background:var(--navy); border:1px solid var(--gray-500); padding:0.5rem 1rem; border-radius:8px; font-size:0.85rem;">CMS</span>
+          <span style="background:var(--navy); border:1px solid var(--gray-500); padding:0.5rem 1rem; border-radius:8px; font-size:0.85rem;">Email Platform</span>
+          <span style="background:var(--navy); border:1px solid var(--gray-500); padding:0.5rem 1rem; border-radius:8px; font-size:0.85rem;">Ad Server</span>
+          <span style="background:var(--navy); border:1px solid var(--gray-500); padding:0.5rem 1rem; border-radius:8px; font-size:0.85rem;">Analytics</span>
+          <span style="background:var(--navy); border:1px solid var(--gray-500); padding:0.5rem 1rem; border-radius:8px; font-size:0.85rem;">CDP</span>
+        </div>
+        <p style="font-size:2.5rem; margin:1rem 0 0.5rem; color:var(--gray-500);">🔀</p>
+        <p style="font-size:0.9rem; color:var(--gray-400);">5 tools. 5 databases. 5 versions of who your audience is.</p>
+      </div>
+    </div>
+    <div>
+      <div class="point"><div class="point-icon">😤</div><div class="point-text">Newsletter subscriber visits your site → popup asks for their email. <strong style="color:var(--orange);">You already have it.</strong></div></div>
+      <div class="point"><div class="point-icon">🗑️</div><div class="point-text">Forms collect junk data because you asked the same person the same questions for the <strong>third time</strong>.</div></div>
+      <div class="point"><div class="point-icon">💸</div><div class="point-text">Every obtrusive popup tells your best readers: <strong>"We don't actually know who you are."</strong></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: Reader Experience Comparison -->
+<div class="slide light" data-slide="7">
+  <div class="gap-label" style="color:var(--orange);">Gap #1 — The reader experience</div>
+  <h2 class="headline" style="font-size:clamp(1.6rem,3vw,2.4rem);">Your readers <span class="hl">experience</span> your silos.</h2>
+  <div class="col-2" style="margin-top:1rem;">
+    <div>
+      <p style="font-weight:700; color:var(--red); margin-bottom:0.5rem; font-size:0.9rem;">❌ THE TYPICAL APPROACH</p>
+      <div class="screenshot-frame">
+        <div class="frame-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <img src="images/competitor-popup.png" alt="Competitor popup example showing multiple overlapping popups">
+      </div>
+      <p style="font-size:0.85rem; color:var(--gray-500); margin-top:0.5rem;">Popups stacked on popups. Content buried. The reader can't even see the article.</p>
+    </div>
+    <div>
+      <p style="font-weight:700; color:var(--green); margin-bottom:0.5rem; font-size:0.9rem;">✅ WHEN YOUR SYSTEMS ARE CONNECTED</p>
+      <div class="screenshot-frame">
+        <div class="frame-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <img src="images/ct-full-gate.png" alt="Cosmetics & Toiletries clean native gate experience">
+      </div>
+      <p style="font-size:0.85rem; color:var(--gray-500); margin-top:0.5rem;">Clean. Native. Built into the content. Not bolted on top.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8: What Connected Looks Like -->
+<div class="slide dark" data-slide="8">
+  <div class="gap-label">Gap #1 — The fix</div>
+  <h2 class="headline" style="font-size:clamp(1.6rem,3vw,2.4rem);">One identity layer. <span class="hl">Every system connected.</span></h2>
+  <div class="col-2" style="margin-top:1rem;">
+    <div>
+      <div class="point"><div class="point-icon" style="color:var(--green);">✓</div><div class="point-text">Audience data talks to the email system, ad platform, and content engine</div></div>
+      <div class="point"><div class="point-icon" style="color:var(--green);">✓</div><div class="point-text">Known users aren't asked for data you already have</div></div>
+      <div class="point"><div class="point-icon" style="color:var(--green);">✓</div><div class="point-text">Forms prepopulate intelligently — ask only enrichment questions</div></div>
+      <div class="point"><div class="point-icon" style="color:var(--green);">✓</div><div class="point-text">Email validation at first touch — no junk data enters the system</div></div>
+      <div class="point"><div class="point-icon" style="color:var(--green);">✓</div><div class="point-text">Same data powers editorial decisions: which topics drive registrations, which authors create subscribers</div></div>
+    </div>
+    <div>
+      <div class="card" style="text-align:center; padding:2rem;">
+        <p style="font-size:0.85rem; color:var(--gray-400); margin-bottom:1rem;">THE RESULT</p>
+        <p style="font-size:clamp(1.5rem,3vw,2.5rem); font-weight:800; color:var(--green);">More names.</p>
+        <p style="font-size:clamp(1.5rem,3vw,2.5rem); font-weight:800; color:var(--blue-light);">Better data.</p>
+        <p style="font-size:clamp(1.5rem,3vw,2.5rem); font-weight:800; color:var(--orange);">Better experience.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9: WATT Proof #1 -->
+<div class="slide dark" data-slide="9">
+  <div class="gap-label">Gap #1 — Proof</div>
+  <h2 class="headline" style="font-size:clamp(1.6rem,3vw,2.4rem);"><span class="hl">WATT Global Media</span> — Connected Data in Action</h2>
+  <div class="col-2" style="margin-top:1.5rem;">
+    <div class="card">
+      <p style="font-weight:700; font-size:1rem; margin-bottom:1.5rem;">Before → After</p>
+      <div style="display:flex; justify-content:space-between; margin-bottom:1.5rem;">
+        <div style="text-align:center;">
+          <p style="font-size:0.8rem; color:var(--gray-400);">Tools managed</p>
+          <p style="font-size:2rem; font-weight:800; color:var(--red);">[X]</p>
+          <p style="font-size:0.75rem; color:var(--gray-400);">separate systems</p>
+        </div>
+        <div style="font-size:2rem; color:var(--gray-500); align-self:center;">→</div>
+        <div style="text-align:center;">
+          <p style="font-size:0.8rem; color:var(--gray-400);">Tools managed</p>
+          <p style="font-size:2rem; font-weight:800; color:var(--green);">1</p>
+          <p style="font-size:0.75rem; color:var(--gray-400);">unified platform</p>
+        </div>
+      </div>
+      <div style="border-top:1px solid var(--navy-light); padding-top:1rem;">
+        <div style="display:flex; justify-content:space-between;">
+          <div style="text-align:center;">
+            <p style="font-size:0.75rem; color:var(--gray-400);">Form completion</p>
+            <p style="font-size:1.2rem; font-weight:700;">[X]% → [X]%</p>
+          </div>
+          <div style="text-align:center;">
+            <p style="font-size:0.75rem; color:var(--gray-400);">Junk data reduction</p>
+            <p style="font-size:1.2rem; font-weight:700;">[X]%</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="background:rgba(59,130,246,0.1); border-color:rgba(59,130,246,0.3);">
+        <p style="font-size:1.1rem; font-style:italic; line-height:1.6; color:var(--gray-200);">"[WATT stakeholder quote about the impact of consolidating to one platform]"</p>
+        <p style="font-size:0.85rem; color:var(--gray-400); margin-top:1rem;">— [Name], WATT Global Media</p>
+      </div>
+      <p style="font-size:0.9rem; color:var(--gray-400); margin-top:1.5rem; line-height:1.6;">WATT runs [X] brands across [X] properties on Mindful — content, audience, ads, newsletters, and reporting in a single platform.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 10: The Gating Fear -->
+<div class="slide gradient" data-slide="10">
+  <div class="gap-label">Gap #2</div>
+  <div style="text-align:center;">
+    <h2 style="font-size:clamp(2.5rem,6vw,4.5rem); font-weight:900; line-height:1.1;">
+      "But what about<br>my <span style="color:var(--orange);">traffic</span>?"
+    </h2>
+    <p style="font-size:clamp(1rem,1.8vw,1.4rem); color:var(--gray-300); margin-top:2rem; max-width:60%; margin-left:auto; margin-right:auto;">
+      The #1 reason publishers don't gate.<br>And the #1 reason they should.
+    </p>
+  </div>
+</div>
+
+<!-- SLIDE 11: The Math -->
+<div class="slide dark" data-slide="11">
+  <div class="gap-label">Gap #2 — The math</div>
+  <h2 class="headline" style="font-size:clamp(1.6rem,3vw,2.4rem);">The traffic you "lose" <span class="hl" style="color:var(--orange);">was never worth keeping.</span></h2>
+  <div class="split" style="margin-top:1rem;">
+    <div class="split-left">
+      <div style="text-align:center;">
+        <div class="big-number">85-95%</div>
+        <div class="big-number-label">of your traffic is anonymous</div>
+      </div>
+      <div style="text-align:center; margin-top:2rem;">
+        <p style="font-size:clamp(1.2rem,2.2vw,1.8rem); font-weight:700; color:var(--gray-300);">Mostly single-session bounces.</p>
+        <p style="font-size:clamp(0.9rem,1.4vw,1.1rem); color:var(--gray-400); margin-top:0.5rem;">Landed from search. Skimmed for 3 seconds. Left.<br>Never going to become a reader, subscriber, or lead.</p>
+      </div>
+    </div>
+    <div class="split-right">
+      <div class="card" style="text-align:center;">
+        <p style="font-size:0.85rem; font-weight:700; color:var(--orange); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:1rem;">When you gate 0% → 100%</p>
+        <p style="font-size:clamp(2rem,4vw,3.5rem); font-weight:900; color:var(--green);">[X]%</p>
+        <p style="font-size:1rem; color:var(--gray-300);">traffic decrease</p>
+        <div style="border-top:1px solid var(--navy-light); margin:1.5rem 0; padding-top:1.5rem;">
+          <p style="font-size:clamp(2rem,4vw,3.5rem); font-weight:900; color:var(--blue-light);">[X]x</p>
+          <p style="font-size:1rem; color:var(--gray-300);">increase in identified audience</p>
+        </div>
+        <p style="font-size:0.85rem; color:var(--gray-500); font-style:italic;">You won't miss that traffic. Neither will your advertisers.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 12: Gating Spectrum -->
+<div class="slide dark" data-slide="12">
+  <div class="gap-label">Gap #2 — Your options</div>
+  <h2 class="headline" style="font-size:clamp(1.6rem,3vw,2.4rem);">Gating isn't all or nothing. <span class="hl">Pick your strategy.</span></h2>
+  <div class="spectrum" style="margin-top:1.5rem;">
+    <div class="spectrum-seg">
+      <div class="spectrum-label">Metered</div>
+      <div class="spectrum-desc">X free articles, then gate.<br>Lowest friction.</div>
+    </div>
+    <div class="spectrum-seg">
+      <div class="spectrum-label">Selective</div>
+      <div class="spectrum-desc">Gate premium content or<br>specific sections only.</div>
+    </div>
+    <div class="spectrum-seg">
+      <div class="spectrum-label">Full</div>
+      <div class="spectrum-desc">All content requires<br>identification.</div>
+    </div>
+  </div>
+  <div class="col-2" style="margin-top:1.5rem;">
+    <div class="screenshot-frame" style="height:35vh; display:flex; flex-direction:column;">
+      <div class="frame-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      <div style="flex:1; overflow:hidden; position:relative;">
+        <img src="images/ct-metered-article.png" alt="Cosmetics & Toiletries metered article with 1 view remaining" style="width:100%; height:100%; object-fit:cover; object-position:center bottom; display:block;">
+      </div>
+    </div>
+    <div class="screenshot-frame" style="height:35vh; display:flex; flex-direction:column;">
+      <div class="frame-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      <div style="flex:1; overflow:hidden; position:relative;">
+        <img src="images/ct-full-gate.png" alt="Cosmetics & Toiletries article with full gate requiring registration" style="width:100%; height:100%; object-fit:cover; object-position:center bottom; display:block;">
+      </div>
+    </div>
+  </div>
+  <p style="text-align:center; font-size:0.95rem; color:var(--gray-300); margin-top:1rem;">Most publishers use <strong>combinations</strong>. The point is to have a strategy, not to gate everything or nothing.</p>
+</div>
+
+<!-- SLIDE 13: Native vs Popup -->
+<div class="slide light" data-slide="13">
+  <div class="gap-label" style="color:var(--orange);">Gap #2 — The key differentiator</div>
+  <h2 class="headline" style="font-size:clamp(1.6rem,3vw,2.4rem);">Control the experience. <span class="hl">Not a popup in sight.</span></h2>
+  <p class="subhead" style="margin-bottom:1.5rem;">When gating is built into the content layer, the whole dynamic changes. It's native, not bolted on.</p>
+  <div class="col-2">
+    <div>
+      <p style="font-weight:700; color:var(--green); margin-bottom:0.5rem; font-size:0.9rem;">STEP 1: Email first — validated instantly</p>
+      <div class="screenshot-frame">
+        <div class="frame-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <img src="images/ct-registration.png" alt="Cosmetics & Toiletries progressive registration form">
+      </div>
+    </div>
+    <div>
+      <p style="font-weight:700; color:var(--green); margin-bottom:0.5rem; font-size:0.9rem;">STEP 2: Enrich progressively over time</p>
+      <div class="screenshot-frame">
+        <div class="frame-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <img src="images/feed-grain-form.png" alt="Feed & Grain prepopulated profile form for returning user">
+      </div>
+    </div>
+  </div>
+  <p style="text-align:center; color:var(--gray-500); font-size:0.95rem; margin-top:1rem;"><strong>Anonymous → email validated → name, title, company → newsletter subscriber → fully profiled.</strong> One interaction at a time.</p>
+</div>
+
+<!-- SLIDE 14: Newsletter as Identity Engine -->
+<div class="slide dark" data-slide="14">
+  <div class="gap-label">Gap #2 — Beyond identification</div>
+  <h2 class="headline" style="font-size:clamp(1.6rem,3vw,2.4rem);">Your newsletter isn't a distribution channel.<br><span class="hl">It's your identity engine.</span></h2>
+  <p class="subhead" style="max-width:85%; margin-bottom:1.5rem;">It's the one owned channel immune to algorithm changes, platform fees, and search volatility. And it's the most powerful mechanism for moving people up the audience ladder.</p>
+  <div style="display:flex; align-items:center; justify-content:center; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.5rem;">
+    <div class="card" style="text-align:center; padding:1.2rem 1.5rem; min-width:155px;">
+      <p style="font-size:0.7rem; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.3rem;">Stage 1</p>
+      <p style="font-size:1.1rem; font-weight:800; color:var(--red);">Anonymous</p>
+      <p style="font-size:0.75rem; color:var(--gray-400); margin-top:0.3rem;">Visits site, reads content</p>
+    </div>
+    <div style="font-size:1.2rem; color:var(--gray-500);">→</div>
+    <div class="card" style="text-align:center; padding:1.2rem 1.5rem; min-width:155px;">
+      <p style="font-size:0.7rem; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.3rem;">Stage 2</p>
+      <p style="font-size:1.1rem; font-weight:800; color:var(--orange);">Known</p>
+      <p style="font-size:0.75rem; color:var(--gray-400); margin-top:0.3rem;">Validated email at gate</p>
+    </div>
+    <div style="font-size:1.2rem; color:var(--gray-500);">→</div>
+    <div class="card" style="text-align:center; padding:1.2rem 1.5rem; min-width:155px; background:rgba(59,130,246,0.15); border-color:rgba(59,130,246,0.3);">
+      <p style="font-size:0.7rem; color:var(--blue-light); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.3rem;">The pivot point</p>
+      <p style="font-size:1.1rem; font-weight:800; color:var(--blue-light);">Subscriber</p>
+      <p style="font-size:0.75rem; color:var(--gray-300); margin-top:0.3rem;">Newsletter opt-in =<br>direct, recurring access</p>
+    </div>
+    <div style="font-size:1.2rem; color:var(--gray-500);">→</div>
+    <div class="card" style="text-align:center; padding:1.2rem 1.5rem; min-width:155px; background:rgba(34,197,94,0.15); border-color:rgba(34,197,94,0.3);">
+      <p style="font-size:0.7rem; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.3rem;">Stage 4</p>
+      <p style="font-size:1.1rem; font-weight:800; color:var(--green);">Engaged</p>
+      <p style="font-size:0.75rem; color:var(--gray-400); margin-top:0.3rem;">Active across content,<br>email, and ads</p>
+    </div>
+  </div>
+  <div class="col-2">
+    <div class="card">
+      <p style="font-weight:700; font-size:0.9rem; margin-bottom:0.8rem; color:var(--blue-light);">Why the newsletter is the key</p>
+      <div class="point" style="margin-bottom:0.6rem;"><div class="point-icon" style="color:var(--green); font-size:0.9rem;">✓</div><div class="point-text" style="font-size:0.9rem;">You own the channel. No algorithm. No platform fee. No search ranking gamble.</div></div>
+      <div class="point" style="margin-bottom:0.6rem;"><div class="point-icon" style="color:var(--green); font-size:0.9rem;">✓</div><div class="point-text" style="font-size:0.9rem;">3-5x engagement vs. web. Your most valuable audience segment by every measure.</div></div>
+      <div class="point" style="margin-bottom:0;"><div class="point-icon" style="color:var(--green); font-size:0.9rem;">✓</div><div class="point-text" style="font-size:0.9rem;">Email click → site visit → ad view. Cross-channel identity without login friction.</div></div>
+    </div>
+    <div class="card">
+      <p style="font-weight:700; font-size:0.9rem; margin-bottom:0.8rem; color:var(--orange);">How the platform makes it automatic</p>
+      <div class="point" style="margin-bottom:0.6rem;"><div class="point-icon" style="color:var(--orange); font-size:0.9rem;">→</div><div class="point-text" style="font-size:0.9rem;">Registration forms include contextual newsletter opt-ins — not a separate ask</div></div>
+      <div class="point" style="margin-bottom:0.6rem;"><div class="point-icon" style="color:var(--orange); font-size:0.9rem;">→</div><div class="point-text" style="font-size:0.9rem;">Cross-channel tracking links every touchpoint into a single profile automatically</div></div>
+      <div class="point" style="margin-bottom:0;"><div class="point-icon" style="color:var(--orange); font-size:0.9rem;">→</div><div class="point-text" style="font-size:0.9rem;">Profiles enrich progressively — each interaction adds data without asking again</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 15: WATT Proof #2 -->
+<div class="slide dark" data-slide="15">
+  <div class="gap-label">Gap #2 — Proof</div>
+  <h2 class="headline" style="font-size:clamp(1.6rem,3vw,2.4rem);"><span class="hl">WATT Global Media</span> — Gating in Practice</h2>
+  <div class="col-3" style="margin-top:2rem;">
+    <div class="card" style="text-align:center;">
+      <p style="font-size:0.8rem; color:var(--gray-400); margin-bottom:0.5rem;">Known audience before</p>
+      <p style="font-size:3rem; font-weight:900; color:var(--red);">[X]%</p>
+    </div>
+    <div class="card" style="text-align:center;">
+      <p style="font-size:0.8rem; color:var(--gray-400); margin-bottom:0.5rem;">Known audience after</p>
+      <p style="font-size:3rem; font-weight:900; color:var(--green);">[X]%</p>
+    </div>
+    <div class="card" style="text-align:center;">
+      <p style="font-size:0.8rem; color:var(--gray-400); margin-bottom:0.5rem;">Traffic impact</p>
+      <p style="font-size:3rem; font-weight:900; color:var(--blue-light);">[X]%</p>
+      <p style="font-size:0.75rem; color:var(--gray-400);">decrease</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:2rem; text-align:center;">
+    <p style="font-size:0.85rem; color:var(--gray-400); margin-bottom:0.5rem;">Strategy used</p>
+    <p style="font-size:1.2rem; font-weight:700;">[Metered / Selective / Full / Combination — describe WATT's approach]</p>
+    <p style="font-size:1rem; color:var(--gray-300); margin-top:1rem;">Achieved in <strong>[X] months</strong>. The traffic they lost? Single-session bounces they'll never miss.</p>
+  </div>
+</div>
+
+<!-- SLIDE 16: What Advertisers Want -->
+<div class="slide gradient" data-slide="16">
+  <div class="gap-label">Gap #3</div>
+  <h2 class="headline">Advertisers stopped buying <span class="hl" style="color:var(--orange);">impressions.</span><br>They're buying <span class="hl">proof.</span></h2>
+  <div class="col-2" style="margin-top:2rem;">
+    <div class="card">
+      <p style="font-weight:700; color:var(--red); margin-bottom:1rem;">What you're giving them</p>
+      <div class="point"><div class="point-icon" style="color:var(--red);">✕</div><div class="point-text">Pageviews</div></div>
+      <div class="point"><div class="point-icon" style="color:var(--red);">✕</div><div class="point-text">Impressions served</div></div>
+      <div class="point"><div class="point-icon" style="color:var(--red);">✕</div><div class="point-text">Open rates from the newsletter</div></div>
+      <div class="point"><div class="point-icon" style="color:var(--red);">✕</div><div class="point-text">...from 4 different spreadsheets</div></div>
+    </div>
+    <div class="card">
+      <p style="font-weight:700; color:var(--green); margin-bottom:1rem;">What they actually want</p>
+      <div class="point"><div class="point-icon" style="color:var(--green);">✓</div><div class="point-text">How many <strong>verified decision-makers</strong> saw the campaign?</div></div>
+      <div class="point"><div class="point-icon" style="color:var(--green);">✓</div><div class="point-text">Did they engage with the content around the ad?</div></div>
+      <div class="point"><div class="point-icon" style="color:var(--green);">✓</div><div class="point-text">Did they read the newsletter too?</div></div>
+      <div class="point"><div class="point-icon" style="color:var(--green);">✓</div><div class="point-text">Did they come back?</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 17: Old vs New Report -->
+<div class="slide light" data-slide="17">
+  <div class="gap-label" style="color:var(--orange);">Gap #3 — The proof in action</div>
+  <h2 class="headline" style="font-size:clamp(1.4rem,2.5vw,2rem);">Same advertiser. <span class="hl">Different story.</span></h2>
+  <div class="col-2" style="margin-top:1rem;">
+    <div>
+      <p style="font-weight:700; color:var(--red); margin-bottom:0.5rem; font-size:0.9rem;">❌ THE OLD REPORT</p>
+      <div class="mock-spreadsheet">
+        <div class="ss-header">📊 Q4_Campaign_Report_Final_v3.xlsx</div>
+        <table>
+          <tr><th>Campaign</th><th>Impressions</th><th>Clicks</th><th>CTR</th></tr>
+          <tr><td>Banner - Homepage</td><td>145,200</td><td>312</td><td>0.21%</td></tr>
+          <tr><td>Banner - Section</td><td>89,400</td><td>178</td><td>0.20%</td></tr>
+          <tr><td>Newsletter - Oct</td><td>12,300</td><td>89</td><td>0.72%</td></tr>
+          <tr><td>Newsletter - Nov</td><td>11,800</td><td>76</td><td>0.64%</td></tr>
+          <tr><td>Sponsored Post</td><td>8,900</td><td>234</td><td>2.63%</td></tr>
+          <tr><td style="font-weight:700;">TOTAL</td><td style="font-weight:700;">267,600</td><td style="font-weight:700;">889</td><td style="font-weight:700;">0.33%</td></tr>
+        </table>
+      </div>
+      <p style="font-size:0.8rem; color:var(--gray-500); margin-top:0.5rem;">No audience identity. No cross-channel view. Just "how many," never "who."</p>
+    </div>
+    <div>
+      <p style="font-weight:700; color:var(--green); margin-bottom:0.5rem; font-size:0.9rem;">✅ THE UNIFIED REPORT</p>
+      <div class="scroll-container">
+        <div class="frame-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+        <div class="scroll-viewport">
+          <div class="scroll-inner">
+            <img src="images/advertiser-report.png" alt="Acme Products unified advertiser report showing cross-channel performance">
+          </div>
+        </div>
+      </div>
+      <p style="font-size:0.8rem; color:var(--gray-500); margin-top:0.5rem;">Cross-channel. Self-service. Real-time. One report, one view.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 18: Audience Identity -->
+<div class="slide dark" data-slide="18">
+  <div class="gap-label">Gap #3 — The deeper layer</div>
+  <h2 class="headline" style="font-size:clamp(1.6rem,3vw,2.4rem);">You're not selling impressions.<br>You're selling a <span class="hl">verified, qualified audience.</span></h2>
+  <div class="col-2" style="margin-top:1.5rem;">
+    <div class="screenshot-frame">
+      <div class="frame-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      <img src="images/audience-profiles.png" alt="Audience Profiles showing identified users, companies, and email domains">
+    </div>
+    <div class="screenshot-frame">
+      <div class="frame-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      <img src="images/leaders-performance.png" alt="Leaders Performance dashboard showing unique users and category breakdown">
+    </div>
+  </div>
+  <p style="text-align:center; color:var(--gray-300); font-size:clamp(0.9rem,1.3vw,1.05rem); margin-top:1.5rem;">
+    <strong>"We reached [X] verified professionals across [X] properties. [X]% engaged with related content."</strong><br>
+    <span style="color:var(--gray-400);">That commands premium pricing. Because you're selling access to a known, engaged audience.</span>
+  </p>
+</div>
+
+<!-- SLIDE 19: The Audience Ladder -->
+<div class="slide dark" data-slide="19">
+  <h2 class="headline" style="text-align:center; margin-bottom:2rem;">The audience progression ladder.<br><span class="hl">Every rung is more valuable.</span></h2>
+  <div class="ladder">
+    <div class="ladder-rung" style="background:rgba(34,197,94,0.2); border:1px solid rgba(34,197,94,0.4);">
+      <div class="rung-num" style="color:var(--green);">4</div>
+      <div>
+        <div class="rung-label">Engaged</div>
+        <div class="rung-desc">Active across content + email + ads. Your premium audience. Worth the most to advertisers.</div>
+      </div>
+    </div>
+    <div class="ladder-arrow">↑</div>
+    <div class="ladder-rung" style="background:rgba(59,130,246,0.2); border:1px solid rgba(59,130,246,0.4);">
+      <div class="rung-num" style="color:var(--blue-light);">3</div>
+      <div>
+        <div class="rung-label">Subscriber</div>
+        <div class="rung-desc">Newsletter opt-in. Direct, recurring touchpoint. Highest engagement channel you own.</div>
+      </div>
+    </div>
+    <div class="ladder-arrow">↑</div>
+    <div class="ladder-rung" style="background:rgba(249,115,22,0.15); border:1px solid rgba(249,115,22,0.3);">
+      <div class="rung-num" style="color:var(--orange);">2</div>
+      <div>
+        <div class="rung-label">Known</div>
+        <div class="rung-desc">Validated email. Real name. Progressively enriched profile. First-party data you own.</div>
+      </div>
+    </div>
+    <div class="ladder-arrow">↑</div>
+    <div class="ladder-rung" style="background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2);">
+      <div class="rung-num" style="color:var(--red);">1</div>
+      <div>
+        <div class="rung-label">Anonymous</div>
+        <div class="rung-desc">Unknown visitor. No identity. Unmonetizable. This is where 85-95% of your traffic sits today.</div>
+      </div>
+    </div>
+  </div>
+  <p style="text-align:center; color:var(--gray-300); font-size:1rem; margin-top:1.5rem; font-weight:600;">Your job is to move people <span style="color:var(--green);">up</span> this ladder. Every rung is worth more to you and your advertisers.</p>
+</div>
+
+<!-- SLIDE 20: The DIY Path -->
+<div class="slide dark" data-slide="20">
+  <p style="font-size:clamp(0.75rem,1vw,0.85rem); font-weight:700; color:var(--orange); text-transform:uppercase; letter-spacing:0.15em; margin-bottom:0.5rem; text-align:center;">The DIY Approach</p>
+  <h2 class="headline" style="text-align:center; font-size:clamp(1.5rem,3vw,2.4rem); margin-bottom:2rem;">You can unify it yourself.<br><span class="hl" style="color:var(--orange);">But at what cost?</span></h2>
+
+  <div style="display:flex; align-items:center; justify-content:center; gap:0; margin-bottom:2.5rem;">
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px; background:#FEF0EC; border:2px solid #F0C4B8; border-radius:16px; padding:16px 18px; min-width:120px;">
+      <div style="font-size:2rem;">🔧</div>
+      <div style="font-size:0.8rem; font-weight:700; color:#E05C3A; text-align:center; line-height:1.3;">5 Separate<br>Tools</div>
+    </div>
+    <div style="font-size:1.8rem; color:var(--gray-500); margin:0 12px; padding-bottom:20px;">→</div>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px; background:#F5F0FF; border:2px solid #C9B8F0; border-radius:16px; padding:16px 18px; min-width:120px;">
+      <div style="font-size:2rem;">👷</div>
+      <div style="font-size:0.8rem; font-weight:700; color:#6B3FA0; text-align:center; line-height:1.3;">Engineering<br>Team</div>
+    </div>
+    <div style="font-size:1.8rem; color:var(--gray-500); margin:0 12px; padding-bottom:20px;">→</div>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px; background:#F5F0FF; border:2px solid #C9B8F0; border-radius:16px; padding:16px 18px; min-width:120px;">
+      <div style="font-size:2rem;">🗄️</div>
+      <div style="font-size:0.8rem; font-weight:700; color:#6B3FA0; text-align:center; line-height:1.3;">Data<br>Warehouse</div>
+    </div>
+    <div style="font-size:1.8rem; color:var(--gray-500); margin:0 12px; padding-bottom:20px;">→</div>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px; background:#FEF0EC; border:2px solid #F0C4B8; border-radius:16px; padding:16px 18px; min-width:120px;">
+      <div style="font-size:2rem;">📉</div>
+      <div style="font-size:0.8rem; font-weight:700; color:#E05C3A; text-align:center; line-height:1.3;">Delayed<br>Reports</div>
+    </div>
+  </div>
+
+  <div style="display:flex; gap:1.5rem; justify-content:center;">
+    <div style="background:rgba(224,92,58,0.12); border:1.5px solid rgba(224,92,58,0.3); border-radius:12px; padding:16px 28px; text-align:center; min-width:180px;">
+      <div style="font-size:clamp(1.3rem,2.2vw,1.8rem); font-weight:800; color:var(--orange);">$150K–$400K/yr</div>
+      <div style="font-size:0.8rem; color:var(--gray-400); margin-top:4px;">Engineering & tooling costs</div>
+    </div>
+    <div style="background:rgba(224,92,58,0.12); border:1.5px solid rgba(224,92,58,0.3); border-radius:12px; padding:16px 28px; text-align:center; min-width:180px;">
+      <div style="font-size:clamp(1.3rem,2.2vw,1.8rem); font-weight:800; color:var(--orange);">Weeks of lag</div>
+      <div style="font-size:0.8rem; color:var(--gray-400); margin-top:4px;">From question to insight</div>
+    </div>
+    <div style="background:rgba(224,92,58,0.12); border:1.5px solid rgba(224,92,58,0.3); border-radius:12px; padding:16px 28px; text-align:center; min-width:180px;">
+      <div style="font-size:clamp(1.3rem,2.2vw,1.8rem); font-weight:800; color:var(--orange);">Ongoing maintenance</div>
+      <div style="font-size:0.8rem; color:var(--gray-400); margin-top:4px;">Pipelines break. Teams churn.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 21: The Mindful Path -->
+<div class="slide dark" data-slide="21">
+  <p style="font-size:clamp(0.75rem,1vw,0.85rem); font-weight:700; color:var(--green); text-transform:uppercase; letter-spacing:0.15em; margin-bottom:0.5rem; text-align:center;">The Mindful Approach</p>
+  <h2 class="headline" style="text-align:center; font-size:clamp(1.5rem,3vw,2.4rem); margin-bottom:2rem;">Unified by design.<br><span class="hl">Intelligence on day one.</span></h2>
+
+  <div style="background:rgba(255,255,255,0.06); border:3px solid var(--blue); border-radius:20px; padding:24px 32px; max-width:700px; margin:0 auto 1rem;">
+    <div style="font-size:0.8rem; font-weight:700; color:var(--blue-light); text-transform:uppercase; letter-spacing:0.1em; text-align:center; margin-bottom:16px;">Mindful Unified Platform</div>
+    <div style="display:flex; gap:24px; justify-content:center;">
+      <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+        <div style="width:70px; height:70px; border-radius:16px; background:#4A90D918; border:2px solid #4A90D955; display:flex; align-items:center; justify-content:center; font-size:1.6rem;">📄</div>
+        <div style="font-size:0.75rem; font-weight:700; color:var(--gray-200);">Content</div>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+        <div style="width:70px; height:70px; border-radius:16px; background:#E07B3918; border:2px solid #E07B3955; display:flex; align-items:center; justify-content:center; font-size:1.6rem;">✉️</div>
+        <div style="font-size:0.75rem; font-weight:700; color:var(--gray-200);">Email</div>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+        <div style="width:70px; height:70px; border-radius:16px; background:#9B59B618; border:2px solid #9B59B655; display:flex; align-items:center; justify-content:center; font-size:1.6rem;">📢</div>
+        <div style="font-size:0.75rem; font-weight:700; color:var(--gray-200);">Advertising</div>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+        <div style="width:70px; height:70px; border-radius:16px; background:#27AE6018; border:2px solid #27AE6055; display:flex; align-items:center; justify-content:center; font-size:1.6rem;">📊</div>
+        <div style="font-size:0.75rem; font-weight:700; color:var(--gray-200);">Analytics</div>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+        <div style="width:70px; height:70px; border-radius:16px; background:#E74C3C18; border:2px solid #E74C3C55; display:flex; align-items:center; justify-content:center; font-size:1.6rem;">👥</div>
+        <div style="font-size:0.75rem; font-weight:700; color:var(--gray-200);">Audience</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center; font-size:1.5rem; color:var(--green);">↓</div>
+
+  <div style="display:flex; gap:1.2rem; justify-content:center; max-width:750px; margin:0.5rem auto 0;">
+    <div style="background:#EAF7F2; border:1.5px solid #A8DFC8; border-radius:14px; padding:20px 22px; text-align:center; flex:1;">
+      <div style="font-size:2rem; margin-bottom:8px;">🔗</div>
+      <div style="font-size:0.9rem; font-weight:700; color:#1B3A6B; margin-bottom:4px;">Shared Identity</div>
+      <div style="font-size:0.78rem; color:#6B7A99; line-height:1.5;">One record per user across every touchpoint</div>
+    </div>
+    <div style="background:#EAF7F2; border:1.5px solid #A8DFC8; border-radius:14px; padding:20px 22px; text-align:center; flex:1;">
+      <div style="font-size:2rem; margin-bottom:8px;">📈</div>
+      <div style="font-size:0.9rem; font-weight:700; color:#1B3A6B; margin-bottom:4px;">Real-Time Reporting</div>
+      <div style="font-size:0.78rem; color:#6B7A99; line-height:1.5;">No pipelines. No lag. No engineering team.</div>
+    </div>
+    <div style="background:#EAF7F2; border:1.5px solid #A8DFC8; border-radius:14px; padding:20px 22px; text-align:center; flex:1;">
+      <div style="font-size:2rem; margin-bottom:8px;">🎯</div>
+      <div style="font-size:0.9rem; font-weight:700; color:#1B3A6B; margin-bottom:4px;">Actionable Intelligence</div>
+      <div style="font-size:0.78rem; color:#6B7A99; line-height:1.5;">Answers when you need them</div>
+    </div>
+  </div>
+
+  <p style="text-align:center; font-size:clamp(0.75rem,1.1vw,0.9rem); color:var(--gray-400); margin-top:1.5rem;">As AI commoditizes content, <span style="color:var(--orange); font-weight:600;">verified audience identity becomes your moat.</span> This makes it accessible to every team — not just the ones with data engineers.</p>
+</div>
+
+<!-- SLIDE 22: Intelligence Report -->
+<div class="slide dark" data-slide="22">
+  <div style="text-align:center; margin-bottom:0.8rem;">
+    <p style="font-size:clamp(0.75rem,1vw,0.85rem); font-weight:700; color:var(--blue-light); text-transform:uppercase; letter-spacing:0.15em; margin-bottom:0.3rem;">What this looks like</p>
+    <h2 class="headline" style="font-size:clamp(1.3rem,2.2vw,1.8rem); margin-bottom:0;">Audience Intelligence Report</h2>
+  </div>
+
+  <div class="intel-report">
+    <div class="intel-header">
+      <div>
+        <div class="intel-header-title">Audience Intelligence Report</div>
+        <div class="intel-header-sub">Content-Segment Engagement — Q1 2026 | All Properties</div>
+      </div>
+      <div class="intel-badge">Powered by Mindful</div>
+    </div>
+
+    <div class="intel-kpi-row">
+      <div class="intel-kpi">
+        <div class="intel-kpi-label">Identified Audience</div>
+        <div class="intel-kpi-value">68,412</div>
+        <div class="intel-kpi-sub">+9% vs prior quarter</div>
+      </div>
+      <div class="intel-kpi">
+        <div class="intel-kpi-label">Avg Engagement Score</div>
+        <div class="intel-kpi-value">58.4</div>
+        <div class="intel-kpi-sub">Across all segments</div>
+      </div>
+      <div class="intel-kpi">
+        <div class="intel-kpi-label">Underserved Segments</div>
+        <div class="intel-kpi-value" style="color:#E05C3A;">2</div>
+        <div class="intel-kpi-sub" style="color:#E05C3A;">Require editorial attention</div>
+      </div>
+      <div class="intel-kpi" style="border-right:none;">
+        <div class="intel-kpi-label">Anonymous Traffic</div>
+        <div class="intel-kpi-value">31%</div>
+        <div class="intel-kpi-sub">Conversion opportunity</div>
+      </div>
+    </div>
+
+    <div class="intel-table">
+      <div class="intel-table-title">Segment Engagement vs. Content Supply</div>
+      <div class="intel-table-header">
+        <div>Segment</div>
+        <div>Engagement Score</div>
+        <div>Trend</div>
+        <div>Top Content</div>
+        <div>Content Gap</div>
+      </div>
+
+      <div class="intel-table-row">
+        <div class="intel-seg-name">C-Suite / Executive</div>
+        <div class="intel-bar-wrap">
+          <div class="intel-bar-labels"><span class="intel-bar-score">87</span><span class="intel-bar-articles">142 articles</span></div>
+          <div class="intel-bar"><div class="intel-bar-fill" style="width:87%; background:#2A9D6F;"></div></div>
+        </div>
+        <div class="intel-trend up">+12%</div>
+        <div class="intel-content-type">Industry Trends</div>
+        <div><span class="intel-gap" style="background:rgba(42,157,111,0.13); color:#2A9D6F; border:1px solid rgba(42,157,111,0.3);">Low</span></div>
+      </div>
+
+      <div class="intel-table-row">
+        <div class="intel-seg-name">Engineering / Technical</div>
+        <div class="intel-bar-wrap">
+          <div class="intel-bar-labels"><span class="intel-bar-score">64</span><span class="intel-bar-articles">98 articles</span></div>
+          <div class="intel-bar"><div class="intel-bar-fill" style="width:64%; background:#F0A500;"></div></div>
+        </div>
+        <div class="intel-trend up">+3%</div>
+        <div class="intel-content-type">How-To Guides</div>
+        <div><span class="intel-gap" style="background:rgba(240,165,0,0.13); color:#F0A500; border:1px solid rgba(240,165,0,0.3);">Medium</span></div>
+      </div>
+
+      <div class="intel-table-row critical">
+        <div class="intel-seg-name">Operations / Plant Mgr</div>
+        <div class="intel-bar-wrap">
+          <div class="intel-bar-labels"><span class="intel-bar-score">41</span><span class="intel-bar-articles">34 articles</span></div>
+          <div class="intel-bar"><div class="intel-bar-fill" style="width:41%; background:#E05C3A;"></div></div>
+        </div>
+        <div class="intel-trend down">-8%</div>
+        <div class="intel-content-type">Safety & Compliance</div>
+        <div><span class="intel-gap" style="background:rgba(224,92,58,0.13); color:#E05C3A; border:1px solid rgba(224,92,58,0.3);">High</span></div>
+      </div>
+
+      <div class="intel-table-row">
+        <div class="intel-seg-name">Marketing / Sales</div>
+        <div class="intel-bar-wrap">
+          <div class="intel-bar-labels"><span class="intel-bar-score">72</span><span class="intel-bar-articles">61 articles</span></div>
+          <div class="intel-bar"><div class="intel-bar-fill" style="width:72%; background:#2A9D6F;"></div></div>
+        </div>
+        <div class="intel-trend up">+5%</div>
+        <div class="intel-content-type">Case Studies</div>
+        <div><span class="intel-gap" style="background:rgba(42,157,111,0.13); color:#2A9D6F; border:1px solid rgba(42,157,111,0.3);">Low</span></div>
+      </div>
+
+      <div class="intel-table-row critical">
+        <div class="intel-seg-name">Procurement</div>
+        <div class="intel-bar-wrap">
+          <div class="intel-bar-labels"><span class="intel-bar-score">28</span><span class="intel-bar-articles">19 articles</span></div>
+          <div class="intel-bar"><div class="intel-bar-fill" style="width:28%; background:#C0392B;"></div></div>
+        </div>
+        <div class="intel-trend down">-14%</div>
+        <div class="intel-content-type">Product Specs</div>
+        <div><span class="intel-gap" style="background:rgba(192,57,43,0.13); color:#C0392B; border:1px solid rgba(192,57,43,0.3);">Critical</span></div>
+      </div>
+    </div>
+
+    <div class="intel-callout">
+      <div class="intel-callout-title">Editorial Intelligence</div>
+      <div class="intel-callout-text">
+        <b>Procurement</b> and <b>Operations/Plant Manager</b> segments show critical and high content gaps — together representing an estimated <b>22% of your identified audience</b>. Consider reallocating 2–3 editorial slots/month toward Safety & Compliance and Product Specification content.
+      </div>
+    </div>
+  </div>
+
+  <p style="text-align:center; font-size:0.65rem; color:var(--gray-500); margin-top:0.5rem; font-style:italic;">Illustrative data. Your actual report reflects your real audience across all properties.</p>
+</div>
+
+<!-- SLIDE 23: Monday Morning Checklist -->
+<div class="slide dark" data-slide="23">
+  <p style="font-size:clamp(0.85rem,1.2vw,1rem); font-weight:600; color:var(--orange); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:1rem;">Your action plan</p>
+  <h2 class="headline" style="margin-bottom:2.5rem;">Three things to do <span class="hl">Monday morning.</span></h2>
+  <div style="display:flex; flex-direction:column; gap:1.5rem; max-width:80%;">
+    <div style="display:flex; align-items:flex-start; gap:1.5rem;">
+      <div style="min-width:60px; height:60px; background:var(--orange); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.8rem; font-weight:900;">1</div>
+      <div>
+        <p style="font-size:clamp(1.1rem,1.8vw,1.4rem); font-weight:700; margin-bottom:0.3rem;">Audit your known audience percentage.</p>
+        <p style="font-size:clamp(0.85rem,1.3vw,1rem); color:var(--gray-400); line-height:1.5;">Pull your analytics. What percentage of last month's traffic can you identify by name and email? If you don't know the number, that's your first problem.</p>
+      </div>
+    </div>
+    <div style="display:flex; align-items:flex-start; gap:1.5rem;">
+      <div style="min-width:60px; height:60px; background:var(--blue); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.8rem; font-weight:900;">2</div>
+      <div>
+        <p style="font-size:clamp(1.1rem,1.8vw,1.4rem); font-weight:700; margin-bottom:0.3rem;">Visit your own site in an incognito window.</p>
+        <p style="font-size:clamp(0.85rem,1.3vw,1rem); color:var(--gray-400); line-height:1.5;">Go through the registration process as a new reader. Count the popups. Count the form fields. Then do it again as a returning user. Are you asking for data you already have?</p>
+      </div>
+    </div>
+    <div style="display:flex; align-items:flex-start; gap:1.5rem;">
+      <div style="min-width:60px; height:60px; background:var(--green); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.8rem; font-weight:900; color:var(--navy);">3</div>
+      <div>
+        <p style="font-size:clamp(1.1rem,1.8vw,1.4rem); font-weight:700; margin-bottom:0.3rem;">Build one advertiser report that leads with WHO, not HOW MANY.</p>
+        <p style="font-size:clamp(0.85rem,1.3vw,1rem); color:var(--gray-400); line-height:1.5;">Before your next renewal, show titles, companies, and engagement depth — not just impressions served. If you can't build that report today, you know what needs to change.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 24: Close + CTA -->
+<div class="slide gradient" data-slide="24">
+  <div style="text-align:center;">
+    <p style="font-size:clamp(0.85rem,1.2vw,1rem); font-weight:600; color:var(--orange); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:1.5rem;">Your challenge</p>
+    <h2 style="font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:800; line-height:1.3; max-width:75%; margin:0 auto 2rem;">
+      Before your next advertiser meeting,<br>answer <span style="color:var(--blue-light);">one question:</span>
+    </h2>
+    <p style="font-size:clamp(1.2rem,2.5vw,2rem); font-weight:600; color:var(--gray-200); max-width:70%; margin:0 auto 3rem; line-height:1.5;">
+      Of the audience you're promising them access to, how many can you identify by <span style="color:var(--orange);">name</span>, <span style="color:var(--blue-light);">email</span>, and <span style="color:var(--green);">engagement level</span>?
+    </p>
+    <div style="display:flex; align-items:center; justify-content:center; gap:3rem;">
+      <div>
+        <img src="images/qr-code.png" alt="QR Code - Schedule a conversation" style="width:160px; height:160px; border-radius:8px; background:white; padding:8px;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div style="display:none; width:160px; height:160px; border-radius:8px; background:white; align-items:center; justify-content:center; color:var(--navy); font-size:0.75rem; font-weight:600;">[QR Code]</div>
+        <p style="font-size:0.8rem; color:var(--gray-400); margin-top:0.5rem;">Schedule a conversation</p>
+      </div>
+      <div style="text-align:left;">
+        <span style="font-size:1.4rem; font-weight:700; color:var(--gray-300); display:inline-block; margin-bottom:0.8rem;"><span style="color:var(--blue-light);">{</span> <span style="color:var(--blue-light);">parameter</span> <span style="color:var(--gray-400);">:</span> <span style="color:var(--gray-400);">1</span> <span style="color:var(--blue-light);">}</span></span>
+        <p style="font-size:1.5rem; font-weight:800;">Eric Kammerzelt</p>
+        <p style="font-size:1rem; color:var(--gray-300);">CEO, Parameter1</p>
+        <p style="font-size:1rem; color:var(--blue-light); margin-top:0.5rem;">mindful.pub</p>
+        <p class="tagline" style="margin-top:0.8rem;">Your publishing partner. Your growth platform.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end deck -->
+
+<div class="progress-bar" id="progress"></div>
+<div class="slide-counter" id="counter"></div>
+<div class="nav-hint">← → arrow keys &nbsp;|&nbsp; F = fullscreen</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+let current = 0;
+const total = slides.length;
+
+function showSlide(n) {
+  slides.forEach(s => s.classList.remove('active'));
+  current = Math.max(0, Math.min(n, total - 1));
+  slides[current].classList.add('active');
+  document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+  document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); showSlide(current + 1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); showSlide(current - 1); }
+  if (e.key === 'Home') showSlide(0);
+  if (e.key === 'End') showSlide(total - 1);
+  if (e.key === 'f' || e.key === 'F') {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+});
+
+document.addEventListener('click', e => {
+  if (e.clientX > window.innerWidth * 0.5) showSlide(current + 1);
+  else showSlide(current - 1);
+});
+
+showSlide(0);
+</script>
+</body>
+</html>
