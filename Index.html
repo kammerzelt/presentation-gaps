@@ -130,18 +130,6 @@ body {
 .spectrum-label { font-weight:700; font-size:1rem; margin-bottom:0.3rem; }
 .spectrum-desc { font-size:0.8rem; color:var(--gray-300); }
 
-.pillar-box {
-  background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);
-  border-radius:12px; padding:1.5rem; text-align:center;
-}
-.pillar-icon {
-  width:48px; height:48px; background:var(--blue); border-radius:10px;
-  display:flex; align-items:center; justify-content:center;
-  margin:0 auto 0.8rem; font-size:1.3rem;
-}
-.pillar-label { font-size:0.85rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:0.3rem; }
-.pillar-desc { font-size:0.75rem; color:var(--gray-400); line-height:1.4; }
-
 .ladder { display:flex; flex-direction:column; gap:0; align-items:center; }
 .ladder-rung { display:flex; align-items:center; gap:1.5rem; padding:1.2rem 2rem; border-radius:12px; width:100%; max-width:700px; }
 .ladder-rung .rung-num { font-size:2rem; font-weight:800; min-width:2.5rem; }
@@ -155,12 +143,6 @@ body {
 .slide-counter { position:fixed; bottom:12px; right:20px; font-size:0.75rem; color:var(--gray-500); z-index:100; }
 .nav-hint { position:fixed; bottom:12px; left:20px; font-size:0.7rem; color:var(--gray-500); z-index:100; }
 
-/* Screenshot styling */
-.screenshot {
-  width:100%; border-radius:8px;
-  box-shadow:0 4px 20px rgba(0,0,0,0.3);
-  object-fit:contain;
-}
 .screenshot-frame {
   background:var(--white); border-radius:8px; overflow:hidden;
   box-shadow:0 4px 24px rgba(0,0,0,0.3);
@@ -175,62 +157,81 @@ body {
 .screenshot-frame .dot.g { background:#22c55e; }
 .screenshot-frame img { width:100%; display:block; }
 
-/* Scrolling screenshot */
 .scroll-container {
-  border-radius:8px;
-  overflow:hidden;
+  border-radius:8px; overflow:hidden;
   box-shadow:0 4px 20px rgba(0,0,0,0.15);
 }
 .scroll-container .frame-bar {
   background:var(--gray-200); height:28px;
   display:flex; align-items:center; gap:6px; padding:0 10px;
 }
-.scroll-viewport {
-  height:340px;
-  position:relative;
-  overflow:hidden;
-}
-.scroll-inner {
-  width:100%;
-  animation: scrollReport 14s ease-in-out 2s infinite;
-}
-.scroll-inner img {
-  width:100%;
-  display:block;
-}
+.scroll-viewport { height:340px; position:relative; overflow:hidden; }
+.scroll-inner { width:100%; animation: scrollReport 14s ease-in-out 2s infinite; }
+.scroll-inner img { width:100%; display:block; }
 @keyframes scrollReport {
   0%, 10% { transform: translateY(0); }
   45%, 55% { transform: translateY(calc(-100% + 340px)); }
   90%, 100% { transform: translateY(0); }
 }
 
-/* Intelligence Report - Light theme matching original */
+/* Pipe diagram styles */
+.pipe-compare { display:grid; grid-template-columns:1fr 1fr; gap:3rem; }
+.pipe-col { display:flex; flex-direction:column; align-items:center; }
+.pipe-header {
+  font-size:0.75rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;
+  padding:8px 20px; border-radius:8px; margin-bottom:1.2rem;
+}
+.pipe-segment {
+  width:100%; max-width:340px; position:relative;
+  display:flex; align-items:center; gap:12px;
+  padding:10px 16px; margin-bottom:0;
+}
+.pipe-connector {
+  width:4px; height:16px; margin:0 auto;
+}
+.pipe-icon {
+  width:40px; height:40px; min-width:40px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem;
+}
+.pipe-label { font-size:0.85rem; font-weight:600; line-height:1.3; }
+.pipe-sublabel { font-size:0.72rem; line-height:1.4; margin-top:2px; }
+
+/* Red pipe styles */
+.pipe-col.bad .pipe-header { background:rgba(239,68,68,0.15); color:var(--red); border:1px solid rgba(239,68,68,0.3); }
+.pipe-col.bad .pipe-segment { background:rgba(239,68,68,0.06); border-radius:10px; border:1px solid rgba(239,68,68,0.12); }
+.pipe-col.bad .pipe-connector { background:var(--red); opacity:0.3; }
+.pipe-col.bad .pipe-icon { background:rgba(239,68,68,0.15); }
+.pipe-col.bad .pipe-label { color:var(--gray-200); }
+.pipe-col.bad .pipe-sublabel { color:var(--gray-400); }
+
+/* Green pipe styles */
+.pipe-col.good .pipe-header { background:rgba(34,197,94,0.15); color:var(--green); border:1px solid rgba(34,197,94,0.3); }
+.pipe-col.good .pipe-segment { background:rgba(34,197,94,0.06); border-radius:10px; border:1px solid rgba(34,197,94,0.12); }
+.pipe-col.good .pipe-connector { background:var(--green); opacity:0.3; }
+.pipe-col.good .pipe-icon { background:rgba(34,197,94,0.15); }
+.pipe-col.good .pipe-label { color:var(--gray-200); }
+.pipe-col.good .pipe-sublabel { color:var(--gray-400); }
+
+.pipe-result {
+  margin-top:0.8rem; padding:10px 20px; border-radius:10px;
+  text-align:center; font-weight:700; font-size:0.9rem;
+}
+.pipe-col.bad .pipe-result { background:rgba(239,68,68,0.12); color:var(--red); border:1px solid rgba(239,68,68,0.25); }
+.pipe-col.good .pipe-result { background:rgba(34,197,94,0.12); color:var(--green); border:1px solid rgba(34,197,94,0.25); }
+
 .intel-report {
-  background:#ffffff;
-  border:1px solid #D1DCF0;
-  border-radius:12px;
-  overflow:hidden;
-  font-size:0.75rem;
+  background:#ffffff; border:1px solid #D1DCF0; border-radius:12px; overflow:hidden; font-size:0.75rem;
 }
 .intel-header {
-  background:#1B3A6B;
-  padding:12px 20px;
+  background:#1B3A6B; padding:12px 20px;
   display:flex; justify-content:space-between; align-items:center;
 }
 .intel-header-title { color:#fff; font-weight:700; font-size:0.85rem; }
 .intel-header-sub { color:#A8BFDF; font-size:0.7rem; margin-top:2px; }
-.intel-badge {
-  background:#2E7DD1; border-radius:6px; padding:4px 12px;
-  color:#fff; font-size:0.7rem; font-weight:600;
-}
-.intel-kpi-row {
-  display:grid; grid-template-columns:repeat(4,1fr);
-  border-bottom:1px solid #D1DCF0;
-}
-.intel-kpi {
-  padding:12px 16px;
-  border-right:1px solid #D1DCF0;
-}
+.intel-badge { background:#2E7DD1; border-radius:6px; padding:4px 12px; color:#fff; font-size:0.7rem; font-weight:600; }
+.intel-kpi-row { display:grid; grid-template-columns:repeat(4,1fr); border-bottom:1px solid #D1DCF0; }
+.intel-kpi { padding:12px 16px; border-right:1px solid #D1DCF0; }
 .intel-kpi:last-child { border-right:none; }
 .intel-kpi-label { font-size:0.6rem; color:#6B7A99; text-transform:uppercase; letter-spacing:0.08em; }
 .intel-kpi-value { font-size:1.4rem; font-weight:700; color:#1B3A6B; margin:4px 0 2px; }
@@ -241,13 +242,11 @@ body {
   display:grid; grid-template-columns:2fr 1.5fr 0.8fr 1.2fr 0.8fr;
   font-size:0.6rem; font-weight:700; color:#6B7A99;
   text-transform:uppercase; letter-spacing:0.08em;
-  padding-bottom:8px; border-bottom:1px solid #D1DCF0;
-  margin-bottom:6px;
+  padding-bottom:8px; border-bottom:1px solid #D1DCF0; margin-bottom:6px;
 }
 .intel-table-row {
   display:grid; grid-template-columns:2fr 1.5fr 0.8fr 1.2fr 0.8fr;
-  align-items:center; padding:8px 0;
-  border-bottom:1px solid #EFF4FB;
+  align-items:center; padding:8px 0; border-bottom:1px solid #EFF4FB;
 }
 .intel-table-row.critical { background:#FEF8F7; border-radius:4px; }
 .intel-seg-name { font-weight:600; color:#1B3A6B; font-size:0.75rem; }
@@ -256,92 +255,27 @@ body {
 .intel-bar-score { font-size:0.7rem; font-weight:700; color:#1B3A6B; }
 .intel-bar-articles { font-size:0.6rem; color:#6B7A99; }
 .intel-bar { background:#E8EEF7; border-radius:3px; height:6px; overflow:hidden; }
-.intel-bar-fill { height:100%; border-radius:3px; transition:width 0.6s; }
+.intel-bar-fill { height:100%; border-radius:3px; }
 .intel-trend { font-size:0.75rem; font-weight:600; }
 .intel-trend.up { color:#2A9D6F; }
 .intel-trend.down { color:#E05C3A; }
 .intel-content-type { font-size:0.7rem; color:#6B7A99; }
-.intel-gap {
-  display:inline-block; border-radius:4px; padding:2px 8px;
-  font-size:0.65rem; font-weight:700;
-}
+.intel-gap { display:inline-block; border-radius:4px; padding:2px 8px; font-size:0.65rem; font-weight:700; }
 .intel-callout {
-  margin:0 20px 16px;
-  background:#EFF4FB;
-  border-left:4px solid #2E7DD1;
-  border-radius:0 8px 8px 0;
-  padding:12px 16px;
+  margin:0 20px 16px; background:#EFF4FB; border-left:4px solid #2E7DD1;
+  border-radius:0 8px 8px 0; padding:12px 16px;
 }
 .intel-callout-title { font-weight:700; color:#1B3A6B; font-size:0.75rem; margin-bottom:4px; }
 .intel-callout-text { font-size:0.72rem; color:#334; line-height:1.6; }
 
-/* Architecture Comparison */
-.arch-compare { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
-.arch-panel { border-radius:16px; padding:1.5rem; display:flex; flex-direction:column; align-items:center; gap:10px; }
-.arch-panel.diy { background:#FFF8F6; border:1.5px solid #F0C4B8; }
-.arch-panel.unified { background:#F4F8FF; border:1.5px solid #D1DCF0; }
-.arch-panel-title { font-weight:700; font-size:0.9rem; }
-.arch-panel-sub { font-size:0.72rem; color:#6B7A99; margin-bottom:0.3rem; text-align:center; }
-
-.arch-icons { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
-.arch-icon-box {
-  display:flex; flex-direction:column; align-items:center; gap:4px; width:64px;
-}
-.arch-icon {
-  width:52px; height:52px; border-radius:12px;
-  display:flex; align-items:center; justify-content:center;
-  font-size:22px;
-}
-.arch-icon-label { font-size:0.65rem; font-weight:600; color:#334; text-align:center; line-height:1.3; }
-
-.arch-arrows-row { display:flex; gap:10px; justify-content:center; }
-.arch-arrows-row .arr { width:64px; text-align:center; color:#ccc; font-size:16px; }
-
-.arch-block {
-  display:flex; align-items:center; gap:10px;
-  border-radius:12px; padding:10px 16px; width:100%;
-}
-.arch-block-icon { font-size:22px; }
-.arch-block-title { font-weight:700; font-size:0.78rem; }
-.arch-block-sub { font-size:0.68rem; color:#6B7A99; }
-
-.arch-block.warn { background:#FEF0EC; border:1.5px solid #F0C4B8; }
-.arch-block.warn .arch-block-title { color:#E05C3A; }
-.arch-block.purple { background:#F5F0FF; border:1.5px solid #C9B8F0; }
-.arch-block.purple .arch-block-title { color:#6B3FA0; }
-.arch-block.neutral { background:#EFF4FB; border:1.5px solid #D1DCF0; }
-.arch-block.neutral .arch-block-title { color:#1B3A6B; }
-.arch-block.good { background:#EAF7F2; border:1.5px solid #A8DFC8; }
-.arch-block.good .arch-block-title { color:#2A9D6F; }
-
-.arch-unified-box {
-  background:#fff; border:2px solid #2E7DD1; border-radius:16px;
-  padding:14px 16px; width:100%;
-}
-.arch-unified-label {
-  font-size:0.65rem; font-weight:700; color:#2E7DD1;
-  text-transform:uppercase; letter-spacing:0.08em;
-  text-align:center; margin-bottom:10px;
-}
-
-.arch-arrow-single { color:#ccc; font-size:16px; text-align:center; }
-.arch-arrow-single.good { color:#2A9D6F; }
 .mock-spreadsheet {
   background:var(--white); border-radius:8px; overflow:hidden;
   box-shadow:0 4px 20px rgba(0,0,0,0.15); font-size:0.75rem; color:var(--navy);
 }
-.mock-spreadsheet .ss-header {
-  background:#217346; color:white; padding:8px 12px;
-  font-weight:600; font-size:0.8rem;
-}
+.mock-spreadsheet .ss-header { background:#217346; color:white; padding:8px 12px; font-weight:600; font-size:0.8rem; }
 .mock-spreadsheet table { width:100%; border-collapse:collapse; }
-.mock-spreadsheet th {
-  background:var(--gray-200); padding:6px 10px; text-align:left;
-  font-weight:600; font-size:0.7rem; border-bottom:2px solid var(--gray-300);
-}
-.mock-spreadsheet td {
-  padding:5px 10px; border-bottom:1px solid var(--gray-200); font-size:0.7rem;
-}
+.mock-spreadsheet th { background:var(--gray-200); padding:6px 10px; text-align:left; font-weight:600; font-size:0.7rem; border-bottom:2px solid var(--gray-300); }
+.mock-spreadsheet td { padding:5px 10px; border-bottom:1px solid var(--gray-200); font-size:0.7rem; }
 .mock-spreadsheet tr:nth-child(even) td { background:var(--gray-100); }
 </style>
 </head>
@@ -492,7 +426,6 @@ body {
       <div class="point"><div class="point-icon" style="color:var(--green);">✓</div><div class="point-text">Audience data talks to the email system, ad platform, and content engine</div></div>
       <div class="point"><div class="point-icon" style="color:var(--green);">✓</div><div class="point-text">Known users aren't asked for data you already have</div></div>
       <div class="point"><div class="point-icon" style="color:var(--green);">✓</div><div class="point-text">Forms prepopulate intelligently — ask only enrichment questions</div></div>
-      <div class="point"><div class="point-icon" style="color:var(--green);">✓</div><div class="point-text">Email validation at first touch — no junk data enters the system</div></div>
       <div class="point"><div class="point-icon" style="color:var(--green);">✓</div><div class="point-text">Same data powers editorial decisions: which topics drive registrations, which authors create subscribers</div></div>
     </div>
     <div>
@@ -506,47 +439,79 @@ body {
   </div>
 </div>
 
-<!-- SLIDE 9: WATT Proof #1 -->
+<!-- SLIDE 9: Identity First vs Identity Last — VISUAL PIPE DIAGRAM -->
 <div class="slide dark" data-slide="9">
-  <div class="gap-label">Gap #1 — Proof</div>
-  <h2 class="headline" style="font-size:clamp(1.6rem,3vw,2.4rem);"><span class="hl">WATT Global Media</span> — Connected Data in Action</h2>
-  <div class="col-2" style="margin-top:1.5rem;">
-    <div class="card">
-      <p style="font-weight:700; font-size:1rem; margin-bottom:1.5rem;">Before → After</p>
-      <div style="display:flex; justify-content:space-between; margin-bottom:1.5rem;">
-        <div style="text-align:center;">
-          <p style="font-size:0.8rem; color:var(--gray-400);">Tools managed</p>
-          <p style="font-size:2rem; font-weight:800; color:var(--red);">[X]</p>
-          <p style="font-size:0.75rem; color:var(--gray-400);">separate systems</p>
-        </div>
-        <div style="font-size:2rem; color:var(--gray-500); align-self:center;">→</div>
-        <div style="text-align:center;">
-          <p style="font-size:0.8rem; color:var(--gray-400);">Tools managed</p>
-          <p style="font-size:2rem; font-weight:800; color:var(--green);">1</p>
-          <p style="font-size:0.75rem; color:var(--gray-400);">unified platform</p>
-        </div>
+  <div class="gap-label">Gap #1 — The foundation</div>
+  <h2 class="headline" style="font-size:clamp(1.6rem,3vw,2.4rem); text-align:center;">Identity <span class="hl" style="color:var(--red);">last</span> vs. Identity <span class="hl">first.</span></h2>
+  <p style="text-align:center; color:var(--gray-400); font-size:clamp(0.85rem,1.2vw,1rem); margin-bottom:1.5rem;">Everything downstream depends on what happens at the first touch.</p>
+
+  <div class="pipe-compare">
+    <!-- LEFT: Identity Last (Bad) -->
+    <div class="pipe-col bad">
+      <div class="pipe-header">❌ Identity Last — Fix bad data later</div>
+
+      <div class="pipe-segment">
+        <div class="pipe-icon">📧</div>
+        <div><div class="pipe-label">Unvalidated Emails</div><div class="pipe-sublabel">No verification at entry</div></div>
       </div>
-      <div style="border-top:1px solid var(--navy-light); padding-top:1rem;">
-        <div style="display:flex; justify-content:space-between;">
-          <div style="text-align:center;">
-            <p style="font-size:0.75rem; color:var(--gray-400);">Form completion</p>
-            <p style="font-size:1.2rem; font-weight:700;">[X]% → [X]%</p>
-          </div>
-          <div style="text-align:center;">
-            <p style="font-size:0.75rem; color:var(--gray-400);">Junk data reduction</p>
-            <p style="font-size:1.2rem; font-weight:700;">[X]%</p>
-          </div>
-        </div>
+      <div class="pipe-connector"></div>
+      <div class="pipe-segment">
+        <div class="pipe-icon">👻</div>
+        <div><div class="pipe-label">Fake Users & Junk Data</div><div class="pipe-sublabel">Typos, disposable emails, bots</div></div>
       </div>
+      <div class="pipe-connector"></div>
+      <div class="pipe-segment">
+        <div class="pipe-icon">🔑</div>
+        <div><div class="pipe-label">Passwords & Login Walls</div><div class="pipe-sublabel">Friction on every return visit</div></div>
+      </div>
+      <div class="pipe-connector"></div>
+      <div class="pipe-segment">
+        <div class="pipe-icon">📉</div>
+        <div><div class="pipe-label">Unreliable Segmentation</div><div class="pipe-sublabel">Dirty data = wrong audiences</div></div>
+      </div>
+      <div class="pipe-connector"></div>
+      <div class="pipe-segment">
+        <div class="pipe-icon">🤷</div>
+        <div><div class="pipe-label">Advertiser Doubt</div><div class="pipe-sublabel">"Are these numbers even real?"</div></div>
+      </div>
+
+      <div class="pipe-result">Dirty Data → Wasted Effort → Lost Revenue</div>
     </div>
-    <div>
-      <div class="card" style="background:rgba(59,130,246,0.1); border-color:rgba(59,130,246,0.3);">
-        <p style="font-size:1.1rem; font-style:italic; line-height:1.6; color:var(--gray-200);">"[WATT stakeholder quote about the impact of consolidating to one platform]"</p>
-        <p style="font-size:0.85rem; color:var(--gray-400); margin-top:1rem;">— [Name], WATT Global Media</p>
+
+    <!-- RIGHT: Identity First (Good) -->
+    <div class="pipe-col good">
+      <div class="pipe-header">✅ Identity First — Validate at the gate</div>
+
+      <div class="pipe-segment">
+        <div class="pipe-icon">✉️</div>
+        <div><div class="pipe-label">Validated Email at First Touch</div><div class="pipe-sublabel">Real-time verification before anything else</div></div>
       </div>
-      <p style="font-size:0.9rem; color:var(--gray-400); margin-top:1.5rem; line-height:1.6;">WATT runs [X] brands across [X] properties on Mindful — content, audience, ads, newsletters, and reporting in a single platform.</p>
+      <div class="pipe-connector"></div>
+      <div class="pipe-segment">
+        <div class="pipe-icon">✅</div>
+        <div><div class="pipe-label">Trusted User Identity</div><div class="pipe-sublabel">Every record is a real person</div></div>
+      </div>
+      <div class="pipe-connector"></div>
+      <div class="pipe-segment">
+        <div class="pipe-icon">🚪</div>
+        <div><div class="pipe-label">No Password. Seamless Access.</div><div class="pipe-sublabel">Recognized on every return visit automatically</div></div>
+      </div>
+      <div class="pipe-connector"></div>
+      <div class="pipe-segment">
+        <div class="pipe-icon">🎯</div>
+        <div><div class="pipe-label">Accurate Segmentation</div><div class="pipe-sublabel">Clean data = right audiences</div></div>
+      </div>
+      <div class="pipe-connector"></div>
+      <div class="pipe-segment">
+        <div class="pipe-icon">💰</div>
+        <div><div class="pipe-label">Advertiser Confidence</div><div class="pipe-sublabel">"Show me the verified audience."</div></div>
+      </div>
+
+      <div class="pipe-result">Clean Data → Trusted Reports → Premium Revenue</div>
     </div>
   </div>
+
+  <p style="text-align:center; font-size:clamp(0.9rem,1.3vw,1.05rem); color:var(--gray-300); margin-top:1.2rem; font-weight:600;">Clean data in. Clean data out. <span style="color:var(--gray-400); font-weight:400;">Every report, every advertiser proof point, every audience segment starts here.</span></p>
 </div>
 
 <!-- SLIDE 10: The Gating Fear -->
@@ -565,7 +530,7 @@ body {
 <!-- SLIDE 11: The Math -->
 <div class="slide dark" data-slide="11">
   <div class="gap-label">Gap #2 — The math</div>
-  <h2 class="headline" style="font-size:clamp(1.6rem,3vw,2.4rem);">The traffic you "lose" <span class="hl" style="color:var(--orange);">was never worth keeping.</span></h2>
+  <h2 class="headline" style="font-size:clamp(1.6rem,3vw,2.4rem);">What if gating <span class="hl" style="color:var(--orange);">didn't cost you anything?</span></h2>
   <div class="split" style="margin-top:1rem;">
     <div class="split-left">
       <div style="text-align:center;">
@@ -579,14 +544,23 @@ body {
     </div>
     <div class="split-right">
       <div class="card" style="text-align:center;">
-        <p style="font-size:0.85rem; font-weight:700; color:var(--orange); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:1rem;">When you gate 0% → 100%</p>
-        <p style="font-size:clamp(2rem,4vw,3.5rem); font-weight:900; color:var(--green);">[X]%</p>
-        <p style="font-size:1rem; color:var(--gray-300);">traffic decrease</p>
-        <div style="border-top:1px solid var(--navy-light); margin:1.5rem 0; padding-top:1.5rem;">
-          <p style="font-size:clamp(2rem,4vw,3.5rem); font-weight:900; color:var(--blue-light);">[X]x</p>
-          <p style="font-size:1rem; color:var(--gray-300);">increase in identified audience</p>
+        <p style="font-size:0.85rem; font-weight:700; color:var(--blue-light); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:1rem;">Feed Strategy — real data, 2024</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:1.5rem;">
+          <div>
+            <p style="font-size:clamp(2.5rem,4vw,3.5rem); font-weight:900; color:var(--green);">+7%</p>
+            <p style="font-size:0.9rem; color:var(--gray-300);">traffic increase</p>
+          </div>
+          <div>
+            <p style="font-size:clamp(2.5rem,4vw,3.5rem); font-weight:900; color:var(--green);">+11%</p>
+            <p style="font-size:0.9rem; color:var(--gray-300);">engaged sessions</p>
+          </div>
         </div>
-        <p style="font-size:0.85rem; color:var(--gray-500); font-style:italic;">You won't miss that traffic. Neither will your advertisers.</p>
+        <div style="border-top:1px solid var(--navy-light); padding-top:1.5rem;">
+          <p style="font-size:clamp(2.5rem,5vw,4rem); font-weight:900; color:var(--orange);">413%</p>
+          <p style="font-size:1.1rem; color:var(--gray-200); font-weight:600;">increase in registrations</p>
+          <p style="font-size:0.85rem; color:var(--gray-400); margin-top:0.3rem;">229/mo → 1,174/mo after implementing gating</p>
+        </div>
+        <p style="font-size:0.9rem; color:var(--green); font-weight:600; margin-top:1.5rem;">They didn't lose anything. They gained on every dimension.</p>
       </div>
     </div>
   </div>
@@ -697,29 +671,48 @@ body {
   </div>
 </div>
 
-<!-- SLIDE 15: WATT Proof #2 -->
+<!-- SLIDE 15: Feed Strategy Gating Results — CORRECTED -->
 <div class="slide dark" data-slide="15">
-  <div class="gap-label">Gap #2 — Proof</div>
-  <h2 class="headline" style="font-size:clamp(1.6rem,3vw,2.4rem);"><span class="hl">WATT Global Media</span> — Gating in Practice</h2>
-  <div class="col-3" style="margin-top:2rem;">
-    <div class="card" style="text-align:center;">
-      <p style="font-size:0.8rem; color:var(--gray-400); margin-bottom:0.5rem;">Known audience before</p>
-      <p style="font-size:3rem; font-weight:900; color:var(--red);">[X]%</p>
+  <div class="gap-label">Gap #1 + #2 — Proof</div>
+  <h2 class="headline" style="font-size:clamp(1.6rem,3vw,2.4rem);"><span class="hl">Feed Strategy</span> — The Results</h2>
+  <p style="font-size:0.95rem; color:var(--gray-400); margin-bottom:1.5rem;">WATT Global Media's Feed Strategy implemented two gating strategies in 2024: a <strong style="color:var(--gray-200);">full registration gate</strong> on article content and a <strong style="color:var(--gray-200);">metered gate</strong> on other content. Here's what happened.</p>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:1.2rem; margin-bottom:1.5rem;">
+    <div class="card" style="text-align:center; padding:1.5rem 1rem;">
+      <p style="font-size:0.75rem; color:var(--gray-400); margin-bottom:0.5rem;">Registrations before</p>
+      <p style="font-size:2.5rem; font-weight:900; color:var(--gray-300);">229</p>
+      <p style="font-size:0.75rem; color:var(--gray-400);">per month avg (Jan–Apr)</p>
     </div>
-    <div class="card" style="text-align:center;">
-      <p style="font-size:0.8rem; color:var(--gray-400); margin-bottom:0.5rem;">Known audience after</p>
-      <p style="font-size:3rem; font-weight:900; color:var(--green);">[X]%</p>
+    <div class="card" style="text-align:center; padding:1.5rem 1rem;">
+      <p style="font-size:0.75rem; color:var(--gray-400); margin-bottom:0.5rem;">Registrations after</p>
+      <p style="font-size:2.5rem; font-weight:900; color:var(--green);">1,174</p>
+      <p style="font-size:0.75rem; color:var(--gray-400);">per month avg (May–Dec)</p>
     </div>
-    <div class="card" style="text-align:center;">
-      <p style="font-size:0.8rem; color:var(--gray-400); margin-bottom:0.5rem;">Traffic impact</p>
-      <p style="font-size:3rem; font-weight:900; color:var(--blue-light);">[X]%</p>
-      <p style="font-size:0.75rem; color:var(--gray-400);">decrease</p>
+    <div class="card" style="text-align:center; padding:1.5rem 1rem;">
+      <p style="font-size:0.75rem; color:var(--gray-400); margin-bottom:0.5rem;">Registration increase</p>
+      <p style="font-size:2.5rem; font-weight:900; color:var(--orange);">413%</p>
+      <p style="font-size:0.75rem; color:var(--gray-400);">5x more identified readers</p>
+    </div>
+    <div class="card" style="text-align:center; padding:1.5rem 1rem;">
+      <p style="font-size:0.75rem; color:var(--gray-400); margin-bottom:0.5rem;">Traffic impact</p>
+      <p style="font-size:2.5rem; font-weight:900; color:var(--green);">+7%</p>
+      <p style="font-size:0.75rem; color:var(--gray-400);">sessions increased</p>
     </div>
   </div>
-  <div class="card" style="margin-top:2rem; text-align:center;">
-    <p style="font-size:0.85rem; color:var(--gray-400); margin-bottom:0.5rem;">Strategy used</p>
-    <p style="font-size:1.2rem; font-weight:700;">[Metered / Selective / Full / Combination — describe WATT's approach]</p>
-    <p style="font-size:1rem; color:var(--gray-300); margin-top:1rem;">Achieved in <strong>[X] months</strong>. The traffic they lost? Single-session bounces they'll never miss.</p>
+
+  <div class="col-2">
+    <div class="card">
+      <p style="font-weight:700; font-size:0.9rem; margin-bottom:0.8rem; color:var(--blue-light);">The strategy: match the gate to the content</p>
+      <p style="font-size:0.9rem; color:var(--gray-200); line-height:1.6; margin-bottom:0.8rem;"><strong>Full gate on articles</strong> — the core editorial content readers come for. This drove <strong>73%</strong> of all registrations. High-value content justifies the ask.</p>
+      <p style="font-size:0.9rem; color:var(--gray-200); line-height:1.6;"><strong>Metered gate on other content</strong> — lower friction where appropriate. Contributed <strong>27%</strong> of registrations. Different content, different strategy.</p>
+    </div>
+    <div class="card">
+      <p style="font-weight:700; font-size:0.9rem; margin-bottom:0.8rem; color:var(--green);">What didn't happen</p>
+      <div class="point" style="margin-bottom:0.6rem;"><div class="point-icon" style="color:var(--green); font-size:0.9rem;">✓</div><div class="point-text" style="font-size:0.9rem;">Traffic didn't drop. <strong>Sessions up 7%.</strong></div></div>
+      <div class="point" style="margin-bottom:0.6rem;"><div class="point-icon" style="color:var(--green); font-size:0.9rem;">✓</div><div class="point-text" style="font-size:0.9rem;">Engagement didn't suffer. <strong>Engaged sessions up 11%.</strong></div></div>
+      <div class="point" style="margin-bottom:0.6rem;"><div class="point-icon" style="color:var(--green); font-size:0.9rem;">✓</div><div class="point-text" style="font-size:0.9rem;">Time on site didn't fall. <strong>Engagement time up 12%.</strong></div></div>
+      <div class="point" style="margin-bottom:0;"><div class="point-icon" style="color:var(--green); font-size:0.9rem;">✓</div><div class="point-text" style="font-size:0.9rem;">SEO didn't tank. <strong>Organic search held steady.</strong></div></div>
+    </div>
   </div>
 </div>
 
@@ -844,7 +837,6 @@ body {
 <div class="slide dark" data-slide="20">
   <p style="font-size:clamp(0.75rem,1vw,0.85rem); font-weight:700; color:var(--orange); text-transform:uppercase; letter-spacing:0.15em; margin-bottom:0.5rem; text-align:center;">The DIY Approach</p>
   <h2 class="headline" style="text-align:center; font-size:clamp(1.5rem,3vw,2.4rem); margin-bottom:2rem;">You can unify it yourself.<br><span class="hl" style="color:var(--orange);">But at what cost?</span></h2>
-
   <div style="display:flex; align-items:center; justify-content:center; gap:0; margin-bottom:2.5rem;">
     <div style="display:flex; flex-direction:column; align-items:center; gap:8px; background:#FEF0EC; border:2px solid #F0C4B8; border-radius:16px; padding:16px 18px; min-width:120px;">
       <div style="font-size:2rem;">🔧</div>
@@ -866,7 +858,6 @@ body {
       <div style="font-size:0.8rem; font-weight:700; color:#E05C3A; text-align:center; line-height:1.3;">Delayed<br>Reports</div>
     </div>
   </div>
-
   <div style="display:flex; gap:1.5rem; justify-content:center;">
     <div style="background:rgba(224,92,58,0.12); border:1.5px solid rgba(224,92,58,0.3); border-radius:12px; padding:16px 28px; text-align:center; min-width:180px;">
       <div style="font-size:clamp(1.3rem,2.2vw,1.8rem); font-weight:800; color:var(--orange);">$150K–$400K/yr</div>
@@ -887,7 +878,6 @@ body {
 <div class="slide dark" data-slide="21">
   <p style="font-size:clamp(0.75rem,1vw,0.85rem); font-weight:700; color:var(--green); text-transform:uppercase; letter-spacing:0.15em; margin-bottom:0.5rem; text-align:center;">The Mindful Approach</p>
   <h2 class="headline" style="text-align:center; font-size:clamp(1.5rem,3vw,2.4rem); margin-bottom:2rem;">Unified by design.<br><span class="hl">Intelligence on day one.</span></h2>
-
   <div style="background:rgba(255,255,255,0.06); border:3px solid var(--blue); border-radius:20px; padding:24px 32px; max-width:700px; margin:0 auto 1rem;">
     <div style="font-size:0.8rem; font-weight:700; color:var(--blue-light); text-transform:uppercase; letter-spacing:0.1em; text-align:center; margin-bottom:16px;">Mindful Unified Platform</div>
     <div style="display:flex; gap:24px; justify-content:center;">
@@ -913,9 +903,7 @@ body {
       </div>
     </div>
   </div>
-
   <div style="text-align:center; font-size:1.5rem; color:var(--green);">↓</div>
-
   <div style="display:flex; gap:1.2rem; justify-content:center; max-width:750px; margin:0.5rem auto 0;">
     <div style="background:#EAF7F2; border:1.5px solid #A8DFC8; border-radius:14px; padding:20px 22px; text-align:center; flex:1;">
       <div style="font-size:2rem; margin-bottom:8px;">🔗</div>
@@ -933,7 +921,6 @@ body {
       <div style="font-size:0.78rem; color:#6B7A99; line-height:1.5;">Answers when you need them</div>
     </div>
   </div>
-
   <p style="text-align:center; font-size:clamp(0.75rem,1.1vw,0.9rem); color:var(--gray-400); margin-top:1.5rem;">As AI commoditizes content, <span style="color:var(--orange); font-weight:600;">verified audience identity becomes your moat.</span> This makes it accessible to every team — not just the ones with data engineers.</p>
 </div>
 
@@ -943,7 +930,6 @@ body {
     <p style="font-size:clamp(0.75rem,1vw,0.85rem); font-weight:700; color:var(--blue-light); text-transform:uppercase; letter-spacing:0.15em; margin-bottom:0.3rem;">What this looks like</p>
     <h2 class="headline" style="font-size:clamp(1.3rem,2.2vw,1.8rem); margin-bottom:0;">Audience Intelligence Report</h2>
   </div>
-
   <div class="intel-report">
     <div class="intel-header">
       <div>
@@ -952,7 +938,6 @@ body {
       </div>
       <div class="intel-badge">Powered by Mindful</div>
     </div>
-
     <div class="intel-kpi-row">
       <div class="intel-kpi">
         <div class="intel-kpi-label">Identified Audience</div>
@@ -975,7 +960,6 @@ body {
         <div class="intel-kpi-sub">Conversion opportunity</div>
       </div>
     </div>
-
     <div class="intel-table">
       <div class="intel-table-title">Segment Engagement vs. Content Supply</div>
       <div class="intel-table-header">
@@ -985,7 +969,6 @@ body {
         <div>Top Content</div>
         <div>Content Gap</div>
       </div>
-
       <div class="intel-table-row">
         <div class="intel-seg-name">C-Suite / Executive</div>
         <div class="intel-bar-wrap">
@@ -996,7 +979,6 @@ body {
         <div class="intel-content-type">Industry Trends</div>
         <div><span class="intel-gap" style="background:rgba(42,157,111,0.13); color:#2A9D6F; border:1px solid rgba(42,157,111,0.3);">Low</span></div>
       </div>
-
       <div class="intel-table-row">
         <div class="intel-seg-name">Engineering / Technical</div>
         <div class="intel-bar-wrap">
@@ -1007,7 +989,6 @@ body {
         <div class="intel-content-type">How-To Guides</div>
         <div><span class="intel-gap" style="background:rgba(240,165,0,0.13); color:#F0A500; border:1px solid rgba(240,165,0,0.3);">Medium</span></div>
       </div>
-
       <div class="intel-table-row critical">
         <div class="intel-seg-name">Operations / Plant Mgr</div>
         <div class="intel-bar-wrap">
@@ -1018,7 +999,6 @@ body {
         <div class="intel-content-type">Safety & Compliance</div>
         <div><span class="intel-gap" style="background:rgba(224,92,58,0.13); color:#E05C3A; border:1px solid rgba(224,92,58,0.3);">High</span></div>
       </div>
-
       <div class="intel-table-row">
         <div class="intel-seg-name">Marketing / Sales</div>
         <div class="intel-bar-wrap">
@@ -1029,7 +1009,6 @@ body {
         <div class="intel-content-type">Case Studies</div>
         <div><span class="intel-gap" style="background:rgba(42,157,111,0.13); color:#2A9D6F; border:1px solid rgba(42,157,111,0.3);">Low</span></div>
       </div>
-
       <div class="intel-table-row critical">
         <div class="intel-seg-name">Procurement</div>
         <div class="intel-bar-wrap">
@@ -1041,7 +1020,6 @@ body {
         <div><span class="intel-gap" style="background:rgba(192,57,43,0.13); color:#C0392B; border:1px solid rgba(192,57,43,0.3);">Critical</span></div>
       </div>
     </div>
-
     <div class="intel-callout">
       <div class="intel-callout-title">Editorial Intelligence</div>
       <div class="intel-callout-text">
@@ -1049,7 +1027,6 @@ body {
       </div>
     </div>
   </div>
-
   <p style="text-align:center; font-size:0.65rem; color:var(--gray-500); margin-top:0.5rem; font-style:italic;">Illustrative data. Your actual report reflects your real audience across all properties.</p>
 </div>
 
