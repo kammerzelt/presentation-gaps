@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #e8e8e8;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+}
+h2 {
+  color: #555;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
+}
+.version-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.version-label {
+  color: #888;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+canvas {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+.btn-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.dl-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+}
+.dl-btn.white { background: #1a5cb5; color: #fff; }
+.dl-btn.white:hover { background: #154a96; }
+.dl-btn.dark { background: #0f2847; color: #4a9eff; }
+.dl-btn.dark:hover { background: #0a1628; }
+.dl-btn.trans { background: #666; color: #fff; }
+.dl-btn.trans:hover { background: #555; }
+.size-note {
+  color: #aaa;
+  font-size: 9px;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<h2>Cobranded Logo — PNG Export (Tight Crop)</h2>
+
+<div class="version-block">
+  <div class="version-label">Horizontal — Sponsor / Exhibitor Listing</div>
+  <canvas id="hCanvas"></canvas>
+  <div class="size-note" id="hSize"></div>
+  <div class="btn-row">
+    <button class="dl-btn white" onclick="downloadH('white')">Download White BG</button>
+    <button class="dl-btn dark" onclick="downloadH('dark')">Download Dark BG</button>
+    <button class="dl-btn trans" onclick="downloadH('transparent')">Download Transparent</button>
+  </div>
+</div>
+
+<div class="version-block">
+  <div class="version-label">Stacked — Logo Grid / Square Placement</div>
+  <canvas id="sCanvas"></canvas>
+  <div class="size-note" id="sSize"></div>
+  <div class="btn-row">
+    <button class="dl-btn white" onclick="downloadS('white')">Download White BG</button>
+    <button class="dl-btn dark" onclick="downloadS('dark')">Download Dark BG</button>
+    <button class="dl-btn trans" onclick="downloadS('transparent')">Download Transparent</button>
+  </div>
+</div>
+
+<script>
+document.fonts.ready.then(() => {
+
+  const NAVY = '#0f2847';
+  const BLUE = '#1a5cb5';
+  const BLUE_LIGHT = '#4a9eff';
+  const GRAY_COLON = '#8899aa';
+  const GRAY_TAG = '#8899aa';
+  const WHITE = '#ffffff';
+  const NAVY_BG_START = '#0a1628';
+  const NAVY_BG_MID = '#0f2847';
+  const NAVY_BG_END = '#153a6b';
+
+  // Padding around content: ~5% of content size
+  const PAD = 24;
+
+  // ═══════════════════════════════════════
+  // HORIZONTAL LOCKUP — tight crop
+  // ═══════════════════════════════════════
+  function drawH(mode) {
+    const c = document.getElementById('hCanvas');
+    const ctx = c.getContext('2d');
+    const isDark = mode === 'dark';
+    const isTrans = mode === 'transparent';
+
+    const textNav = isDark ? WHITE : NAVY;
+    const textBlue = isDark ? BLUE_LIGHT : BLUE;
+    const textGray = isDark ? '#607a99' : GRAY_COLON;
+    const textTag = isDark ? '#6a9ed4' : GRAY_TAG;
+    const divColor = isDark ? 'rgba(74,158,255,0.35)' : '#d0dcea';
+
+    // --- Measure everything first ---
+    // Left block: { parameter : 1 } on top, "Mindful" + sub below
+    ctx.font = '700 44px Inter';
+    const b1w = ctx.measureText('{').width;
+    ctx.font = '700 28px Inter';
+    const pw = ctx.measureText('  parameter').width;
+    const cww = ctx.measureText(' : ').width;
+    ctx.font = '800 28px Inter';
+    const ow = ctx.measureText('1').width;
+    ctx.font = '700 44px Inter';
+    const b2w = ctx.measureText('  }').width;
+    const logoW = b1w + pw + cww + ow + b2w;
+
+    ctx.font = '900 46px Inter';
+    const mindfulW = ctx.measureText('Mindful').width;
+
+    ctx.font = '600 14px Inter';
+    ctx.letterSpacing = '3px';
+    const subW = ctx.measureText('PUBLISHING INTELLIGENCE').width;
+    ctx.letterSpacing = '0px';
+
+    const leftBlockW = Math.max(logoW, mindfulW, subW);
+
+    // Right block: mindful.pub on top, tagline below
+    ctx.font = '900 64px Inter';
+    const urlW = ctx.measureText('mindful.pub').width;
+
+    ctx.font = '600 18px Inter';
+    const tagW = ctx.measureText('Your publishing partner. Your growth platform.').width;
+
+    const rightBlockW = Math.max(urlW, tagW);
+
+    const gap = 44; // divider gap
+    const divW = 2;
+    const totalW = leftBlockW + gap + divW + gap + rightBlockW;
+    const totalH = 130; // content height
+
+    const W = Math.ceil(totalW + PAD * 2);
+    const H = Math.ceil(totalH + PAD * 2);
+    c.width = W;
+    c.height = H;
+    c.style.width = Math.round(W / 2) + 'px';
+    c.style.height = Math.round(H / 2) + 'px';
+    document.getElementById('hSize').textContent = `${W} × ${H}px`;
+
+    ctx.clearRect(0, 0, W, H);
+    if (!isTrans) {
+      if (isDark) {
+        const g = ctx.createLinearGradient(0, 0, W, H);
+        g.addColorStop(0, NAVY_BG_START);
+        g.addColorStop(0.55, NAVY_BG_MID);
+        g.addColorStop(1, NAVY_BG_END);
+        ctx.fillStyle = g;
+      } else {
+        ctx.fillStyle = WHITE;
+      }
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'left';
+
+    const cy = H / 2;
+    const leftX = PAD;
+    const leftMid = leftX + leftBlockW / 2;
+
+    // --- { parameter : 1 } ---
+    let lx = leftMid - logoW / 2;
+    const logoY = cy - 28;
+
+    ctx.font = '700 44px Inter';
+    ctx.fillStyle = textBlue;
+    ctx.fillText('{', lx, logoY);
+    lx += b1w;
+
+    ctx.font = '700 28px Inter';
+    ctx.fillStyle = textBlue;
+    ctx.fillText('  parameter', lx, logoY);
+    lx += pw;
+
+    ctx.font = '700 28px Inter';
+    ctx.fillStyle = textGray;
+    ctx.fillText(' : ', lx, logoY);
+    lx += cww;
+
+    ctx.font = '800 28px Inter';
+    ctx.fillStyle = textGray;
+    ctx.fillText('1', lx, logoY);
+    lx += ow;
+
+    ctx.font = '700 44px Inter';
+    ctx.fillStyle = textBlue;
+    ctx.fillText('  }', lx, logoY);
+
+    // Mindful
+    ctx.font = '900 46px Inter';
+    ctx.fillStyle = textNav;
+    ctx.fillText('Mindful', leftMid - mindfulW / 2, cy + 18);
+
+    // PUBLISHING INTELLIGENCE
+    ctx.font = '600 14px Inter';
+    ctx.fillStyle = textBlue;
+    ctx.letterSpacing = '3px';
+    ctx.fillText('PUBLISHING INTELLIGENCE', leftMid - subW / 2, cy + 50);
+    ctx.letterSpacing = '0px';
+
+    // --- Divider ---
+    const divX = leftX + leftBlockW + gap;
+    const dg = ctx.createLinearGradient(divX, cy - 55, divX, cy + 55);
+    dg.addColorStop(0, 'transparent');
+    dg.addColorStop(0.5, divColor);
+    dg.addColorStop(1, 'transparent');
+    ctx.fillStyle = dg;
+    ctx.fillRect(divX, cy - 55, divW, 110);
+
+    // --- Right: mindful.pub + tagline ---
+    const rightX = divX + divW + gap;
+
+    ctx.font = '900 64px Inter';
+    ctx.textBaseline = 'middle';
+    const mUrlPart = 'mindful';
+    const mUrlPartW = ctx.measureText(mUrlPart).width;
+    ctx.fillStyle = textNav;
+    ctx.fillText(mUrlPart, rightX, cy - 16);
+    ctx.fillStyle = textBlue;
+    ctx.fillText('.pub', rightX + mUrlPartW, cy - 16);
+
+    ctx.font = '600 18px Inter';
+    ctx.fillStyle = textTag;
+    ctx.fillText('Your publishing partner. Your growth platform.', rightX, cy + 32);
+
+    return c;
+  }
+
+  // ═══════════════════════════════════════
+  // STACKED LOCKUP — tight crop
+  // ═══════════════════════════════════════
+  function drawS(mode) {
+    const c = document.getElementById('sCanvas');
+    const ctx = c.getContext('2d');
+    const isDark = mode === 'dark';
+    const isTrans = mode === 'transparent';
+
+    const textNav = isDark ? WHITE : NAVY;
+    const textBlue = isDark ? BLUE_LIGHT : BLUE;
+    const textGray = isDark ? '#607a99' : GRAY_COLON;
+    const textTag = isDark ? '#6a9ed4' : GRAY_TAG;
+
+    // Measure widths to determine canvas size
+    ctx.font = '700 52px Inter';
+    const b1w = ctx.measureText('{').width;
+    ctx.font = '700 32px Inter';
+    const pw = ctx.measureText('  parameter').width;
+    const cww = ctx.measureText(' : ').width;
+    ctx.font = '800 32px Inter';
+    const ow = ctx.measureText('1').width;
+    ctx.font = '700 52px Inter';
+    const b2w = ctx.measureText('  }').width;
+    const logoW = b1w + pw + cww + ow + b2w;
+
+    ctx.font = '900 72px Inter';
+    const mindfulW = ctx.measureText('Mindful').width;
+
+    ctx.font = '600 16px Inter';
+    ctx.letterSpacing = '4px';
+    const subW = ctx.measureText('PUBLISHING INTELLIGENCE').width;
+    ctx.letterSpacing = '0px';
+
+    ctx.font = '800 30px Inter';
+    const urlW = ctx.measureText('mindful.pub').width;
+
+    ctx.font = '600 18px Inter';
+    const tagW = ctx.measureText('Your publishing partner. Your growth platform.').width;
+
+    const maxW = Math.max(logoW, mindfulW, subW, urlW, tagW);
+
+    // Stack heights: logo(40) + gap(30) + divider(4) + gap(30) + Mindful(56) + gap(14) + sub(16) + gap(28) + url(24) + gap(22) + tagline(18)
+    const totalH = 40 + 30 + 4 + 30 + 56 + 14 + 16 + 28 + 24 + 22 + 18;
+
+    const W = Math.ceil(maxW + PAD * 2);
+    const H = Math.ceil(totalH + PAD * 2);
+    c.width = W;
+    c.height = H;
+    c.style.width = Math.round(W / 2) + 'px';
+    c.style.height = Math.round(H / 2) + 'px';
+    document.getElementById('sSize').textContent = `${W} × ${H}px`;
+
+    ctx.clearRect(0, 0, W, H);
+    if (!isTrans) {
+      if (isDark) {
+        const g = ctx.createLinearGradient(0, 0, W, H);
+        g.addColorStop(0, NAVY_BG_START);
+        g.addColorStop(0.55, NAVY_BG_MID);
+        g.addColorStop(1, NAVY_BG_END);
+        ctx.fillStyle = g;
+      } else {
+        ctx.fillStyle = WHITE;
+      }
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    const cx = W / 2;
+    ctx.textBaseline = 'middle';
+
+    // --- { parameter : 1 } ---
+    let y = PAD + 20;
+    let lx = cx - logoW / 2;
+    ctx.textAlign = 'left';
+
+    ctx.font = '700 52px Inter';
+    ctx.fillStyle = textBlue;
+    ctx.fillText('{', lx, y);
+    lx += b1w;
+
+    ctx.font = '700 32px Inter';
+    ctx.fillStyle = textBlue;
+    ctx.fillText('  parameter', lx, y);
+    lx += pw;
+
+    ctx.font = '700 32px Inter';
+    ctx.fillStyle = textGray;
+    ctx.fillText(' : ', lx, y);
+    lx += cww;
+
+    ctx.font = '800 32px Inter';
+    ctx.fillStyle = textGray;
+    ctx.fillText('1', lx, y);
+    lx += ow;
+
+    ctx.font = '700 52px Inter';
+    ctx.fillStyle = textBlue;
+    ctx.fillText('  }', lx, y);
+
+    // Divider
+    y += 47;
+    const dg = ctx.createLinearGradient(cx - 30, y, cx + 30, y);
+    dg.addColorStop(0, textBlue);
+    dg.addColorStop(1, isDark ? '#1a5cb5' : BLUE_LIGHT);
+    ctx.fillStyle = dg;
+    ctx.fillRect(cx - 30, y, 60, 4);
+
+    // Mindful
+    y += 47;
+    ctx.textAlign = 'center';
+    ctx.font = '900 72px Inter';
+    ctx.fillStyle = textNav;
+    ctx.fillText('Mindful', cx, y);
+
+    // PUBLISHING INTELLIGENCE
+    y += 49;
+    ctx.font = '600 16px Inter';
+    ctx.fillStyle = textBlue;
+    ctx.letterSpacing = '4px';
+    ctx.fillText('PUBLISHING INTELLIGENCE', cx, y);
+    ctx.letterSpacing = '0px';
+
+    // mindful.pub
+    y += 44;
+    ctx.font = '800 30px Inter';
+    ctx.fillStyle = textBlue;
+    ctx.fillText('mindful.pub', cx, y);
+
+    // Tagline
+    y += 38;
+    ctx.font = '600 18px Inter';
+    ctx.fillStyle = textTag;
+    ctx.fillText('Your publishing partner. Your growth platform.', cx, y);
+
+    return c;
+  }
+
+  // Initial draws
+  drawH('white');
+  drawS('white');
+
+  window.downloadH = function(mode) {
+    drawH(mode);
+    const c = document.getElementById('hCanvas');
+    const a = document.createElement('a');
+    const s = mode === 'transparent' ? 'transparent' : mode === 'dark' ? 'dark' : 'white';
+    a.download = `parameter1-mindful-horizontal-${s}.png`;
+    a.href = c.toDataURL('image/png');
+    a.click();
+    setTimeout(() => drawH('white'), 100);
+  };
+
+  window.downloadS = function(mode) {
+    drawS(mode);
+    const c = document.getElementById('sCanvas');
+    const a = document.createElement('a');
+    const s = mode === 'transparent' ? 'transparent' : mode === 'dark' ? 'dark' : 'white';
+    a.download = `parameter1-mindful-stacked-${s}.png`;
+    a.href = c.toDataURL('image/png');
+    a.click();
+    setTimeout(() => drawS('white'), 100);
+  };
+
+});
+</script>
+
+</body>
+</html>
