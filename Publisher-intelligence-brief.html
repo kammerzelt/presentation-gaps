@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Publisher Intelligence Brief</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f4f0; color: #1a1a1a; font-size: 15px; line-height: 1.6; }
+
+  .page { max-width: 860px; margin: 0 auto; background: #fff; }
+
+  .header { background: #1a2744; color: #fff; padding: 36px 48px 28px; }
+  .header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+  .brand { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #8ea4c8; font-weight: 500; }
+  .brand span { color: #c8d8ee; }
+  .issue-meta { text-align: right; font-size: 12px; color: #8ea4c8; line-height: 1.8; }
+  .pub-name { font-size: 26px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .brief-title { font-size: 13px; color: #8ea4c8; letter-spacing: 0.06em; text-transform: uppercase; }
+  .header-divider { border: none; border-top: 1px solid #2e3f62; margin: 20px 0 16px; }
+  .summary-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+  .summary-stat { padding: 0 20px 0 0; }
+  .summary-stat:first-child { padding-left: 0; }
+  .summary-stat + .summary-stat { border-left: 1px solid #2e3f62; padding-left: 20px; }
+  .stat-val { font-size: 22px; font-weight: 600; color: #fff; }
+  .stat-val.up { color: #5de8b0; }
+  .stat-val.down { color: #f4846a; }
+  .stat-label { font-size: 11px; color: #8ea4c8; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+
+  .body { padding: 40px 48px; }
+
+  .section-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: #8ea4c8; margin-bottom: 20px; padding-bottom: 8px; border-bottom: 1px solid #e8e6e0; }
+
+  .insight { border: 1px solid #e8e6e0; border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+  .insight-head { display: flex; align-items: center; gap: 14px; padding: 18px 22px 14px; border-bottom: 1px solid #f0ede8; }
+  .priority-badge { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; padding: 3px 9px; border-radius: 4px; white-space: nowrap; }
+  .p-high { background: #fdecea; color: #b93b33; }
+  .p-medium { background: #fef7e6; color: #956800; }
+  .p-watch { background: #e8f3fd; color: #1a5fa0; }
+  .insight-title { font-size: 16px; font-weight: 600; color: #1a1a1a; flex: 1; }
+  .insight-body { padding: 16px 22px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .col-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #aaa9a2; margin-bottom: 8px; }
+  .insight-body p { font-size: 14px; color: #3a3a3a; line-height: 1.65; }
+  .action-box { background: #f3f7ff; border-radius: 8px; border-left: 3px solid #2563c4; padding: 14px 16px; }
+  .action-box p { font-size: 14px; color: #1a2744; line-height: 1.65; }
+  .action-step { display: flex; align-items: baseline; gap: 8px; margin-top: 8px; }
+  .action-step:first-of-type { margin-top: 10px; }
+  .step-num { font-size: 11px; font-weight: 700; color: #2563c4; min-width: 16px; }
+  .step-text { font-size: 13px; color: #1a2744; line-height: 1.5; }
+
+  .signal-panel { background: #f9f8f5; border: 1px solid #e8e6e0; border-radius: 10px; padding: 20px 22px; margin-bottom: 20px; }
+  .signal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px; }
+  .signal-item { display: flex; gap: 10px; align-items: flex-start; }
+  .signal-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .dot-green { background: #2a9e6e; }
+  .dot-amber { background: #d48a0a; }
+  .dot-blue { background: #2563c4; }
+  .signal-text { font-size: 13px; color: #3a3a3a; line-height: 1.5; }
+  .signal-text strong { font-weight: 600; color: #1a1a1a; }
+
+  .watch-box { background: #1a2744; border-radius: 10px; padding: 20px 24px; color: #fff; }
+  .watch-box .section-label { color: #6a84a8; border-bottom-color: #2e3f62; }
+  .watch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 4px; }
+  .watch-item { border-left: 2px solid #2e3f62; padding-left: 14px; }
+  .watch-item-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #6a84a8; margin-bottom: 5px; }
+  .watch-item-text { font-size: 13px; color: #c8d8ee; line-height: 1.5; }
+
+  .footer { padding: 24px 48px; border-top: 1px solid #e8e6e0; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-size: 11px; color: #aaa9a2; }
+  .footer-brand strong { color: #5a7ab5; }
+  .footer-note { font-size: 11px; color: #c0bfb8; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="brand">Publishing Intelligence Brief &nbsp;·&nbsp; <span>Powered by Mindful</span></div>
+        <div class="pub-name">Compact Equipment Weekly</div>
+        <div class="brief-title">Monthly Audience &amp; Revenue Intelligence</div>
+      </div>
+      <div class="issue-meta">
+        March 2026<br>
+        Issue #14<br>
+        Prepared for: Mike Hargrove, Publisher
+      </div>
+    </div>
+    <hr class="header-divider">
+    <div class="summary-bar">
+      <div class="summary-stat">
+        <div class="stat-val up">+28%</div>
+        <div class="stat-label">Registration rate</div>
+      </div>
+      <div class="summary-stat">
+        <div class="stat-val">21,580</div>
+        <div class="stat-label">Known audience</div>
+      </div>
+      <div class="summary-stat">
+        <div class="stat-val down">−9%</div>
+        <div class="stat-label">30-day engagement</div>
+      </div>
+      <div class="summary-stat">
+        <div class="stat-val up">↑ Strong</div>
+        <div class="stat-label">Advertiser fit score</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="section-label">Intelligence insights &nbsp;· &nbsp;3 actions this month</div>
+
+    <!-- Insight 1 -->
+    <div class="insight">
+      <div class="insight-head">
+        <span class="priority-badge p-high">Act now</span>
+        <span class="insight-title">Skid steer attachment content is pulling a new audience — none of them are registered</span>
+      </div>
+      <div class="insight-body">
+        <div>
+          <div class="col-label">What the data shows</div>
+          <p>Organic search traffic to your skid steer attachment content — augers, brush cutters, hydraulic breakers — has grown 52% over the past 60 days and now accounts for 23% of all site sessions. Visitor behavior in this cluster shows higher-than-average engaged session time (4m 12s vs. your 2m 48s site average), suggesting purchase-intent research rather than casual browsing. None of this content is gated. At current traffic volume, you are losing an estimated 390 registrable contacts per month — contractors and fleet managers — without capturing a single identity.</p>
+        </div>
+        <div>
+          <div class="col-label">Recommended action</div>
+          <div class="action-box">
+            <div class="action-step"><span class="step-num">1</span><span class="step-text">Apply a metered gate to your top 4 skid steer attachment articles (3 free reads, then registration required).</span></div>
+            <div class="action-step"><span class="step-num">2</span><span class="step-text">Create one gated resource — an attachment compatibility guide or buyer's checklist — to anchor a full registration gate for this cluster.</span></div>
+            <div class="action-step"><span class="step-num">3</span><span class="step-text">Flag this segment to your attachments advertisers immediately. The audience data now supports a stronger rate conversation before their next renewal.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Insight 2 -->
+    <div class="insight">
+      <div class="insight-head">
+        <span class="priority-badge p-medium">This month</span>
+        <span class="insight-title">38 high-value fleet managers are drifting — they haven't visited in over five weeks</span>
+      </div>
+      <div class="insight-body">
+        <div>
+          <div class="col-label">What the data shows</div>
+          <p>Thirty-eight registered readers with fleet manager and equipment procurement titles — who were in your top engagement quintile 90 days ago — have not visited in 37 or more days. Their prior pattern included regular visits across compact track loader, maintenance, and spec comparison content. This matches pre-churn behavior observed across comparable construction trade publishers. These are exactly the decision-maker profiles your dealers and OEM advertisers pay to reach. Re-engaging them now is far less costly than replacing them.</p>
+        </div>
+        <div>
+          <div class="col-label">Recommended action</div>
+          <div class="action-box">
+            <div class="action-step"><span class="step-num">1</span><span class="step-text">Export this segment and send a targeted re-engagement email referencing their previously consumed content categories — not a generic newsletter blast.</span></div>
+            <div class="action-step"><span class="step-num">2</span><span class="step-text">Subject line framing that works: tie it to a specific machine category or a new spec comparison they haven't seen yet. Specificity is the signal worth opening.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Insight 3 -->
+    <div class="insight">
+      <div class="insight-head">
+        <span class="priority-badge p-watch">Revenue signal</span>
+        <span class="insight-title">Compact track loader advertiser category is underpriced relative to your audience growth</span>
+      </div>
+      <div class="insight-body">
+        <div>
+          <div class="col-label">What the data shows</div>
+          <p>Registered readers with contractor, site supervisor, and equipment buyer job titles — the core target for compact track loader and skid steer OEM advertisers — grew 26% over the past quarter. Your three active advertisers in this category are renewing at rates established 20 months ago, before this audience expansion occurred. Based on current audience composition and engagement depth in equipment spec and comparison content, CPMs in this category are running approximately 18–22% below what the data now supports.</p>
+        </div>
+        <div>
+          <div class="col-label">Recommended action</div>
+          <div class="action-box">
+            <div class="action-step"><span class="step-num">1</span><span class="step-text">Pull an audience composition report filtered to contractor and equipment buyer titles. Lead your renewal conversation with this data, not a rate card.</span></div>
+            <div class="action-step"><span class="step-num">2</span><span class="step-text">Opening framing: "Our audience in your equipment category grew significantly this quarter — I want to show you what that looks like before we talk about next year."</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signals panel -->
+    <div class="signal-panel">
+      <div class="section-label">Other signals worth noting</div>
+      <div class="signal-grid">
+        <div class="signal-item"><div class="signal-dot dot-green"></div><div class="signal-text"><strong>Spec sheet downloads rising.</strong> PDF downloads on machine spec pages up 34% month-over-month — a strong purchase-intent signal to share with OEM advertisers.</div></div>
+        <div class="signal-item"><div class="signal-dot dot-amber"></div><div class="signal-text"><strong>Mobile session share growing.</strong> 58% of sessions in March came from mobile, likely field-based readers. Review your registration form experience on small screens.</div></div>
+        <div class="signal-item"><div class="signal-dot dot-blue"></div><div class="signal-text"><strong>Dealer-sponsored content outperforming editorial.</strong> Two dealer-sponsored articles are in your top 10 for engaged session time — useful leverage in upcoming dealer network conversations.</div></div>
+        <div class="signal-item"><div class="signal-dot dot-amber"></div><div class="signal-text"><strong>New reader return rate softening.</strong> First-time visitors returning within 30 days dropped to 17% from 23% last quarter. Investigate the path from first article to second page.</div></div>
+      </div>
+    </div>
+
+    <!-- Watch next month -->
+    <div class="watch-box">
+      <div class="section-label">Watch next month</div>
+      <div class="watch-grid">
+        <div class="watch-item">
+          <div class="watch-item-label">Audience</div>
+          <div class="watch-item-text">Whether gating skid steer attachment content converts at or above your site average registration rate of 5.8%.</div>
+        </div>
+        <div class="watch-item">
+          <div class="watch-item-label">Engagement</div>
+          <div class="watch-item-text">Re-engagement rate on the 38 drifting fleet managers. A response above 20% indicates the segment is recoverable.</div>
+        </div>
+        <div class="watch-item">
+          <div class="watch-item-label">Revenue</div>
+          <div class="watch-item-text">Compact track loader renewal conversations initiated. Do not let these renew without a rate conversation anchored in the audience data.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="footer-brand">Prepared by <strong>Mindful</strong> &nbsp;·&nbsp; mindful.pub &nbsp;·&nbsp; a { parameter : 1 } product</div>
+    <div class="footer-note">This brief is generated from your connected audience, content, and advertising data.</div>
+  </div>
+
+</div>
+</body>
+</html>
