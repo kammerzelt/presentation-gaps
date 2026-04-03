@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advertiser Dashboard — Mindful</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+
+@page {
+  margin: 0;
+  size: 8.5in 11in;
+}
+@media print {
+  html, body {
+    margin:0 !important; padding:0 !important;
+    background:#fff !important;
+    display:block !important;
+    width:100% !important;
+    gap:0 !important;
+  }
+  .page {
+    page-break-after:always;
+    box-shadow:none;
+    width:100%;
+    min-height:auto;
+    margin:0 !important;
+    padding:0 !important;
+  }
+  .page:last-of-type {
+    page-break-after: avoid;
+  }
+  .page-label { display:none; }
+}
+
+body {
+  font-family:'Inter',sans-serif;
+  background:#666;
+  padding:30px 20px;
+  display:flex; flex-direction:column; align-items:center; gap:24px;
+}
+.page-label {
+  color:#bbb; font-size:9px; font-weight:700;
+  letter-spacing:2px; text-transform:uppercase; text-align:center;
+}
+.page {
+  width:8.5in; min-height:11in; background:#fff;
+  box-shadow:0 6px 30px rgba(0,0,0,0.35);
+  display:flex; flex-direction:column; overflow:hidden;
+}
+
+/* HEADER */
+.page-header {
+  background:linear-gradient(150deg,#0a1628 0%,#0f2847 60%,#153a6b 100%);
+  padding:18px 48px 16px;
+  display:flex; align-items:center; justify-content:space-between;
+  position:relative; overflow:hidden;
+}
+.page-header::after {
+  content:''; position:absolute; top:-60px; right:-60px;
+  width:220px; height:220px; border-radius:50%;
+  border:1px solid rgba(74,158,255,0.1); pointer-events:none;
+}
+.header-logo { display:flex; flex-direction:column; gap:3px; }
+.logo-mark { display:flex; align-items:center; gap:1px; }
+.lb{font-size:20px;font-weight:700;color:#4a9eff;}
+.lw{font-size:13px;font-weight:700;color:#4a9eff;}
+.lc{font-size:13px;font-weight:700;color:#607a99;}
+.l1{font-size:13px;font-weight:800;color:#607a99;}
+.logo-product{font-size:22px;font-weight:900;color:#fff;letter-spacing:-0.3px;line-height:1;}
+.logo-sub{font-size:8px;font-weight:600;color:#4a9eff;letter-spacing:1.5px;text-transform:uppercase;}
+.header-title { text-align:right; }
+.header-eyebrow{font-size:9px;font-weight:600;color:#6a9ed4;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;}
+.header-h1{font-size:26px;font-weight:900;color:#fff;letter-spacing:-0.4px;line-height:1.2;}
+.header-h1 span{color:#4a9eff;}
+
+/* BODY */
+.page-body { flex:1; padding:22px 48px; }
+.eyebrow{font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#1a5cb5;margin-bottom:7px;}
+h2{font-size:17px;font-weight:800;color:#0f2847;letter-spacing:-0.3px;line-height:1.3;margin-bottom:10px;}
+h3{font-size:12.5px;font-weight:700;color:#0f2847;margin-bottom:6px;}
+p{font-size:11.5px;color:#3a4a5e;line-height:1.65;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.rule{border:none;border-top:1px solid #e2eaf5;margin:18px 0;}
+
+/* PAIN */
+.pain-banner{
+  background:#0f2847;border-radius:10px;
+  padding:18px 24px;margin-bottom:20px;
+  display:grid;grid-template-columns:1fr 1fr;gap:8px 28px;
+}
+.pain-item{display:flex;align-items:flex-start;gap:8px;}
+.pain-dot{width:6px;height:6px;border-radius:50%;background:#4a9eff;flex-shrink:0;margin-top:5px;}
+.pain-text{font-size:11.5px;color:#c5d8f0;line-height:1.45;font-weight:500;}
+
+.pain-callout{
+  background:linear-gradient(135deg,#1a5cb5,#0f2847);
+  border-radius:10px;padding:18px 22px;
+  display:flex;align-items:center;gap:16px;margin-bottom:20px;
+}
+.pain-callout-quote{font-size:16px;font-weight:800;color:#fff;line-height:1.3;letter-spacing:-0.3px;flex:1;}
+.pain-callout-quote span{color:#4a9eff;}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#f0f6ff;border:1px solid #c0d8f0;
+  border-radius:20px;padding:5px 14px;
+  font-size:10px;font-weight:700;color:#1a5cb5;white-space:nowrap;
+}
+.badge svg{width:11px;height:11px;}
+
+/* SECTION DIVIDER */
+.section-divider{display:flex;align-items:center;gap:12px;margin:16px 0;}
+.sdline{flex:1;height:1px;background:#e2eaf5;}
+.sdbadge{
+  background:#fff;border:2px solid #1a5cb5;color:#1a5cb5;
+  border-radius:20px;padding:4px 16px;
+  font-size:8px;font-weight:800;letter-spacing:2px;text-transform:uppercase;white-space:nowrap;
+}
+
+/* CARDS */
+.card{background:#f4f8ff;border:1px solid #d4e4f7;border-radius:10px;padding:18px;}
+.card.green{background:#f0fbf5;border-color:#b8e8cc;}
+
+/* BULLET */
+.bullet-list{display:flex;flex-direction:column;gap:7px;margin-top:8px;}
+.bullet-item{display:flex;align-items:flex-start;gap:7px;}
+.bcheck{
+  width:15px;height:15px;min-width:15px;border-radius:3px;
+  background:#1a5cb5;display:flex;align-items:center;justify-content:center;margin-top:1px;
+}
+.bcheck svg{width:8px;height:8px;}
+.bcheck.green{background:#22a05a;}
+.bcheck.dark{background:#4a9eff;}
+.bullet-text{font-size:11px;color:#3a4a5e;line-height:1.5;}
+.bullet-text.light{color:#c5d8f0;}
+
+/* SCREEN MOCKUP */
+.screen-frame{background:#1a2a44;border-radius:8px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.2);}
+.screen-bar{background:#0a1628;height:20px;display:flex;align-items:center;gap:5px;padding:0 10px;}
+.dot{width:7px;height:7px;border-radius:50%;}
+.dot.r{background:#ef4444;}.dot.y{background:#f59e0b;}.dot.g{background:#22c55e;}
+.screen-body{padding:12px 14px;}
+.screen-title{font-size:8.5px;font-weight:700;color:#c5d8f0;margin-bottom:8px;letter-spacing:0.5px;}
+.metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:8px;}
+.metric-box{background:#0f2847;border-radius:6px;padding:7px 9px;border:1px solid #1e3a6b;}
+.metric-label{font-size:7px;color:#6a9ed4;margin-bottom:2px;}
+.metric-value{font-size:15px;font-weight:800;color:#fff;}
+.metric-sub{font-size:6.5px;color:#4a9eff;margin-top:1px;}
+.chart-area{background:#0f2847;border-radius:6px;padding:9px;border:1px solid #1e3a6b;}
+.chart-label{font-size:7px;color:#6a9ed4;margin-bottom:7px;}
+.chart-bars{display:flex;align-items:flex-end;gap:3px;height:32px;}
+.bar{flex:1;border-radius:2px 2px 0 0;background:#1a5cb5;opacity:0.7;}
+.bar.hi{background:#4a9eff;opacity:1;}
+
+/* INTELLIGENCE REPORT */
+.intel-report{background:#fff;border:1px solid #D1DCF0;border-radius:10px;overflow:hidden;}
+.intel-header{background:#1B3A6B;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;}
+.intel-header-title{color:#fff;font-weight:700;}
+.intel-header-sub{color:#A8BFDF;margin-top:2px;}
+.intel-badge-rpt{background:#2E7DD1;border-radius:5px;padding:3px 10px;color:#fff;font-weight:600;white-space:nowrap;}
+.intel-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid #D1DCF0;}
+.intel-kpi{padding:8px 12px;border-right:1px solid #D1DCF0;}
+.intel-kpi:last-child{border-right:none;}
+.intel-kpi-label{color:#6B7A99;text-transform:uppercase;letter-spacing:0.08em;}
+.intel-kpi-value{font-weight:700;color:#1B3A6B;margin:3px 0 1px;}
+.intel-kpi-sub{color:#2A9D6F;}
+.intel-table{padding:10px 16px;}
+.intel-table-title{font-weight:700;color:#1B3A6B;margin-bottom:8px;}
+.intel-table-header{
+  display:grid;grid-template-columns:2fr 1.8fr 0.7fr 0.8fr;
+  color:#6B7A99;text-transform:uppercase;letter-spacing:0.08em;
+  padding-bottom:6px;border-bottom:1px solid #D1DCF0;margin-bottom:4px;
+}
+.intel-table-row{
+  display:grid;grid-template-columns:2fr 1.8fr 0.7fr 0.8fr;
+  align-items:center;padding:5px 0;border-bottom:1px solid #EFF4FB;
+}
+.intel-table-row.critical{background:#FEF8F7;border-radius:3px;}
+.intel-seg-name{font-weight:600;color:#1B3A6B;}
+.intel-bar-wrap{padding-right:12px;}
+.intel-bar-labels{display:flex;justify-content:space-between;margin-bottom:2px;}
+.intel-bar-score{font-weight:700;color:#1B3A6B;}
+.intel-bar-articles{color:#6B7A99;}
+.intel-bar{background:#E8EEF7;border-radius:3px;height:5px;overflow:hidden;}
+.intel-bar-fill{height:100%;border-radius:3px;}
+.intel-trend{font-weight:600;}
+.intel-trend.up{color:#2A9D6F;}
+.intel-trend.down{color:#E05C3A;}
+.intel-gap{display:inline-block;border-radius:3px;padding:1px 6px;font-weight:700;}
+.intel-callout{
+  margin:0 16px 12px;background:#EFF4FB;
+  border-left:3px solid #2E7DD1;border-radius:0 6px 6px 0;padding:8px 12px;
+}
+.intel-callout-title{font-weight:700;color:#1B3A6B;margin-bottom:3px;}
+.intel-callout-text{color:#334;line-height:1.55;}
+
+/* PILLAR ROW */
+.pillar-row{display:flex;gap:8px;margin-bottom:12px;}
+.pillar{
+  flex:1;background:#f4f8ff;border:1px solid #d4e4f7;
+  border-radius:8px;padding:10px 11px;
+  display:flex;gap:8px;align-items:flex-start;
+}
+.pillar-icon{width:26px;height:26px;min-width:26px;background:#1a5cb5;border-radius:5px;display:flex;align-items:center;justify-content:center;}
+.pillar-label{font-size:9.5px;font-weight:800;color:#0f2847;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:2px;}
+.pillar-desc{font-size:9.5px;color:#5a6d85;line-height:1.35;}
+
+/* FOOTER */
+.page-footer{
+  background:#0f2847;padding:14px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.footer-cta{font-size:13px;font-weight:800;color:#fff;}
+.footer-contact{font-size:10.5px;color:#6a9ed4;margin-top:2px;}
+.footer-contact a{color:#4a9eff;text-decoration:none;}
+.footer-center{font-size:8px;font-weight:700;color:#4a6a99;letter-spacing:1.5px;text-transform:uppercase;text-align:center;line-height:1.7;}
+.footer-right{display:flex;flex-direction:column;align-items:flex-end;gap:2px;}
+</style>
+</head>
+<body>
+
+<!-- ══════════ PAGE 1 ══════════ -->
+<div class="page-label">Page 1</div>
+<div class="page">
+  <div class="page-header">
+    <div class="header-logo">
+      <div class="logo-mark"><span class="lb">{</span><span class="lw">parameter</span><span class="lc">:</span><span class="l1">1</span><span class="lb">}</span></div>
+      <div class="logo-product">Mindful</div>
+      <div class="logo-sub">Publishing Intelligence</div>
+    </div>
+    <div class="header-title">
+      <div class="header-eyebrow">Introducing</div>
+      <div class="header-h1">The Advertiser <span>Dashboard</span></div>
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <div class="eyebrow">If you're a B2B publisher, you already know the reality</div>
+    <div class="pain-banner">
+      <div class="pain-item"><div class="pain-dot"></div><span class="pain-text">Advertiser performance data lives across multiple disconnected systems</span></div>
+      <div class="pain-item"><div class="pain-dot"></div><span class="pain-text">Reports are built manually — often under deadline pressure</span></div>
+      <div class="pain-item"><div class="pain-dot"></div><span class="pain-text">Errors surface weeks later, usually during renewal conversations</span></div>
+      <div class="pain-item"><div class="pain-dot"></div><span class="pain-text">Too much time spent explaining numbers instead of demonstrating value</span></div>
+    </div>
+
+    <div class="pain-callout">
+      <div class="pain-callout-quote">Advertiser reporting should <span>not</span> be this complicated.</div>
+      <div class="badge" style="background:rgba(255,255,255,0.08);border-color:rgba(74,158,255,0.3);color:#4a9eff;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        There's a better way
+      </div>
+    </div>
+
+    <div class="two-col" style="margin-bottom:20px;">
+      <div>
+        <h2>What is the Advertiser Dashboard?</h2>
+        <p>The Advertiser Dashboard is a standalone module within the Mindful Publishing Intelligence platform — built to solve one specific, immediate problem: clear, accurate, advertiser-ready reporting without spreadsheets.</p>
+        <p style="margin-top:10px;">It brings advertising performance, content engagement, and audience data into one unified, shareable view your advertisers can access directly — in real time.</p>
+        <div style="margin-top:16px;">
+          <div class="badge" style="margin-bottom:10px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Works with your current publishing setup
+          </div>
+          <p style="font-size:11px;color:#5a6d85;">You don't need to change your CMS or overhaul your tech stack. The Advertiser Dashboard works alongside your existing tools and can be implemented quickly and independently.</p>
+        </div>
+      </div>
+      <div>
+        <div class="screen-frame">
+          <div class="screen-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+          <div class="screen-body">
+            <div class="screen-title">DELIVERY PERFORMANCE — Shell Lubricants Campaign</div>
+            <div class="metric-row">
+              <div class="metric-box"><div class="metric-label">Line Items</div><div class="metric-value">4</div><div class="metric-sub">Active</div></div>
+              <div class="metric-box"><div class="metric-label">Impressions</div><div class="metric-value">860k</div><div class="metric-sub">+12% vs prior period</div></div>
+              <div class="metric-box"><div class="metric-label">Clicks</div><div class="metric-value">1.3k</div><div class="metric-sub">0.15% CTR</div></div>
+            </div>
+            <div class="chart-area">
+              <div class="chart-label">IMPRESSIONS OVER TIME — DAILY</div>
+              <div class="chart-bars">
+                <div class="bar" style="height:30%"></div><div class="bar" style="height:45%"></div>
+                <div class="bar" style="height:38%"></div><div class="bar" style="height:60%"></div>
+                <div class="bar hi" style="height:75%"></div><div class="bar hi" style="height:90%"></div>
+                <div class="bar hi" style="height:100%"></div><div class="bar" style="height:85%"></div>
+                <div class="bar" style="height:70%"></div><div class="bar" style="height:80%"></div>
+                <div class="bar hi" style="height:95%"></div><div class="bar" style="height:72%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:10px;color:#8899aa;margin-top:7px;text-align:center;font-style:italic;">Real-time campaign visibility — shareable directly with advertisers</p>
+      </div>
+    </div>
+
+    <div class="section-divider">
+      <div class="sdline"></div><div class="sdbadge">What the Advertiser Dashboard delivers</div><div class="sdline"></div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <h3>For publishers</h3>
+        <div class="bullet-list">
+          <div class="bullet-item"><div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div><span class="bullet-text">Centralized advertiser reporting across all properties and campaigns</span></div>
+          <div class="bullet-item"><div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div><span class="bullet-text">Dramatically reduced manual reporting time — hours become minutes</span></div>
+          <div class="bullet-item"><div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div><span class="bullet-text">Fewer errors, fewer make-goods, fewer last-minute scrambles</span></div>
+          <div class="bullet-item"><div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div><span class="bullet-text">Walk into every renewal conversation with confidence</span></div>
+        </div>
+      </div>
+      <div class="card green">
+        <h3 style="color:#1a6b3a;">For advertisers</h3>
+        <div class="bullet-list">
+          <div class="bullet-item"><div class="bcheck green"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div><span class="bullet-text">Transparent, self-serve access to real-time campaign performance</span></div>
+          <div class="bullet-item"><div class="bcheck green"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div><span class="bullet-text">Clear visibility into what's working, what's delivering, and why</span></div>
+          <div class="bullet-item"><div class="bcheck green"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div><span class="bullet-text">No more back-and-forth waiting for reports to be built and sent</span></div>
+          <div class="bullet-item"><div class="bcheck green"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div><span class="bullet-text">Proof of performance that builds trust and supports renewals</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <div><div class="footer-cta">Learn more or request a demo</div><div class="footer-contact"><a href="mailto:sales@mindful.pub">sales@mindful.pub</a> &nbsp;|&nbsp; mindful.pub</div></div>
+    <div class="footer-center">Built by publishers.<br>Designed for how publishing actually works.</div>
+    <div class="footer-right">
+      <div class="logo-mark"><span class="lb">{</span><span class="lw">parameter</span><span class="lc">:</span><span class="l1">1</span><span class="lb">}</span></div>
+      <div style="font-size:13px;font-weight:900;color:#fff;">Mindful</div>
+      <div style="font-size:7px;font-weight:600;color:#4a9eff;letter-spacing:1px;text-transform:uppercase;">Publishing Intelligence</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ PAGE 2 ══════════ -->
+<div class="page-label">Page 2</div>
+<div class="page">
+  <div class="page-header">
+    <div class="header-logo">
+      <div class="logo-mark"><span class="lb">{</span><span class="lw">parameter</span><span class="lc">:</span><span class="l1">1</span><span class="lb">}</span></div>
+      <div class="logo-product">Mindful</div>
+      <div class="logo-sub">Publishing Intelligence</div>
+    </div>
+    <div class="header-title">
+      <div class="header-eyebrow">The bigger picture</div>
+      <div class="header-h1" style="font-size:20px;">Meet <span>Mindful</span> — it's more than reporting</div>
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <div class="two-col" style="margin-bottom:12px; align-items:start;">
+      <div>
+        <div class="eyebrow">One connected platform</div>
+        <h2>Publishing Intelligence for the whole business</h2>
+        <p>The Advertiser Dashboard is one entry point into Mindful — Parameter1's Publishing Intelligence platform built exclusively for B2B publishers. Mindful connects what publishers typically manage in silos into one clear, actionable view.</p>
+        <div class="bullet-list" style="margin-top:10px;">
+          <div class="bullet-item"><div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div><span class="bullet-text">One identity layer across every touchpoint</span></div>
+          <div class="bullet-item"><div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div><span class="bullet-text">Real-time reporting — no pipelines, no lag, no data team required</span></div>
+          <div class="bullet-item"><div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div><span class="bullet-text">Built specifically for B2B media — not adapted from e-commerce</span></div>
+          <div class="bullet-item"><div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div><span class="bullet-text">Modular — start where the pain is, expand at your pace</span></div>
+          <div class="bullet-item"><div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div><span class="bullet-text">Scales from single-title to multi-property enterprises</span></div>
+          <div class="bullet-item"><div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div><span class="bullet-text">As AI commoditizes content, verified audience identity becomes your moat</span></div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size:8px;font-weight:700;color:#1a5cb5;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">What Publishing Intelligence looks like</div>
+        <div class="intel-report" style="font-size:8px;">
+          <div class="intel-header" style="padding:9px 14px;">
+            <div>
+              <div class="intel-header-title" style="font-size:9px;">Audience Intelligence Report</div>
+              <div class="intel-header-sub" style="font-size:7px;">Content-Segment Engagement — Q1 2026 | All Properties</div>
+            </div>
+            <div class="intel-badge-rpt" style="font-size:7px;">Powered by Mindful</div>
+          </div>
+          <div class="intel-kpi-row">
+            <div class="intel-kpi">
+              <div class="intel-kpi-label" style="font-size:6.5px;">Identified Audience</div>
+              <div class="intel-kpi-value" style="font-size:15px;">68,412</div>
+              <div class="intel-kpi-sub" style="font-size:6.5px;">+9% vs prior quarter</div>
+            </div>
+            <div class="intel-kpi">
+              <div class="intel-kpi-label" style="font-size:6.5px;">Engagement Score</div>
+              <div class="intel-kpi-value" style="font-size:15px;">58.4</div>
+              <div class="intel-kpi-sub" style="font-size:6.5px;">Across all segments</div>
+            </div>
+            <div class="intel-kpi">
+              <div class="intel-kpi-label" style="font-size:6.5px;">Underserved Segments</div>
+              <div class="intel-kpi-value" style="font-size:15px;color:#E05C3A;">2</div>
+              <div class="intel-kpi-sub" style="font-size:6.5px;color:#E05C3A;">Require attention</div>
+            </div>
+            <div class="intel-kpi">
+              <div class="intel-kpi-label" style="font-size:6.5px;">Anonymous Traffic</div>
+              <div class="intel-kpi-value" style="font-size:15px;">31%</div>
+              <div class="intel-kpi-sub" style="font-size:6.5px;">Conversion opportunity</div>
+            </div>
+          </div>
+          <div class="intel-table">
+            <div class="intel-table-title" style="font-size:7.5px;">Segment Engagement vs. Content Supply</div>
+            <div class="intel-table-header" style="font-size:6.5px;">
+              <div>Segment</div><div>Engagement Score</div><div>Trend</div><div>Gap</div>
+            </div>
+            <div class="intel-table-row">
+              <div class="intel-seg-name" style="font-size:7.5px;">C-Suite / Executive</div>
+              <div class="intel-bar-wrap">
+                <div class="intel-bar-labels"><span class="intel-bar-score" style="font-size:7.5px;">87</span><span class="intel-bar-articles" style="font-size:6.5px;">142 articles</span></div>
+                <div class="intel-bar"><div class="intel-bar-fill" style="width:87%;background:#2A9D6F;"></div></div>
+              </div>
+              <div class="intel-trend up" style="font-size:7.5px;">+12%</div>
+              <div><span class="intel-gap" style="font-size:6.5px;background:rgba(42,157,111,0.13);color:#2A9D6F;border:1px solid rgba(42,157,111,0.3);">Low</span></div>
+            </div>
+            <div class="intel-table-row">
+              <div class="intel-seg-name" style="font-size:7.5px;">Engineering / Technical</div>
+              <div class="intel-bar-wrap">
+                <div class="intel-bar-labels"><span class="intel-bar-score" style="font-size:7.5px;">64</span><span class="intel-bar-articles" style="font-size:6.5px;">98 articles</span></div>
+                <div class="intel-bar"><div class="intel-bar-fill" style="width:64%;background:#F0A500;"></div></div>
+              </div>
+              <div class="intel-trend up" style="font-size:7.5px;">+3%</div>
+              <div><span class="intel-gap" style="font-size:6.5px;background:rgba(240,165,0,0.13);color:#F0A500;border:1px solid rgba(240,165,0,0.3);">Med</span></div>
+            </div>
+            <div class="intel-table-row critical">
+              <div class="intel-seg-name" style="font-size:7.5px;">Operations / Plant Mgr</div>
+              <div class="intel-bar-wrap">
+                <div class="intel-bar-labels"><span class="intel-bar-score" style="font-size:7.5px;">41</span><span class="intel-bar-articles" style="font-size:6.5px;">34 articles</span></div>
+                <div class="intel-bar"><div class="intel-bar-fill" style="width:41%;background:#E05C3A;"></div></div>
+              </div>
+              <div class="intel-trend down" style="font-size:7.5px;">-8%</div>
+              <div><span class="intel-gap" style="font-size:6.5px;background:rgba(224,92,58,0.13);color:#E05C3A;border:1px solid rgba(224,92,58,0.3);">High</span></div>
+            </div>
+            <div class="intel-table-row critical">
+              <div class="intel-seg-name" style="font-size:7.5px;">Procurement</div>
+              <div class="intel-bar-wrap">
+                <div class="intel-bar-labels"><span class="intel-bar-score" style="font-size:7.5px;">28</span><span class="intel-bar-articles" style="font-size:6.5px;">19 articles</span></div>
+                <div class="intel-bar"><div class="intel-bar-fill" style="width:28%;background:#C0392B;"></div></div>
+              </div>
+              <div class="intel-trend down" style="font-size:7.5px;">-14%</div>
+              <div><span class="intel-gap" style="font-size:6.5px;background:rgba(192,57,43,0.13);color:#C0392B;border:1px solid rgba(192,57,43,0.3);">Critical</span></div>
+            </div>
+          </div>
+          <div class="intel-callout">
+            <div class="intel-callout-title" style="font-size:7.5px;">Editorial Intelligence</div>
+            <div class="intel-callout-text" style="font-size:7px;"><b>Procurement</b> and <b>Operations/Plant Manager</b> segments show critical content gaps — representing an estimated <b>22% of your identified audience</b>. Consider reallocating 2–3 editorial slots/month toward Safety &amp; Compliance and Product Specification content.</div>
+          </div>
+        </div>
+        <p style="font-size:9px;color:#8899aa;margin-top:6px;text-align:center;font-style:italic;">Illustrative data. Your actual report reflects your real audience.</p>
+      </div>
+    </div>
+
+    <div class="section-divider">
+      <div class="sdline"></div><div class="sdbadge">Manage. Publish. Engage. Monetize. Measure.</div><div class="sdline"></div>
+    </div>
+
+    <div class="pillar-row" style="margin-bottom:18px;">
+      <div class="pillar">
+        <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" width="13" height="13"><path d="M3 7h18M3 12h18M3 17h10"/></svg></div>
+        <div><div class="pillar-label">Manage</div><div class="pillar-desc">Headless CMS across all properties</div></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" width="13" height="13"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <div><div class="pillar-label">Publish</div><div class="pillar-desc">Print, digital &amp; newsletter workflows</div></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" width="13" height="13"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+        <div><div class="pillar-label">Engage</div><div class="pillar-desc">Convert anonymous to known audience</div></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" width="13" height="13"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <div><div class="pillar-label">Monetize</div><div class="pillar-desc">Integrated ad platform &amp; lead gen</div></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" width="13" height="13"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div>
+        <div><div class="pillar-label">Measure</div><div class="pillar-desc">Unified reporting across all channels</div></div>
+      </div>
+    </div>
+
+    <div class="rule"></div>
+
+    <div class="two-col">
+      <div>
+        <div class="eyebrow">Why publishers start here</div>
+        <h2>Start with the Advertiser Dashboard</h2>
+        <p>Many publishers begin with the Advertiser Dashboard because the ROI is immediate and visible. From there, Mindful expands to support your broader publishing intelligence needs — at your pace, on your terms.</p>
+        <div class="bullet-list" style="margin-top:8px;">
+          <div class="bullet-item"><div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div><span class="bullet-text">Reporting is the most immediate, visible pain point</span></div>
+          <div class="bullet-item"><div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div><span class="bullet-text">Advertiser trust directly impacts renewals and revenue</span></div>
+          <div class="bullet-item"><div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div><span class="bullet-text">Value is visible quickly — no full platform commitment required</span></div>
+          <div class="bullet-item"><div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div><span class="bullet-text">Expands naturally into the full platform when you're ready</span></div>
+        </div>
+      </div>
+      <div style="background:#f8fafe;border:1px solid #d4e4f7;border-radius:10px;padding:18px;">
+        <div class="eyebrow">About Parameter1</div>
+        <h3 style="margin-bottom:8px;">We've lived the problems we solve.</h3>
+        <p style="font-size:11px;">Parameter1, creator of Mindful, has been building technology for B2B publishers since 2009. Our team has decades of hands-on experience inside publishing organizations — our platform is shaped by real operational challenges, not assumptions.</p>
+        <p style="font-size:11px;margin-top:8px;">We partner with publishers to eliminate data silos, simplify workflows, grow audience, and build stronger advertiser relationships.</p>
+        <div style="margin-top:12px;padding-top:10px;border-top:1px solid #d4e4f7;">
+          <div style="font-size:9px;color:#8899aa;font-weight:600;font-style:italic;">Your publishing partner. Your growth platform.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <div><div class="footer-cta">Learn more or request a demo</div><div class="footer-contact"><a href="mailto:sales@mindful.pub">sales@mindful.pub</a> &nbsp;|&nbsp; mindful.pub</div></div>
+    <div class="footer-center">Built by publishers.<br>Designed for how publishing actually works.</div>
+    <div class="footer-right">
+      <div class="logo-mark"><span class="lb">{</span><span class="lw">parameter</span><span class="lc">:</span><span class="l1">1</span><span class="lb">}</span></div>
+      <div style="font-size:13px;font-weight:900;color:#fff;">Mindful</div>
+      <div style="font-size:7px;font-weight:600;color:#4a9eff;letter-spacing:1px;text-transform:uppercase;">Publishing Intelligence</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

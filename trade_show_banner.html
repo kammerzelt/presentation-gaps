@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mindful Trade Show Banner</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  @page { margin:0; size: 33in 81in; }
+
+  @media print {
+    html, body {
+      margin:0 !important; padding:0 !important;
+      background:#fff !important; display:block !important;
+    }
+    .banner-outer {
+      width:33in !important; height:81in !important;
+      overflow:visible !important; box-shadow:none !important;
+    }
+    .banner {
+      width:3168px !important; height:7776px !important;
+      transform:none !important;
+    }
+  }
+
+  body {
+    background:#555;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:30px 20px;
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+  }
+
+  /* Outer wrapper clips the scaled banner to preview size */
+  .banner-outer {
+    width:380px;
+    height:933px;
+    overflow:hidden;
+    box-shadow:0 8px 40px rgba(0,0,0,0.4);
+    flex-shrink:0;
+  }
+
+  /* Banner designed at full print size: 3168×7776px (33in×81in @96dpi)
+     Scale 0.12 = 380/3168 brings it to screen preview size */
+  .banner {
+    width:3168px;
+    height:7776px;
+    transform:scale(0.12);
+    transform-origin:top left;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* TOP DARK SECTION */
+  .top {
+    background:linear-gradient(165deg,#0a1628 0%,#0f2847 55%,#153a6b 100%);
+    padding:220px 267px 180px;
+    position:relative;
+    overflow:hidden;
+    flex:1;
+  }
+  .top::after {
+    content:'';
+    position:absolute;
+    top:-500px; right:-500px;
+    width:1833px; height:1833px;
+    border-radius:50%;
+    border:8px solid rgba(74,158,255,0.12);
+    pointer-events:none;
+  }
+
+  .logo {
+    display:flex;
+    align-items:center;
+    gap:17px;
+    margin-bottom:217px;
+  }
+  .logo-brace { font-size:183px; font-weight:700; color:#4a9eff; line-height:1; }
+  .logo-word  { font-size:125px; font-weight:700; color:#4a9eff; letter-spacing:-2px; line-height:1; }
+  .logo-colon { font-size:125px; font-weight:700; color:#607a99; line-height:1; }
+  .logo-one   { font-size:125px; font-weight:800; color:#607a99; line-height:1; }
+
+  .headline {
+    font-size:217px;
+    font-weight:900;
+    color:#fff;
+    line-height:1.15;
+    letter-spacing:-4px;
+    margin-bottom:60px;
+  }
+  .headline em { font-style:normal; color:#4a9eff; }
+
+  .subline {
+    font-size:100px;
+    font-weight:600;
+    color:#6a9ed4;
+    letter-spacing:2px;
+    margin-bottom:150px;
+    line-height:1.5;
+  }
+
+  .section-label {
+    font-size:75px;
+    font-weight:700;
+    letter-spacing:21px;
+    text-transform:uppercase;
+    color:rgba(255,255,255,0.5);
+    margin-bottom:80px;
+  }
+
+  .checks { display:flex; flex-direction:column; gap:70px; }
+
+  .check-item {
+    display:flex;
+    align-items:flex-start;
+    gap:83px;
+  }
+
+  .checkbox {
+    width:150px; height:150px;
+    border:17px solid #4a9eff;
+    border-radius:33px;
+    flex-shrink:0;
+    margin-top:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(74,158,255,0.12);
+  }
+  .checkbox svg { width:83px; height:83px; }
+
+  .check-text {
+    font-size:104px;
+    color:#c5d8f0;
+    line-height:1.4;
+    font-weight:500;
+  }
+  .check-text strong { color:#fff; font-weight:700; }
+
+  /* DIVIDER */
+  .divider {
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:117px 0;
+    flex-shrink:0;
+  }
+  .divider-badge {
+    background:#fff;
+    color:#1a5cb5;
+    font-size:75px;
+    font-weight:800;
+    letter-spacing:21px;
+    text-transform:uppercase;
+    padding:58px 167px;
+    border-radius:167px;
+    border:17px solid #1a5cb5;
+    box-shadow:0 17px 83px rgba(26,92,181,0.15);
+  }
+
+  /* BOTTOM WHITE SECTION */
+  .bottom {
+    background:#fff;
+    padding:33px 267px 233px;
+    display:flex;
+    flex-direction:column;
+    flex-shrink:0;
+  }
+
+  .product-name {
+    font-size:250px;
+    font-weight:900;
+    color:#0f2847;
+    letter-spacing:-4px;
+    text-align:center;
+    margin-bottom:33px;
+  }
+
+  .product-sub {
+    font-size:83px;
+    font-weight:600;
+    color:#1a5cb5;
+    text-align:center;
+    letter-spacing:2px;
+    margin-bottom:167px;
+  }
+
+  .value-props { display:flex; flex-direction:column; gap:92px; margin-bottom:183px; }
+
+  .value-item {
+    display:flex;
+    gap:83px;
+    align-items:flex-start;
+  }
+
+  .value-icon {
+    width:250px; height:250px;
+    border-radius:50%;
+    background:#f0f6ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+  }
+  .value-icon svg { width:125px; height:125px; }
+
+  .value-text { font-size:92px; color:#3a4a5e; line-height:1.45; font-weight:500; }
+  .value-text strong {
+    color:#0f2847; font-weight:700;
+    display:block; margin-bottom:8px; font-size:96px;
+  }
+
+  /* CTA BAR */
+  .cta-bar {
+    border-top:17px solid #e8eef5;
+    padding-top:133px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+
+  .cta-left { display:flex; flex-direction:column; gap:17px; }
+  .cta-eyebrow { font-size:67px; color:#9aabb8; font-weight:700; letter-spacing:12px; text-transform:uppercase; }
+  .cta-url { font-size:133px; font-weight:900; color:#0f2847; letter-spacing:-2px; }
+
+  .cta-btn {
+    background:#1a5cb5;
+    color:#fff;
+    font-size:83px;
+    font-weight:700;
+    padding:75px 167px;
+    border-radius:50px;
+    letter-spacing:8px;
+    text-transform:uppercase;
+  }
+
+  .tagline {
+    font-size:75px;
+    color:#9aabb8;
+    font-style:italic;
+    font-weight:600;
+    text-align:center;
+    margin-top:83px;
+  }
+</style>
+</head>
+<body>
+
+<div class="banner-outer">
+<div class="banner">
+
+  <!-- TOP DARK -->
+  <div class="top">
+    <div class="logo">
+      <span class="logo-brace">{</span>
+      <span class="logo-word">parameter</span>
+      <span class="logo-colon">:</span>
+      <span class="logo-one">1</span>
+      <span class="logo-brace">}</span>
+    </div>
+
+    <div class="headline">
+      One platform for <em>content</em>,<br><em>audience</em>, and <em>advertiser</em> data.
+    </div>
+
+    <div class="subline">One platform. Zero silos. Everything connected. Finally.</div>
+
+    <div class="section-label">Sound familiar?</div>
+
+    <div class="checks">
+      <div class="check-item">
+        <div class="checkbox"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#4a9eff" fill="none" stroke-width="1.8"/></svg></div>
+        <span class="check-text">Your <strong>content, audience, and ad data</strong> live in separate systems</span>
+      </div>
+      <div class="check-item">
+        <div class="checkbox"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#4a9eff" fill="none" stroke-width="1.8"/></svg></div>
+        <span class="check-text">Most of your <strong>website traffic is anonymous</strong> and unmonetized</span>
+      </div>
+      <div class="check-item">
+        <div class="checkbox"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#4a9eff" fill="none" stroke-width="1.8"/></svg></div>
+        <span class="check-text">You <strong>can't prove advertiser ROI</strong> without stitching reports together</span>
+      </div>
+      <div class="check-item">
+        <div class="checkbox"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#4a9eff" fill="none" stroke-width="1.8"/></svg></div>
+        <span class="check-text">You're making decisions <strong>without a complete picture</strong> of your business</span>
+      </div>
+      <div class="check-item">
+        <div class="checkbox"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#4a9eff" fill="none" stroke-width="1.8"/></svg></div>
+        <span class="check-text">Your readers <strong>experience your silos</strong> — popups, redundant forms, junk data</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIVIDER -->
+  <div class="divider">
+    <div class="divider-badge">The Mindful Difference</div>
+  </div>
+
+  <!-- BOTTOM WHITE -->
+  <div class="bottom">
+    <div class="product-name">Mindful</div>
+    <div class="product-sub">Publishing Intelligence — Manage. Publish. Engage. Monetize. Measure.</div>
+
+    <div class="value-props">
+      <div class="value-item">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1a5cb5" stroke-width="2" stroke-linecap="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+          </svg>
+        </div>
+        <div class="value-text">
+          <strong>Turn anonymous traffic into known audience</strong>
+          Progressive identity — convert anonymous visitors into verified, profiled readers you own.
+        </div>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1a5cb5" stroke-width="2" stroke-linecap="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <div class="value-text">
+          <strong>Give advertisers proof, not spreadsheets</strong>
+          Real-time unified reporting across web, email, and ads — in a single self-serve dashboard.
+        </div>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1a5cb5" stroke-width="2" stroke-linecap="round">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </div>
+        <div class="value-text">
+          <strong>One platform that grows with you</strong>
+          Start with reporting or a single module — scale to the full platform without switching tools.
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-bar">
+      <div class="cta-left">
+        <span class="cta-eyebrow">Learn more</span>
+        <span class="cta-url">mindful.pub</span>
+      </div>
+      <div class="cta-btn">Ask Us How</div>
+    </div>
+
+    <div class="tagline">Your publishing partner. Your growth platform.</div>
+  </div>
+
+</div>
+</div>
+
+</body>
+</html>

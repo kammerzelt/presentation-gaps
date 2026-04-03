@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mindful — Publishing Intelligence</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+
+@page {
+  margin: 0;
+  size: 8.5in 11in;
+}
+@media print {
+  html, body {
+    margin:0 !important; padding:0 !important;
+    background:#fff !important;
+    display:block !important;
+    width:100% !important;
+    gap:0 !important;
+  }
+  .page {
+    page-break-after: always;
+    box-shadow: none;
+    width: 100%;
+    min-height: auto;
+    margin:0 !important;
+    padding:0 !important;
+  }
+  .page:last-of-type {
+    page-break-after: avoid;
+  }
+  .page-label { display:none; }
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #666;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.page-label {
+  color: #bbb; font-size: 9px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; text-align: center;
+}
+
+.page {
+  width: 8.5in;
+  min-height: 11in;
+  background: #fff;
+  box-shadow: 0 6px 30px rgba(0,0,0,0.35);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── HEADER ── */
+.page-header {
+  background: linear-gradient(150deg, #0a1628 0%, #0f2847 60%, #153a6b 100%);
+  padding: 26px 48px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::after {
+  content:''; position:absolute; top:-60px; right:-60px;
+  width:220px; height:220px; border-radius:50%;
+  border:1px solid rgba(74,158,255,0.1); pointer-events:none;
+}
+.header-logo { display:flex; flex-direction:column; gap:3px; }
+.logo-mark { display:flex; align-items:center; gap:1px; }
+.lb { font-size:20px; font-weight:700; color:#4a9eff; }
+.lw { font-size:13px; font-weight:700; color:#4a9eff; }
+.lc { font-size:13px; font-weight:700; color:#607a99; }
+.l1 { font-size:13px; font-weight:800; color:#607a99; }
+.logo-product { font-size:22px; font-weight:900; color:#fff; letter-spacing:-0.3px; line-height:1; }
+.logo-sub { font-size:8px; font-weight:600; color:#4a9eff; letter-spacing:1.5px; text-transform:uppercase; }
+
+.header-right { text-align:right; }
+.header-eyebrow { font-size:9px; font-weight:600; color:#6a9ed4; letter-spacing:2px; text-transform:uppercase; margin-bottom:5px; }
+.header-h1 { font-size:26px; font-weight:900; color:#fff; letter-spacing:-0.4px; line-height:1.2; }
+.header-h1 span { color:#4a9eff; }
+.header-sub { font-size:11px; color:#6a9ed4; margin-top:5px; font-weight:500; }
+
+/* ── BODY ── */
+.page-body { flex:1; padding:22px 48px; }
+
+/* ── TYPE ── */
+.eyebrow { font-size:8px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:#1a5cb5; margin-bottom:7px; }
+h2 { font-size:17px; font-weight:800; color:#0f2847; letter-spacing:-0.3px; line-height:1.3; margin-bottom:10px; }
+h3 { font-size:12.5px; font-weight:700; color:#0f2847; margin-bottom:6px; }
+p { font-size:11.5px; color:#3a4a5e; line-height:1.65; }
+
+/* ── LAYOUT ── */
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+.rule { border:none; border-top:1px solid #e2eaf5; margin:20px 0; }
+
+/* ── PAIN BANNER ── */
+.pain-banner {
+  background: #0f2847; border-radius:10px;
+  padding:16px 26px; margin-bottom:16px;
+  display:grid; grid-template-columns:1fr 1fr; gap:7px 28px;
+}
+.pain-item { display:flex; align-items:flex-start; gap:8px; }
+.pain-dot { width:6px; height:6px; border-radius:50%; background:#4a9eff; flex-shrink:0; margin-top:5px; }
+.pain-text { font-size:11.5px; color:#c5d8f0; line-height:1.45; font-weight:500; }
+
+/* ── FEATURE CARDS ── */
+.feature-card {
+  background:#f4f8ff; border:1px solid #d4e4f7;
+  border-radius:10px; padding:18px;
+}
+.feature-icon {
+  width:32px; height:32px; background:#1a5cb5;
+  border-radius:7px; display:flex; align-items:center;
+  justify-content:center; margin-bottom:10px;
+}
+.feature-icon svg { width:16px; height:16px; }
+
+/* ── PILLAR ROW ── */
+.pillar-row { display:flex; gap:8px; margin-bottom:20px; }
+.pillar {
+  flex:1; background:#f4f8ff; border:1px solid #d4e4f7;
+  border-radius:8px; padding:10px 12px;
+  display:flex; gap:8px; align-items:flex-start;
+}
+.pillar-icon {
+  width:26px; height:26px; min-width:26px; background:#1a5cb5;
+  border-radius:5px; display:flex; align-items:center; justify-content:center;
+}
+.pillar-icon svg { width:13px; height:13px; }
+.pillar-label { font-size:9.5px; font-weight:800; color:#0f2847; text-transform:uppercase; letter-spacing:0.4px; margin-bottom:2px; }
+.pillar-desc { font-size:9.5px; color:#5a6d85; line-height:1.35; }
+
+/* ── BULLET ── */
+.bullet-list { display:flex; flex-direction:column; gap:7px; margin-top:8px; }
+.bullet-item { display:flex; align-items:flex-start; gap:7px; }
+.bcheck {
+  width:15px; height:15px; min-width:15px; border-radius:3px;
+  background:#1a5cb5; display:flex; align-items:center;
+  justify-content:center; margin-top:1px;
+}
+.bcheck svg { width:8px; height:8px; }
+.bcheck.green { background:#22a05a; }
+.bullet-text { font-size:11px; color:#3a4a5e; line-height:1.5; }
+.bullet-text.light { color:#c5d8f0; }
+
+/* ── SECTION DIVIDER ── */
+.section-divider { display:flex; align-items:center; gap:12px; margin:12px 0; }
+.sdline { flex:1; height:1px; background:#e2eaf5; }
+.sdbadge {
+  background:#fff; border:2px solid #1a5cb5; color:#1a5cb5;
+  border-radius:20px; padding:4px 16px;
+  font-size:8px; font-weight:800; letter-spacing:2px; text-transform:uppercase; white-space:nowrap;
+}
+
+/* ── CARD DARK ── */
+.card-dark {
+  background:#0f2847; border-radius:10px; padding:18px;
+}
+.card-white {
+  background:#f8fafe; border:1px solid #d4e4f7; border-radius:10px; padding:18px;
+}
+
+/* ── LOGO STRIP ── */
+.logo-strip {
+  display:flex; gap:16px; align-items:center;
+  flex-wrap:wrap; margin-top:10px;
+}
+.logo-pill {
+  background:#f4f8ff; border:1px solid #d4e4f7;
+  border-radius:6px; padding:6px 14px;
+  font-size:10px; font-weight:700; color:#3a4a5e;
+}
+
+/* ── HIGHLIGHT BOX ── */
+.highlight-box {
+  background: linear-gradient(135deg, #1a5cb5, #0f2847);
+  border-radius:10px; padding:20px 24px;
+  display:flex; align-items:center; justify-content:space-between; gap:20px;
+}
+.highlight-quote { font-size:16px; font-weight:800; color:#fff; line-height:1.3; letter-spacing:-0.3px; }
+.highlight-quote span { color:#4a9eff; }
+.highlight-sub { font-size:10px; color:#6a9ed4; margin-top:4px; font-style:italic; }
+
+/* ── FOOTER ── */
+.page-footer {
+  background:#0f2847; padding:14px 48px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.footer-cta { font-size:13px; font-weight:800; color:#fff; }
+.footer-contact { font-size:10.5px; color:#6a9ed4; margin-top:2px; }
+.footer-contact a { color:#4a9eff; text-decoration:none; }
+.footer-center { font-size:8px; font-weight:700; color:#4a6a99; letter-spacing:1.5px; text-transform:uppercase; text-align:center; line-height:1.7; }
+.footer-right { display:flex; flex-direction:column; align-items:flex-end; gap:2px; }
+
+</style>
+</head>
+<body>
+
+<!-- ══════════ PAGE 1 ══════════ -->
+<div class="page-label">Page 1</div>
+<div class="page">
+
+  <div class="page-header">
+    <div class="header-logo">
+      <div class="logo-mark">
+        <span class="lb">{</span><span class="lw">parameter</span><span class="lc">:</span><span class="l1">1</span><span class="lb">}</span>
+      </div>
+      <div class="logo-product">Mindful</div>
+      <div class="logo-sub">Publishing Intelligence</div>
+    </div>
+    <div class="header-right">
+      <div class="header-eyebrow">One platform for</div>
+      <div class="header-h1">Content, <span>Audience</span>,<br>and Advertiser Data.</div>
+      <div class="header-sub">One platform. Zero silos. Everything connected. Finally.</div>
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- Pain -->
+    <div class="eyebrow">Sound familiar?</div>
+    <div class="pain-banner">
+      <div class="pain-item"><div class="pain-dot"></div><span class="pain-text">Your content, audience, and ad data live in separate systems</span></div>
+      <div class="pain-item"><div class="pain-dot"></div><span class="pain-text">You can't prove advertiser ROI without stitching reports together</span></div>
+      <div class="pain-item"><div class="pain-dot"></div><span class="pain-text">Most of your website traffic is anonymous and unmonetized</span></div>
+      <div class="pain-item"><div class="pain-dot"></div><span class="pain-text">You're making editorial, audience, and revenue decisions without a complete picture</span></div>
+      <div class="pain-item"><div class="pain-dot"></div><span class="pain-text">Your readers experience your silos — popups, redundant forms, junk data</span></div>
+      <div class="pain-item"><div class="pain-dot"></div><span class="pain-text">You're paying more as you grow instead of benefiting from scale</span></div>
+    </div>
+
+    <!-- Intro -->
+    <div class="highlight-box" style="margin-bottom:14px;">
+      <div>
+        <div class="highlight-quote">Mindful solves that.<br><span>Publishing Intelligence</span> built for B2B publishers.</div>
+        <div class="highlight-sub">You've already done the hard work — years of content, audience data, advertiser relationships. It's all there, trapped in disconnected systems.</div>
+      </div>
+      <div style="text-align:right; flex-shrink:0;">
+        <div style="font-size:11px; font-weight:700; color:#6a9ed4; margin-bottom:6px;">Trusted by</div>
+        <div style="display:flex; flex-direction:column; gap:4px; align-items:flex-end;">
+          <span style="font-size:10px; color:#a8c4e0; font-weight:600;">WATT Global Media</span>
+          <span style="font-size:10px; color:#a8c4e0; font-weight:600;">PMMI Media Group</span>
+          <span style="font-size:10px; color:#a8c4e0; font-weight:600;">Allured Business Media</span>
+          <span style="font-size:10px; color:#a8c4e0; font-weight:600;">Ascend Media</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Three features -->
+    <div class="section-divider">
+      <div class="sdline"></div>
+      <div class="sdbadge">What Mindful delivers</div>
+      <div class="sdline"></div>
+    </div>
+
+    <div class="two-col" style="margin-bottom:0;">
+      <div class="feature-card" style="padding:14px;">
+        <div class="feature-icon" style="margin-bottom:7px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M3 7h18M3 12h18M3 17h10"/></svg>
+        </div>
+        <h3>Seamless content creation and management</h3>
+        <p>Create, manage, and publish across multiple properties — from print to digital to newsletters — with a modular, headless CMS built for how publishing actually works.</p>
+      </div>
+      <div class="feature-card" style="padding:14px;">
+        <div class="feature-icon" style="margin-bottom:7px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Data-driven audience intelligence</h3>
+        <p>Convert anonymous traffic into known, verified audience. Progressive profiling builds first-party data you own — powering smarter editorial decisions and stronger advertiser proof points.</p>
+      </div>
+      <div class="feature-card" style="padding:14px;">
+        <div class="feature-icon" style="margin-bottom:7px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <h3>Integrated advertising platform</h3>
+        <p>Contextual placements, lead generation, and multi-property campaign management — with self-serve advertiser dashboards that prove value and eliminate manual reporting.</p>
+      </div>
+      <div class="feature-card" style="padding:14px;">
+        <div class="feature-icon" style="margin-bottom:7px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+        </div>
+        <h3>Unified reporting across every property</h3>
+        <p>Aggregate performance data across ads, newsletters, and web content into one real-time dashboard. Understand engagement, prove advertiser ROI, and make decisions with a complete picture.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <div>
+      <div class="footer-cta">See it in action</div>
+      <div class="footer-contact"><a href="mailto:sales@mindful.pub">sales@mindful.pub</a> &nbsp;|&nbsp; mindful.pub</div>
+    </div>
+    <div class="footer-center">Built by publishers.<br>Designed for how publishing actually works.</div>
+    <div class="footer-right">
+      <div class="logo-mark"><span class="lb">{</span><span class="lw">parameter</span><span class="lc">:</span><span class="l1">1</span><span class="lb">}</span></div>
+      <div style="font-size:13px; font-weight:900; color:#fff;">Mindful</div>
+      <div style="font-size:7px; font-weight:600; color:#4a9eff; letter-spacing:1px; text-transform:uppercase;">Publishing Intelligence</div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ══════════ PAGE 2 ══════════ -->
+<div class="page-label">Page 2</div>
+<div class="page">
+
+  <div class="page-header">
+    <div class="header-logo">
+      <div class="logo-mark">
+        <span class="lb">{</span><span class="lw">parameter</span><span class="lc">:</span><span class="l1">1</span><span class="lb">}</span>
+      </div>
+      <div class="logo-product">Mindful</div>
+      <div class="logo-sub">Publishing Intelligence</div>
+    </div>
+    <div class="header-right">
+      <div class="header-eyebrow">The foundation of your</div>
+      <div class="header-h1">Publishing <span>Tech Stack</span></div>
+      <div class="header-sub">Modular. Connected. Integrated.</div>
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- Platform overview -->
+    <div class="two-col" style="margin-bottom:20px; align-items:start;">
+      <div>
+        <div class="eyebrow">One platform. Every function.</div>
+        <h2>Stop managing tools.<br>Start running your business.</h2>
+        <p>Mindful connects all aspects of publishing operations — content, audience, advertising, and analytics — into one unified Publishing Intelligence platform. Whether you need a single module or the full suite, Mindful scales with your needs and delivers value at every stage of growth.</p>
+        <p style="margin-top:10px;">Unlike generic CMS or marketing platforms, Mindful was built specifically for B2B media companies — by people who have spent decades inside publishing organizations.</p>
+        <div class="bullet-list" style="margin-top:14px;">
+          <div class="bullet-item">
+            <div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div>
+            <span class="bullet-text">Start with one module — no full platform commitment required</span>
+          </div>
+          <div class="bullet-item">
+            <div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div>
+            <span class="bullet-text">Pricing that grows with your audience — not against it</span>
+          </div>
+          <div class="bullet-item">
+            <div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div>
+            <span class="bullet-text">White-glove migration — go live without disrupting operations</span>
+          </div>
+          <div class="bullet-item">
+            <div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div>
+            <span class="bullet-text">3-year price protection — predictable costs as you scale</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-dark">
+        <div style="font-size:9px; font-weight:700; color:#4a9eff; letter-spacing:2px; text-transform:uppercase; margin-bottom:12px;">The Publishing Intelligence difference</div>
+        <p style="font-size:11px; color:#c5d8f0; line-height:1.65; margin-bottom:14px;">Publishers don't need another CMS or a full CDP. They need a unified layer that makes existing data actionable — connecting content, audience, and advertiser intelligence into one clear picture.</p>
+        <div class="bullet-list">
+          <div class="bullet-item">
+            <div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div>
+            <span class="bullet-text light">One identity layer across every touchpoint</span>
+          </div>
+          <div class="bullet-item">
+            <div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div>
+            <span class="bullet-text light">Real-time reporting — no pipelines, no lag, no data team required</span>
+          </div>
+          <div class="bullet-item">
+            <div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div>
+            <span class="bullet-text light">Scales from single-title publishers to multi-property enterprises</span>
+          </div>
+          <div class="bullet-item">
+            <div class="bcheck"><svg viewBox="0 0 10 10"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#fff" fill="none" stroke-width="1.8"/></svg></div>
+            <span class="bullet-text light">As AI commoditizes content, verified audience identity becomes your moat</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Five pillars compressed -->
+    <div class="section-divider">
+      <div class="sdline"></div>
+      <div class="sdbadge">Manage. Publish. Engage. Monetize. Measure.</div>
+      <div class="sdline"></div>
+    </div>
+
+    <div class="pillar-row" style="margin-bottom:20px;">
+      <div class="pillar">
+        <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" width="13" height="13"><path d="M3 7h18M3 12h18M3 17h10"/></svg></div>
+        <div><div class="pillar-label">Manage</div><div class="pillar-desc">Headless CMS across all properties</div></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" width="13" height="13"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <div><div class="pillar-label">Publish</div><div class="pillar-desc">Print, digital &amp; newsletter workflows</div></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" width="13" height="13"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+        <div><div class="pillar-label">Engage</div><div class="pillar-desc">Convert anonymous to known audience</div></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" width="13" height="13"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <div><div class="pillar-label">Monetize</div><div class="pillar-desc">Integrated ad platform &amp; lead gen</div></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" width="13" height="13"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div>
+        <div><div class="pillar-label">Measure</div><div class="pillar-desc">Unified reporting across all channels</div></div>
+      </div>
+    </div>
+
+    <div class="rule"></div>
+
+    <!-- About + CTA -->
+    <div class="two-col">
+      <div class="card-white">
+        <div class="eyebrow">About Parameter1</div>
+        <h3 style="margin-bottom:8px;">We've lived the problems we solve.</h3>
+        <p style="font-size:11px;">Parameter1, creator of Mindful, has been building technology for B2B publishers since 2009. Our team has decades of hands-on experience inside publishing organizations — which means our platform is shaped by real operational challenges, not assumptions.</p>
+        <p style="font-size:11px; margin-top:8px;">We partner with publishers to eliminate data silos, simplify workflows, grow audience, and build stronger advertiser relationships.</p>
+        <div style="margin-top:12px; padding-top:10px; border-top:1px solid #d4e4f7;">
+          <div style="font-size:9px; color:#8899aa; font-weight:600; font-style:italic;">Your publishing partner. Your growth platform.</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="eyebrow">Trusted by publishers across North America</div>
+        <div class="logo-strip" style="margin-bottom:16px;">
+          <span class="logo-pill">WATT Global Media</span>
+          <span class="logo-pill">PMMI Media Group</span>
+          <span class="logo-pill">Allured Business Media</span>
+          <span class="logo-pill">Ascend Media</span>
+          <span class="logo-pill">AB Media</span>
+          <span class="logo-pill">Randall-Reilly</span>
+        </div>
+        <div style="background:#f0f6ff; border:1px solid #c0d8f0; border-radius:10px; padding:16px 18px;">
+          <div style="font-size:10px; font-weight:700; color:#1a5cb5; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px;">Ready to see it in action?</div>
+          <p style="font-size:11px; color:#3a4a5e; line-height:1.6; margin-bottom:10px;">Schedule a demo and we'll show you exactly how Mindful unifies your publishing data — and what that means for your advertisers, your audience, and your revenue.</p>
+          <div style="font-size:11px; font-weight:700; color:#0f2847;">sales@mindful.pub &nbsp;|&nbsp; mindful.pub</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <div>
+      <div class="footer-cta">Schedule a demo</div>
+      <div class="footer-contact"><a href="mailto:sales@mindful.pub">sales@mindful.pub</a> &nbsp;|&nbsp; mindful.pub</div>
+    </div>
+    <div class="footer-center">Built by publishers.<br>Designed for how publishing actually works.</div>
+    <div class="footer-right">
+      <div class="logo-mark"><span class="lb">{</span><span class="lw">parameter</span><span class="lc">:</span><span class="l1">1</span><span class="lb">}</span></div>
+      <div style="font-size:13px; font-weight:900; color:#fff;">Mindful</div>
+      <div style="font-size:7px; font-weight:600; color:#4a9eff; letter-spacing:1px; text-transform:uppercase;">Publishing Intelligence</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
