@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advertiser Report</title>
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; font-feature-settings: 'cv02','cv03','cv04','cv11'; background: #f3f2ee; color: #1a1a1a; font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+.page { max-width: 980px; margin: 0 auto; background: #fff; min-height: 100vh; display: flex; flex-direction: column; }
+
+/* HEADER */
+.header { background: #1e2d4a; padding: 20px 48px 0; }
+.header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 16px; }
+.brand-tag { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #6a88b8; margin-bottom: 6px; }
+.brand-tag span { color: #a8c0d8; }
+.advertiser-name { font-size: 22px; font-weight: 600; color: #fff; line-height: 1.3; }
+.report-sub { font-size: 11px; color: #6a88b8; margin-top: 4px; }
+.report-meta { text-align: right; font-size: 12px; color: #6a88b8; line-height: 1.9; }
+.logo-circle { width: 72px; height: 72px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.7); background: #fff; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.logo-circle-inner { font-size: 10px; font-weight: 700; color: #1e2d4a; letter-spacing: 0.04em; text-align: center; line-height: 1.4; padding: 6px; }
+.date-picker-bar { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+.dp-presets { display: flex; gap: 6px; flex-wrap: wrap; }
+.dp-preset { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; color: #6a88b8; font-size: 12px; font-weight: 500; padding: 5px 11px; cursor: pointer; transition: all 0.1s; }
+.dp-preset:hover { background: rgba(255,255,255,0.15); color: #a8c0d8; }
+.dp-preset.active { background: #2563c4; border-color: #2563c4; color: #fff; }
+.dp-inputs { display: flex; align-items: flex-end; gap: 8px; }
+.dp-field { display: flex; flex-direction: column; gap: 2px; }
+.dp-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(106,136,184,0.7); }
+.dp-field input[type="date"] { background: #243356; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; color: #a8c0d8; font-family: inherit; font-size: 13px; font-weight: 600; padding: 5px 9px; width: 136px; outline: none; cursor: pointer; }
+.dp-field input[type="date"]:hover, .dp-field input[type="date"]:focus { border-color: rgba(165,192,216,0.5); }
+.dp-sep { color: rgba(106,136,184,0.5); font-size: 13px; padding-bottom: 6px; }
+.dp-apply { background: #2563c4; border: none; border-radius: 4px; color: #fff; font-family: inherit; font-size: 13px; font-weight: 500; padding: 6px 16px; cursor: pointer; }
+.dp-apply:hover { background: rgba(37,99,196,0.8); }
+.header-divider { border: none; border-top: 1px solid rgba(255,255,255,0.1); }
+.summary-bar { display: grid; grid-template-columns: repeat(5, 1fr); padding: 20px 0; }
+.h-stat { padding: 0 20px; border-left: 1px solid rgba(255,255,255,0.1); }
+.h-stat:first-child { padding-left: 0; border-left: none; }
+.h-stat-val { font-size: 20px; font-weight: 600; color: #fff; }
+.h-stat-label { font-size: 11px; color: #6a88b8; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+
+/* CHANNEL OVERVIEW */
+.channel-overview { padding: 20px 48px; background: #f3f2ee; border-bottom: 1px solid #e4e2dc; }
+.eyebrow { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.13em; color: #b0ada4; margin-bottom: 14px; }
+.co-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
+.co-card { background: #fff; border: 1px solid #e4e2dc; border-radius: 8px; padding: 14px; }
+.co-ch { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: #555; margin-bottom: 6px; }
+.co-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.co-reach { font-size: 16px; font-weight: 600; color: #111; }
+.co-reach-label { font-size: 11px; color: #b0ada4; text-transform: uppercase; letter-spacing: 0.07em; min-height: 16px; }
+.co-bar { height: 3px; border-radius: 9999px; margin: 8px 0 6px; width: 100%; }
+.co-eng { font-size: 12px; color: #888; }
+.co-eng strong { color: #333; font-weight: 500; }
+
+/* YOUR AUDIENCE, QUALIFIED */
+.aq-wrap { padding: 22px 48px; border-bottom: 1px solid #e4e2dc; }
+.aq-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+.aq-subtitle { font-size: 12px; color: #888; margin-bottom: 16px; }
+.aq-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.aq-panel { background: #f9f8f5; border-radius: 10px; padding: 16px 18px; }
+.aq-panel-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #b0ada4; margin-bottom: 12px; }
+.aq-panel-label.mt { margin-top: 18px; }
+.bar-row { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-bottom: 1px solid #eeecea; font-size: 12px; }
+.bar-row:last-child { border-bottom: none; }
+.bar-row-name { color: #3a3a3a; flex: 0 0 148px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 12px; }
+.bar-wrap { flex: 1; height: 3px; background: #e4e2dc; border-radius: 2px; }
+.bar-fill { height: 3px; border-radius: 2px; }
+.bar-pct { font-weight: 600; color: #111; min-width: 28px; text-align: right; font-size: 12px; }
+.bar-count { color: #888; min-width: 36px; text-align: right; font-size: 11px; }
+.delta { font-weight: 700; font-size: 11px; min-width: 36px; text-align: right; }
+.delta.up { color: #1a9a74; }
+.delta.dn { color: #b93b33; }
+.users-col { color: #888; font-size: 11px; min-width: 64px; text-align: right; white-space: nowrap; }
+
+/* Company table */
+.co-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.co-table th { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: #b0ada4; padding: 4px 6px; border-bottom: 1px solid #e4e2dc; white-space: nowrap; }
+.co-table td { padding: 8px 6px; border-bottom: 1px solid #eeecea; vertical-align: middle; }
+.co-table tr:last-child td { border-bottom: none; }
+.co-name { font-weight: 500; color: #111; font-size: 12px; }
+.co-sub { font-size: 11px; color: #b0ada4; margin-top: 1px; }
+.co-users { font-weight: 600; color: #111; text-align: right; white-space: nowrap; }
+.intent-badge { font-size: 11px; font-weight: 600; white-space: nowrap; }
+.intent-badge.high { color: #1a9a74; }
+.intent-badge.mid  { color: #d48a0a; }
+.intent-badge.low  { color: #aaa; }
+.eng-bar-wrap { width: 56px; height: 3px; background: #e4e2dc; border-radius: 2px; display: inline-block; vertical-align: middle; }
+.eng-bar { height: 3px; background: #2563c4; border-radius: 2px; }
+.co-table-note { font-size: 11px; color: #b0ada4; margin-top: 10px; line-height: 1.6; }
+
+/* SECTIONS */
+.section { border-bottom: 1px solid #e4e2dc; }
+.section-toggle { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 14px 48px; cursor: pointer; background: none; border: none; text-align: left; transition: background 0.1s; }
+.section-toggle:hover { background: #faf9f7; }
+.section-left { display: flex; align-items: center; gap: 12px; }
+.s-icon { width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ic-blue   { background: #ddeeff; color: #1a5fa0; }
+.ic-teal   { background: #ddf5ee; color: #1a9a74; }
+.ic-purple { background: #eeecfd; color: #534ab7; }
+.ic-amber  { background: #fef4e0; color: #956800; }
+.ic-coral  { background: #fceee9; color: #993c1d; }
+.ic-indigo { background: #e8ecff; color: #3a4ab0; }
+.section-name { font-size: 15px; font-weight: 500; color: #111; }
+.pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.pill { font-size: 12px; color: #666; background: #f0ede8; padding: 2px 8px; border-radius: 4px; }
+.chevron { width: 16px; height: 16px; color: #b0ada4; flex-shrink: 0; transition: transform 0.2s; }
+.chevron.open { transform: rotate(180deg); }
+.section-body { padding: 4px 48px 26px; display: none; }
+.section-body.open { display: block; }
+
+/* SECTION INTERNALS */
+.sub-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: #b0ada4; padding-bottom: 8px; border-bottom: 1px solid #eeece8; margin-bottom: 14px; margin-top: 20px; }
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+.stat-card { background: #f7f6f2; border-radius: 8px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; }
+.si { width: 30px; height: 30px; border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 13px; }
+.si-blue   { background: #ddeeff; }
+.si-green  { background: #ddf5ee; }
+.si-purple { background: #eeecfd; }
+.si-amber  { background: #fef4e0; }
+.si-indigo { background: #e8ecff; }
+.s-val { font-size: 17px; font-weight: 600; color: #111; line-height: 1.2; }
+.s-label { font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 0.07em; }
+.chart-wrap { background: #f9f8f5; border-radius: 8px; padding: 14px 16px 10px; margin-bottom: 20px; }
+.chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.chart-title { font-size: 11px; font-weight: 500; color: #666; }
+.chart-note  { font-size: 11px; color: #bbb; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th { text-align: left; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: #b0ada4; padding: 6px 8px; border-bottom: 1px solid #e4e2dc; white-space: nowrap; }
+td { padding: 8px; border-bottom: 1px solid #f2f1ed; color: #444; vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #faf9f7; }
+.td-name { font-weight: 500; color: #111; font-size: 12px; }
+.td-sub  { font-size: 11px; color: #b0ada4; display: block; font-weight: 400; }
+.td-r { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.td-badge { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 3px; font-weight: 500; }
+.b-blue   { background: #ddeeff; color: #1a5fa0; }
+.b-indigo { background: #e8ecff; color: #3a4ab0; }
+.b-sky    { background: #ddf0ff; color: #1060a0; }
+tfoot td { font-weight: 600; font-size: 11px; color: #555; border-top: 1px solid #e4e2dc; border-bottom: none; padding-top: 10px; }
+.trend-note { font-size: 12px; color: #666; background: #f9f8f5; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; line-height: 1.65; }
+.trend-note strong { color: #111; }
+.platform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+.platform-card { border: 1px solid #e4e2dc; border-radius: 8px; padding: 16px; }
+.platform-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.platform-logo { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.pl-fb { background: #1877f2; color: #fff; }
+.pl-li { background: #0a66c2; color: #fff; }
+.platform-name { font-size: 13px; font-weight: 500; color: #111; }
+.platform-period { font-size: 11px; color: #b0ada4; }
+.platform-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.ps-val { font-size: 16px; font-weight: 600; color: #111; }
+.ps-label { font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 0.07em; margin-top: 2px; }
+
+/* FOOTER */
+.footer { margin-top: auto; padding: 20px 48px; border-top: 1px solid #e4e2dc; display: flex; justify-content: space-between; align-items: center; }
+.footer-brand { font-size: 12px; color: #b0ada4; }
+.footer-brand strong { color: #5a7ab5; }
+.footer-note { font-size: 12px; color: #ccc; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="brand-tag">Advertiser Performance Report &nbsp;·&nbsp; <span>Powered by Mindful</span></div>
+      <div class="advertiser-name">Meridian Pool &amp; Spa Supply</div>
+      <div class="report-sub">Campaign Performance &nbsp;·&nbsp; AQUA Magazine &nbsp;·&nbsp; <span id="range-label">Jul 1 – Aug 31, 2025</span></div>
+    </div>
+    <div class="logo-circle"><div class="logo-circle-inner">MERIDIAN<br>POOL &amp;<br>SPA</div></div>
+  </div>
+  <div class="date-picker-bar">
+    <div class="dp-presets">
+      <button class="dp-preset active" onclick="setPreset(this,'2025-07-01','2025-08-31')">Last period</button>
+      <button class="dp-preset" onclick="setPreset(this,'2026-01-01','2026-03-19')">YTD</button>
+      <button class="dp-preset" onclick="setPreset(this,'2025-10-01','2025-12-31')">Q4 2025</button>
+      <button class="dp-preset" onclick="setPreset(this,'2025-07-01','2025-09-30')">Q3 2025</button>
+      <button class="dp-preset" onclick="setPreset(this,'2025-04-01','2025-06-30')">Q2 2025</button>
+    </div>
+    <div class="dp-inputs">
+      <div class="dp-field"><label class="dp-label">From</label><input type="date" id="date-start" value="2025-07-01" onchange="onDateChange()"></div>
+      <div class="dp-sep">→</div>
+      <div class="dp-field"><label class="dp-label">To</label><input type="date" id="date-end" value="2025-08-31" onchange="onDateChange()"></div>
+      <button class="dp-apply" onclick="applyRange()">Apply</button>
+    </div>
+  </div>
+  <hr class="header-divider">
+  <div class="summary-bar">
+    <div class="h-stat"><div class="h-stat-val">38.4k</div><div class="h-stat-label">Gross Reach</div></div>
+    <div class="h-stat"><div class="h-stat-val">7,820</div><div class="h-stat-label">Total Engagements</div></div>
+    <div class="h-stat"><div class="h-stat-val">12.3k</div><div class="h-stat-label">Verified Professionals</div></div>
+    <div class="h-stat"><div class="h-stat-val">20.4%</div><div class="h-stat-label">Engagement Rate</div></div>
+    <div class="h-stat"><div class="h-stat-val">6</div><div class="h-stat-label">Active Channels</div></div>
+  </div>
+</div>
+
+<!-- CHANNEL OVERVIEW -->
+<div class="channel-overview">
+  <div class="eyebrow">Overview</div>
+  <div class="co-grid">
+    <div class="co-card"><div class="co-ch"><div class="co-dot" style="background:#2563c4"></div>Website Ads</div><div class="co-reach">924.6k</div><div class="co-reach-label">Impressions</div><div class="co-bar" style="background:#2563c4"></div><div class="co-eng"><strong>1,540</strong> Clicks &nbsp;·&nbsp; <strong>0.18%</strong> CTR</div></div>
+    <div class="co-card"><div class="co-ch"><div class="co-dot" style="background:#1a9a74"></div>Sponsored Posts</div><div class="co-reach">401</div><div class="co-reach-label">Views</div><div class="co-bar" style="background:#1a9a74"></div><div class="co-eng"><strong>318</strong> Readers &nbsp;·&nbsp; <strong>1.3</strong> VPR</div></div>
+    <div class="co-card"><div class="co-ch"><div class="co-dot" style="background:#993c1d"></div>Leaders Performance</div><div class="co-reach">13.8k</div><div class="co-reach-label">Impressions</div><div class="co-bar" style="background:#993c1d"></div><div class="co-eng"><strong>312</strong> Card Opens &nbsp;·&nbsp; <strong>9</strong> Profile Views</div></div>
+    <div class="co-card"><div class="co-ch"><div class="co-dot" style="background:#534ab7"></div>Newsletter Ads</div><div class="co-reach">178.2k</div><div class="co-reach-label">Deliveries</div><div class="co-bar" style="background:#534ab7"></div><div class="co-eng"><strong>2,870</strong> Clicks &nbsp;·&nbsp; <strong>0.61%</strong> CTR</div></div>
+    <div class="co-card"><div class="co-ch"><div class="co-dot" style="background:#d48a0a"></div>Email Campaigns</div><div class="co-reach">22.4k</div><div class="co-reach-label">Latest reach</div><div class="co-bar" style="background:#d48a0a"></div><div class="co-eng"><strong>940</strong> Clicks &nbsp;·&nbsp; <strong>36.4%</strong> Avg open rate</div></div>
+    <div class="co-card"><div class="co-ch"><div class="co-dot" style="background:#3a4ab0"></div>Social Campaigns</div><div class="co-reach">24.6k</div><div class="co-reach-label">Social reach</div><div class="co-bar" style="background:#3a4ab0"></div><div class="co-eng"><strong>1,840</strong> Engagements &nbsp;·&nbsp; <strong>7.5%</strong> Eng. rate</div></div>
+  </div>
+</div>
+
+<!-- YOUR AUDIENCE, QUALIFIED -->
+<div class="aq-wrap">
+  <div class="aq-head">
+    <div>
+      <div class="eyebrow" style="margin-bottom:3px;">Your Audience, Qualified</div>
+          </div>
+    <div style="font-size:11px;font-weight:600;color:#2563c4;letter-spacing:0.08em;text-transform:uppercase;">Who they are</div>
+  </div>
+  <div class="aq-panels">
+
+    <!-- LEFT -->
+    <div class="aq-panel">
+      <div class="aq-panel-label">Audience by role</div>
+      <div class="bar-row"><span class="bar-row-name">Pool Builder / Contractor</span><div class="bar-wrap"><div class="bar-fill" style="width:100%;background:#2563c4"></div></div><span class="bar-pct">31%</span><span class="bar-count">3,840</span></div>
+      <div class="bar-row"><span class="bar-row-name">Service Technician</span><div class="bar-wrap"><div class="bar-fill" style="width:78%;background:#2563c4"></div></div><span class="bar-pct">24%</span><span class="bar-count">2,990</span></div>
+      <div class="bar-row"><span class="bar-row-name">Pool Retail / Dealer</span><div class="bar-wrap"><div class="bar-fill" style="width:61%;background:#1a9a74"></div></div><span class="bar-pct">19%</span><span class="bar-count">2,340</span></div>
+      <div class="bar-row"><span class="bar-row-name">Distributor / Wholesale</span><div class="bar-wrap"><div class="bar-fill" style="width:44%;background:#d48a0a"></div></div><span class="bar-pct">14%</span><span class="bar-count">1,690</span></div>
+      <div class="bar-row"><span class="bar-row-name">Facility / Aquatics Mgr</span><div class="bar-wrap"><div class="bar-fill" style="width:26%;background:#aaa"></div></div><span class="bar-pct">10%</span><span class="bar-count">1,230</span></div>
+      <div class="bar-row"><span class="bar-row-name">Manufacturer / OEM</span><div class="bar-wrap"><div class="bar-fill" style="width:16%;background:#aaa"></div></div><span class="bar-pct">7%</span><span class="bar-count">810</span></div>
+
+      <div class="aq-panel-label mt">Top intent topics this month</div>
+      <div class="bar-row"><span class="bar-row-name">Pool chemicals &amp; treatment</span><div class="bar-wrap"><div class="bar-fill" style="width:100%;background:#1a9a74"></div></div><span class="delta up">+38%</span><span class="users-col">4,210 users</span></div>
+      <div class="bar-row"><span class="bar-row-name">Variable-speed pump specs</span><div class="bar-wrap"><div class="bar-fill" style="width:78%;background:#1a9a74"></div></div><span class="delta up">+24%</span><span class="users-col">3,290 users</span></div>
+      <div class="bar-row"><span class="bar-row-name">Vinyl liner comparisons</span><div class="bar-wrap"><div class="bar-fill" style="width:62%;background:#2563c4"></div></div><span class="delta up">+17%</span><span class="users-col">2,610 users</span></div>
+      <div class="bar-row"><span class="bar-row-name">Closing season / winterizing</span><div class="bar-wrap"><div class="bar-fill" style="width:46%;background:#2563c4"></div></div><span class="delta up">+11%</span><span class="users-col">1,940 users</span></div>
+      <div class="bar-row"><span class="bar-row-name">Pool financing / install cost</span><div class="bar-wrap"><div class="bar-fill" style="width:22%;background:#aaa"></div></div><span class="delta dn">−3%</span><span class="users-col">920 users</span></div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="aq-panel">
+      <div class="aq-panel-label">Top companies by engagement depth</div>
+      <table class="co-table">
+        <thead><tr><th>Company</th><th class="td-r">Users</th><th class="td-r">Intent</th><th class="td-r">Engagement</th></tr></thead>
+        <tbody>
+          <tr><td><div class="co-name">Blue Haven Pools</div><div class="co-sub">Pool builder, national</div></td><td class="co-users">34</td><td class="td-r"><span class="intent-badge high">● High</span></td><td class="td-r"><div class="eng-bar-wrap"><div class="eng-bar" style="width:100%"></div></div></td></tr>
+          <tr><td><div class="co-name">Anthony &amp; Sylvan</div><div class="co-sub">Pool builder, national</div></td><td class="co-users">30</td><td class="td-r"><span class="intent-badge high">● High</span></td><td class="td-r"><div class="eng-bar-wrap"><div class="eng-bar" style="width:88%"></div></div></td></tr>
+          <tr><td><div class="co-name">Latham Pool Products</div><div class="co-sub">Manufacturer, national</div></td><td class="co-users">26</td><td class="td-r"><span class="intent-badge high">● High</span></td><td class="td-r"><div class="eng-bar-wrap"><div class="eng-bar" style="width:76%"></div></div></td></tr>
+          <tr><td><div class="co-name">Sunset Pools &amp; Spas</div><div class="co-sub">Pool builder, Southeast</div></td><td class="co-users">22</td><td class="td-r"><span class="intent-badge mid">● Mid</span></td><td class="td-r"><div class="eng-bar-wrap"><div class="eng-bar" style="width:65%"></div></div></td></tr>
+          <tr><td><div class="co-name">Premier Pool Service</div><div class="co-sub">Service network, Southwest</div></td><td class="co-users">18</td><td class="td-r"><span class="intent-badge mid">● Mid</span></td><td class="td-r"><div class="eng-bar-wrap"><div class="eng-bar" style="width:53%"></div></div></td></tr>
+          <tr><td><div class="co-name">Crystal Clear Aquatics</div><div class="co-sub">Dealer / distributor, Florida</div></td><td class="co-users">14</td><td class="td-r"><span class="intent-badge mid">● Mid</span></td><td class="td-r"><div class="eng-bar-wrap"><div class="eng-bar" style="width:41%"></div></div></td></tr>
+          <tr><td><div class="co-name">Gulf Coast Pool Supply</div><div class="co-sub">Distributor, Gulf region</div></td><td class="co-users">11</td><td class="td-r"><span class="intent-badge low">● Low</span></td><td class="td-r"><div class="eng-bar-wrap"><div class="eng-bar" style="width:32%"></div></div></td></tr>
+          <tr><td><div class="co-name">Lakeside Aquatics</div><div class="co-sub">Pool builder, Midwest</div></td><td class="co-users">9</td><td class="td-r"><span class="intent-badge low">● Low</span></td><td class="td-r"><div class="eng-bar-wrap"><div class="eng-bar" style="width:26%"></div></div></td></tr>
+        </tbody>
+      </table>
+      <div class="co-table-note">Showing top 8 of 1,240 known companies in audience. Intent score based on content depth, recency, and return visit frequency.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- WEBSITE ADS -->
+<div class="section">
+  <button class="section-toggle" onclick="tog(this)">
+    <div class="section-left">
+      <div class="s-icon ic-blue"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path fill-rule="evenodd" d="M3 6a3 3 0 0 1 3-3h2.25a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6Zm9.75 0a3 3 0 0 1 3-3H18a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3h-2.25a3 3 0 0 1-3-3V6ZM3 15.75a3 3 0 0 1 3-3h2.25a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-2.25Zm9.75 0a3 3 0 0 1 3-3H18a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3h-2.25a3 3 0 0 1-3-3v-2.25Z" clip-rule="evenodd"/></svg></div>
+      <span class="section-name">Website Ads</span>
+      <div class="pills"><span class="pill">4 Line Items</span><span class="pill">924.6k Impressions</span><span class="pill">1.54k Clicks</span><span class="pill">0.18% CTR</span></div>
+    </div>
+    <svg class="chevron open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>
+  </button>
+  <div class="section-body open">
+    <div class="stat-grid">
+      <div class="stat-card"><div class="si si-blue"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#2563c4" width="14" height="14"><path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/><path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41Z" clip-rule="evenodd"/></svg></div><div><div class="s-val">924.6k</div><div class="s-label">Impressions</div></div></div>
+      <div class="stat-card"><div class="si si-green"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#1a9a74" width="14" height="14"><path d="M10 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM3.465 14.493a1.23 1.23 0 0 0 .41 1.412A9.957 9.957 0 0 0 10 18c2.31 0 4.438-.784 6.131-2.1.43-.333.604-.903.408-1.41a7.002 7.002 0 0 0-13.074.003Z"/></svg></div><div><div class="s-val">12.3k</div><div class="s-label">Verified professionals</div></div></div>
+      <div class="stat-card"><div class="si si-purple"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#534ab7" width="14" height="14"><path d="M6.3 2.841A1.5 1.5 0 0 0 4 4.11V15.89a1.5 1.5 0 0 0 2.3 1.269l9.344-5.89a1.5 1.5 0 0 0 0-2.538L6.3 2.84Z"/></svg></div><div><div class="s-val">1,540</div><div class="s-label">Clicks</div></div></div>
+      <div class="stat-card"><div class="si si-amber"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#956800" width="14" height="14"><path fill-rule="evenodd" d="M1 2.75A.75.75 0 0 1 1.75 2h10.5a.75.75 0 0 1 0 1.5H12v13.75a.25.25 0 0 1-.4.2l-1.45-1.087a.25.25 0 0 0-.3 0l-1.45 1.087a.25.25 0 0 1-.3 0l-1.45-1.087a.25.25 0 0 0-.3 0l-1.45 1.087a.25.25 0 0 1-.4-.2V3.5h-.25A.75.75 0 0 1 1 2.75Z" clip-rule="evenodd"/></svg></div><div><div class="s-val">0.18%</div><div class="s-label">CTR</div></div></div>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-header"><span class="chart-title">Impressions over time — daily</span><span class="chart-note">Jul 1 – Aug 31, 2025</span></div>
+      <svg viewBox="0 0 880 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:72px;display:block;">
+        <line x1="0" y1="12" x2="880" y2="12" stroke="#e8e6e0" stroke-width="0.5"/>
+        <line x1="0" y1="40" x2="880" y2="40" stroke="#e8e6e0" stroke-width="0.5"/>
+        <line x1="0" y1="68" x2="880" y2="68" stroke="#e8e6e0" stroke-width="0.5"/>
+        <path d="M0,65 C20,62 40,55 70,48 C100,41 120,38 150,32 C180,26 200,22 230,16 C260,10 280,12 310,18 C340,24 360,20 390,26 C420,32 440,36 470,40 C500,44 520,42 550,46 C580,50 600,48 630,52 C660,56 680,53 710,56 C740,59 760,57 800,58 C830,59 850,60 880,61 L880,72 L0,72 Z" fill="#ddeeff"/>
+        <path d="M0,65 C20,62 40,55 70,48 C100,41 120,38 150,32 C180,26 200,22 230,16 C260,10 280,12 310,18 C340,24 360,20 390,26 C420,32 440,36 470,40 C500,44 520,42 550,46 C580,50 600,48 630,52 C660,56 680,53 710,56 C740,59 760,57 800,58 C830,59 850,60 880,61" fill="none" stroke="#2563c4" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <div class="sub-label">Line items</div>
+    <table>
+      <thead><tr><th>Name / Creative</th><th>Start</th><th>End</th><th class="td-r">Impressions</th><th class="td-r">Clicks</th><th class="td-r">CTR</th></tr></thead>
+      <tbody>
+        <tr><td><span class="td-name">Meridian | ROS | Apr 2025</span><span class="td-sub">Spring Opening Campaign · 6 creatives</span></td><td>Apr 1, 2025</td><td>Apr 30, 2025</td><td class="td-r">188.2k</td><td class="td-r">420</td><td class="td-r">0.22%</td></tr>
+        <tr><td><span class="td-name">Meridian | ROS | May 2025</span><span class="td-sub">Chemical &amp; Equipment Line · 8 creatives</span></td><td>May 1, 2025</td><td>May 31, 2025</td><td class="td-r">204.7k</td><td class="td-r">510</td><td class="td-r">0.25%</td></tr>
+        <tr><td><span class="td-name">Meridian | ROS | Jul 2025</span><span class="td-sub">Summer Essentials · 10 creatives</span></td><td>Jul 1, 2025</td><td>Jul 31, 2025</td><td class="td-r">268.4k</td><td class="td-r">390</td><td class="td-r">0.15%</td></tr>
+        <tr><td><span class="td-name">Meridian | ROS | Aug 2025</span><span class="td-sub">Closing Season Prep · 12 creatives</span></td><td>Aug 1, 2025</td><td>Aug 31, 2025</td><td class="td-r">263.3k</td><td class="td-r">220</td><td class="td-r">0.08%</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="3">Totals</td><td class="td-r">924.6k</td><td class="td-r">1,540</td><td class="td-r">0.18%</td></tr></tfoot>
+    </table>
+  </div>
+</div>
+
+<!-- SPONSORED POSTS -->
+<div class="section">
+  <button class="section-toggle" onclick="tog(this)">
+    <div class="section-left">
+      <div class="s-icon ic-teal"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path fill-rule="evenodd" d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0 0 16.5 9h-1.875a1.875 1.875 0 0 1-1.875-1.875V5.25A3.75 3.75 0 0 0 9 1.5H5.625ZM7.5 15a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 7.5 15Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H8.25Z" clip-rule="evenodd"/><path d="M12.971 1.816A5.23 5.23 0 0 1 14.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 0 1 3.434 1.279 9.768 9.768 0 0 0-6.963-6.963Z"/></svg></div>
+      <span class="section-name">Sponsored Posts</span>
+      <div class="pills"><span class="pill">4 Posts</span><span class="pill">401 Views</span><span class="pill">318 Readers</span><span class="pill">1.3 VPR</span></div>
+    </div>
+    <svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>
+  </button>
+  <div class="section-body">
+    <div class="stat-grid">
+      <div class="stat-card"><div class="si si-blue">👁</div><div><div class="s-val">401</div><div class="s-label">Views</div></div></div>
+      <div class="stat-card"><div class="si si-green">👤</div><div><div class="s-val">318</div><div class="s-label">Unique readers</div></div></div>
+      <div class="stat-card"><div class="si si-purple">≈</div><div><div class="s-val">1.3</div><div class="s-label">Views per reader</div></div></div>
+      <div class="stat-card"><div class="si si-amber">✦</div><div><div class="s-val">4</div><div class="s-label">Active posts</div></div></div>
+    </div>
+    <div class="sub-label">Post performance</div>
+    <table>
+      <thead><tr><th>Post title</th><th class="td-r">Views</th><th class="td-r">Readers</th><th class="td-r">VPR</th></tr></thead>
+      <tbody>
+        <tr><td class="td-name">The Contractor's Guide to Choosing the Right Pool Chemicals This Season</td><td class="td-r">198</td><td class="td-r">162</td><td class="td-r">1.2</td></tr>
+        <tr><td class="td-name">How Meridian's New Pump Line Cuts Installation Time by 30%</td><td class="td-r">112</td><td class="td-r">94</td><td class="td-r">1.2</td></tr>
+        <tr><td class="td-name">5 Things Every Pool Builder Should Stock Before Closing Season</td><td class="td-r">68</td><td class="td-r">48</td><td class="td-r">1.4</td></tr>
+        <tr><td class="td-name">Meridian Expands Distribution to 14 New Markets in the Southeast</td><td class="td-r">23</td><td class="td-r">14</td><td class="td-r">1.6</td></tr>
+      </tbody>
+      <tfoot><tr><td>Totals</td><td class="td-r">401</td><td class="td-r">318</td><td class="td-r">1.3</td></tr></tfoot>
+    </table>
+  </div>
+</div>
+
+<!-- LEADERS PERFORMANCE -->
+<div class="section">
+  <button class="section-toggle" onclick="tog(this)">
+    <div class="section-left">
+      <div class="s-icon ic-coral"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75ZM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 0 1-1.875-1.875V8.625ZM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 0 1 3 19.875v-6.75Z"/></svg></div>
+      <span class="section-name">Leaders Performance</span>
+      <div class="pills"><span class="pill">4 Categories</span><span class="pill">13.8k Impressions</span><span class="pill">312 Card Opens</span><span class="pill">9 Profile Views</span></div>
+    </div>
+    <svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>
+  </button>
+  <div class="section-body">
+    <div class="stat-grid">
+      <div class="stat-card"><div class="si si-blue">👁</div><div><div class="s-val">13.8k</div><div class="s-label">Impressions</div></div></div>
+      <div class="stat-card"><div class="si si-green">👤</div><div><div class="s-val">8.9k</div><div class="s-label">Unique readers</div></div></div>
+      <div class="stat-card"><div class="si si-purple">◈</div><div><div class="s-val">312</div><div class="s-label">Card opens</div></div></div>
+      <div class="stat-card"><div class="si si-amber">◈</div><div><div class="s-val">9</div><div class="s-label">Profile views</div></div></div>
+    </div>
+    <div class="sub-label">Category impression detail</div>
+    <table>
+      <thead><tr><th>Category</th><th>Site</th><th class="td-r">Impressions</th><th class="td-r">Readers</th></tr></thead>
+      <tbody>
+        <tr><td class="td-name">Leaders &gt; 2025 &gt; Pool Chemicals &amp; Treatment</td><td>AQUA Magazine</td><td class="td-r">6.2k</td><td class="td-r">4.8k</td></tr>
+        <tr><td class="td-name">Leaders &gt; 2025 &gt; Pool Equipment &amp; Pumps</td><td>AQUA Magazine</td><td class="td-r">3.8k</td><td class="td-r">2.9k</td></tr>
+        <tr><td class="td-name">Leaders &gt; 2025 &gt; Spa &amp; Hot Tub Supplies</td><td>AQUA Magazine</td><td class="td-r">2.2k</td><td class="td-r">1.7k</td></tr>
+        <tr><td class="td-name">Leaders &gt; 2025 &gt; Pool Retail &amp; Distribution</td><td>AQUA Magazine</td><td class="td-r">1.6k</td><td class="td-r">1.2k</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="2">Totals</td><td class="td-r">13.8k</td><td class="td-r">10.6k</td></tr></tfoot>
+    </table>
+    <div class="sub-label">Top content appearances</div>
+    <table>
+      <thead><tr><th>Title</th><th>Site</th><th>Type</th><th class="td-r">Views</th><th class="td-r">Readers</th></tr></thead>
+      <tbody>
+        <tr><td class="td-name">Best-in-Class Pool Chemicals: 2025 Buyer's Guide</td><td>AQUA Magazine</td><td><span class="td-badge b-blue">Article</span></td><td class="td-r">184</td><td class="td-r">158</td></tr>
+        <tr><td class="td-name">The New Standard in Variable-Speed Pumps</td><td>AQUA Magazine</td><td><span class="td-badge b-blue">Article</span></td><td class="td-r">96</td><td class="td-r">84</td></tr>
+        <tr><td class="td-name">Winterizing Done Right: A Pro's Closing Checklist</td><td>AQUA Magazine</td><td><span class="td-badge b-blue">Article</span></td><td class="td-r">72</td><td class="td-r">61</td></tr>
+        <tr><td class="td-name">Spa Chemistry 101: What Dealers Need to Know</td><td>AQUA Magazine</td><td><span class="td-badge b-blue">Article</span></td><td class="td-r">44</td><td class="td-r">38</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="3">Totals</td><td class="td-r">396</td><td class="td-r">341</td></tr></tfoot>
+    </table>
+  </div>
+</div>
+
+<!-- NEWSLETTER ADS -->
+<div class="section">
+  <button class="section-toggle" onclick="tog(this)">
+    <div class="section-left">
+      <div class="s-icon ic-purple"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z"/><path d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z"/></svg></div>
+      <span class="section-name">Newsletter Ads</span>
+      <div class="pills"><span class="pill">18 Creatives</span><span class="pill">178.2k Deliveries</span><span class="pill">2.87k Clicks</span><span class="pill">0.61% CTR</span></div>
+    </div>
+    <svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>
+  </button>
+  <div class="section-body">
+    <div class="stat-grid">
+      <div class="stat-card"><div class="si si-blue">👁</div><div><div class="s-val">178.2k</div><div class="s-label">Deliveries</div></div></div>
+      <div class="stat-card"><div class="si si-green">⚡</div><div><div class="s-val">2,870</div><div class="s-label">Unique clicks</div></div></div>
+      <div class="stat-card"><div class="si si-purple">▦</div><div><div class="s-val">18</div><div class="s-label">Creatives</div></div></div>
+      <div class="stat-card"><div class="si si-amber">%</div><div><div class="s-val">0.61%</div><div class="s-label">CTR</div></div></div>
+    </div>
+    <div class="sub-label">Deployments</div>
+    <table>
+      <thead><tr><th>Deployment</th><th class="td-r">Date</th><th class="td-r">Sent</th><th class="td-r">Deliveries</th><th class="td-r">Opens</th><th class="td-r">Clicks</th></tr></thead>
+      <tbody>
+        <tr><td class="td-name">AQUA Daily — Monday, Jul 7</td><td class="td-r">2025-07-07</td><td class="td-r">34.2k</td><td class="td-r">15.8k</td><td class="td-r">5.2k</td><td class="td-r">18</td></tr>
+        <tr><td class="td-name">AQUA Daily — Wednesday, Jul 9</td><td class="td-r">2025-07-09</td><td class="td-r">34.2k</td><td class="td-r">16.1k</td><td class="td-r">5.6k</td><td class="td-r">24</td></tr>
+        <tr><td class="td-name">AQUA Daily — Friday, Jul 11</td><td class="td-r">2025-07-11</td><td class="td-r">34.2k</td><td class="td-r">15.4k</td><td class="td-r">4.9k</td><td class="td-r">11</td></tr>
+        <tr><td class="td-name">AQUA Daily — Tuesday, Aug 5</td><td class="td-r">2025-08-05</td><td class="td-r">34.9k</td><td class="td-r">16.4k</td><td class="td-r">5.8k</td><td class="td-r">31</td></tr>
+        <tr><td class="td-name">AQUA Daily — Thursday, Aug 21</td><td class="td-r">2025-08-21</td><td class="td-r">34.9k</td><td class="td-r">15.9k</td><td class="td-r">5.1k</td><td class="td-r">14</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- EMAIL CAMPAIGNS -->
+<div class="section">
+  <button class="section-toggle" onclick="tog(this)">
+    <div class="section-left">
+      <div class="s-icon ic-amber"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M19.5 22.5a3 3 0 0 0 3-3v-8.174l-6.879 4.022 3.485 1.876a.75.75 0 1 1-.712 1.321l-5.683-3.06a1.5 1.5 0 0 0-1.422 0l-5.683 3.06a.75.75 0 0 1-.712-1.32l3.485-1.877L1.5 11.326V19.5a3 3 0 0 0 3 3h15Z"/><path d="M1.5 9.589v-.745a3 3 0 0 1 1.578-2.642l7.5-4.038a3 3 0 0 1 2.844 0l7.5 4.038A3 3 0 0 1 22.5 8.844v.745l-8.426 4.926-.652-.351a3 3 0 0 0-2.844 0l-.652.351L1.5 9.589Z"/></svg></div>
+      <span class="section-name">Email Campaigns</span>
+      <div class="pills"><span class="pill">10 Sends</span><span class="pill">88.4k Opens</span><span class="pill">940 Clicks</span><span class="pill">0.42% CTR</span><span class="pill">1.06% CTOR</span></div>
+    </div>
+    <svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>
+  </button>
+  <div class="section-body">
+    <div class="stat-grid">
+      <div class="stat-card"><div class="si si-blue">👁</div><div><div class="s-val">22.4k</div><div class="s-label">Latest reach</div></div></div>
+      <div class="stat-card"><div class="si si-green">✉</div><div><div class="s-val">88.4k</div><div class="s-label">Total opens</div></div></div>
+      <div class="stat-card"><div class="si si-purple">⚡</div><div><div class="s-val">940</div><div class="s-label">Total clicks</div></div></div>
+      <div class="stat-card"><div class="si si-amber">%</div><div><div class="s-val">36.4%</div><div class="s-label">Avg open rate</div></div></div>
+    </div>
+    <div class="trend-note">Your audience relationship with AQUA Magazine readers has strengthened consistently — open rates have grown from <strong>30.2%</strong> (Feb 2023) to <strong>39.1%</strong> (Aug 2025). You are reaching a more engaged, more responsive audience with each deployment.</div>
+    <div class="sub-label">Campaign history</div>
+    <table>
+      <thead><tr><th>Campaign</th><th class="td-r">Sent</th><th class="td-r">Opens</th><th class="td-r">OR</th><th class="td-r">Clicks</th><th class="td-r">CTR</th><th class="td-r">CTOR</th></tr></thead>
+      <tbody>
+        <tr><td class="td-name">20260215 - AQUA Dedicated · Meridian</td><td class="td-r">22.4k</td><td class="td-r">8.8k</td><td class="td-r">39.1%</td><td class="td-r">112</td><td class="td-r">0.50%</td><td class="td-r">1.28%</td></tr>
+        <tr><td class="td-name">20250810 - AQUA Dedicated · Meridian</td><td class="td-r">21.8k</td><td class="td-r">8.5k</td><td class="td-r">38.8%</td><td class="td-r">94</td><td class="td-r">0.43%</td><td class="td-r">1.11%</td></tr>
+        <tr><td class="td-name">20250415 - AQUA Dedicated · Meridian</td><td class="td-r">21.2k</td><td class="td-r">7.9k</td><td class="td-r">37.3%</td><td class="td-r">138</td><td class="td-r">0.65%</td><td class="td-r">1.75%</td></tr>
+        <tr><td class="td-name">20250210 - AQUA Dedicated · Meridian</td><td class="td-r">20.8k</td><td class="td-r">7.6k</td><td class="td-r">36.6%</td><td class="td-r">88</td><td class="td-r">0.42%</td><td class="td-r">1.16%</td></tr>
+        <tr><td class="td-name">20240812 - AQUA Dedicated · Meridian</td><td class="td-r">20.1k</td><td class="td-r">7.2k</td><td class="td-r">35.8%</td><td class="td-r">74</td><td class="td-r">0.37%</td><td class="td-r">1.03%</td></tr>
+        <tr><td class="td-name">20240408 - AQUA Dedicated · Meridian</td><td class="td-r">19.6k</td><td class="td-r">7.0k</td><td class="td-r">35.7%</td><td class="td-r">102</td><td class="td-r">0.52%</td><td class="td-r">1.46%</td></tr>
+        <tr><td class="td-name">20240211 - AQUA Dedicated · Meridian</td><td class="td-r">19.1k</td><td class="td-r">6.6k</td><td class="td-r">34.6%</td><td class="td-r">80</td><td class="td-r">0.42%</td><td class="td-r">1.21%</td></tr>
+        <tr><td class="td-name">20230814 - AQUA Dedicated · Meridian</td><td class="td-r">18.4k</td><td class="td-r">6.0k</td><td class="td-r">32.6%</td><td class="td-r">58</td><td class="td-r">0.32%</td><td class="td-r">0.97%</td></tr>
+        <tr><td class="td-name">20230410 - AQUA Dedicated · Meridian</td><td class="td-r">18.0k</td><td class="td-r">5.8k</td><td class="td-r">32.2%</td><td class="td-r">44</td><td class="td-r">0.24%</td><td class="td-r">0.76%</td></tr>
+        <tr><td class="td-name">20230213 - AQUA Dedicated · Meridian</td><td class="td-r">17.6k</td><td class="td-r">5.3k</td><td class="td-r">30.2%</td><td class="td-r">36</td><td class="td-r">0.20%</td><td class="td-r">0.68%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SOCIAL CAMPAIGNS -->
+<div class="section">
+  <button class="section-toggle" onclick="tog(this)">
+    <div class="section-left">
+      <div class="s-icon ic-indigo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path fill-rule="evenodd" d="M8.25 6.75a3.75 3.75 0 1 1 7.5 0 3.75 3.75 0 0 1-7.5 0ZM15.75 9.75a3 3 0 1 1 6 0 3 3 0 0 1-6 0ZM2.25 9.75a3 3 0 1 1 6 0 3 3 0 0 1-6 0ZM6.31 15.117A6.745 6.745 0 0 1 12 12a6.745 6.745 0 0 1 6.709 7.498.75.75 0 0 1-.372.568A12.696 12.696 0 0 1 12 21.75c-2.305 0-4.47-.612-6.337-1.684a.75.75 0 0 1-.372-.568 6.787 6.787 0 0 1 1.019-4.38Z" clip-rule="evenodd"/><path d="M5.082 14.254a8.287 8.287 0 0 0-1.308 5.135 9.687 9.687 0 0 1-1.764-.44l-.115-.04a.563.563 0 0 1-.373-.487l-.01-.121a3.75 3.75 0 0 1 3.57-4.047ZM20.226 19.389a8.287 8.287 0 0 0-1.308-5.135 3.75 3.75 0 0 1 3.57 4.047l-.01.121a.563.563 0 0 1-.373.486l-.115.04c-.567.2-1.156.349-1.764.441Z"/></svg></div>
+      <span class="section-name">Social Campaigns</span>
+      <div class="pills"><span class="pill">2 Platforms</span><span class="pill">24.6k Reach</span><span class="pill">1,840 Engagements</span><span class="pill">7.5% Eng. rate</span></div>
+    </div>
+    <svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>
+  </button>
+  <div class="section-body">
+    <div class="stat-grid">
+      <div class="stat-card"><div class="si si-indigo">👤</div><div><div class="s-val">24.6k</div><div class="s-label">Total reach</div></div></div>
+      <div class="stat-card"><div class="si si-green">⚡</div><div><div class="s-val">1,840</div><div class="s-label">Engagements</div></div></div>
+      <div class="stat-card"><div class="si si-purple">↗</div><div><div class="s-val">612</div><div class="s-label">Link clicks</div></div></div>
+      <div class="stat-card"><div class="si si-amber">%</div><div><div class="s-val">7.5%</div><div class="s-label">Engagement rate</div></div></div>
+    </div>
+    <div class="sub-label">Platform breakdown</div>
+    <div class="platform-grid">
+      <div class="platform-card">
+        <div class="platform-header"><div class="platform-logo pl-fb">f</div><div><div class="platform-name">Facebook</div><div class="platform-period">Jul 1 – Aug 31, 2025</div></div></div>
+        <div class="platform-stats">
+          <div class="ps"><div class="ps-val">14.2k</div><div class="ps-label">Reach</div></div>
+          <div class="ps"><div class="ps-val">1,040</div><div class="ps-label">Engagements</div></div>
+          <div class="ps"><div class="ps-val">7.3%</div><div class="ps-label">Eng. rate</div></div>
+          <div class="ps"><div class="ps-val">48.8k</div><div class="ps-label">Impressions</div></div>
+          <div class="ps"><div class="ps-val">348</div><div class="ps-label">Link clicks</div></div>
+          <div class="ps"><div class="ps-val">0.71%</div><div class="ps-label">CTR</div></div>
+        </div>
+      </div>
+      <div class="platform-card">
+        <div class="platform-header"><div class="platform-logo pl-li">in</div><div><div class="platform-name">LinkedIn</div><div class="platform-period">Jul 1 – Aug 31, 2025</div></div></div>
+        <div class="platform-stats">
+          <div class="ps"><div class="ps-val">10.4k</div><div class="ps-label">Reach</div></div>
+          <div class="ps"><div class="ps-val">800</div><div class="ps-label">Engagements</div></div>
+          <div class="ps"><div class="ps-val">7.7%</div><div class="ps-label">Eng. rate</div></div>
+          <div class="ps"><div class="ps-val">32.1k</div><div class="ps-label">Impressions</div></div>
+          <div class="ps"><div class="ps-val">264</div><div class="ps-label">Link clicks</div></div>
+          <div class="ps"><div class="ps-val">0.82%</div><div class="ps-label">CTR</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="sub-label">Campaign detail</div>
+    <table>
+      <thead><tr><th>Campaign</th><th>Platform</th><th>Objective</th><th class="td-r">Reach</th><th class="td-r">Impressions</th><th class="td-r">Engagements</th><th class="td-r">Link clicks</th><th class="td-r">CTR</th></tr></thead>
+      <tbody>
+        <tr><td><span class="td-name">Summer Essentials — Pool Pros</span><span class="td-sub">Jul 1 – Jul 31, 2025</span></td><td><span class="td-badge b-indigo">Facebook</span></td><td>Awareness</td><td class="td-r">8,140</td><td class="td-r">28.4k</td><td class="td-r">620</td><td class="td-r">196</td><td class="td-r">0.69%</td></tr>
+        <tr><td><span class="td-name">Closing Season Checklist</span><span class="td-sub">Aug 1 – Aug 31, 2025</span></td><td><span class="td-badge b-indigo">Facebook</span></td><td>Traffic</td><td class="td-r">6,060</td><td class="td-r">20.4k</td><td class="td-r">420</td><td class="td-r">152</td><td class="td-r">0.74%</td></tr>
+        <tr><td><span class="td-name">Pool Industry Professionals — B2B</span><span class="td-sub">Jul 1 – Jul 31, 2025</span></td><td><span class="td-badge b-sky">LinkedIn</span></td><td>Lead gen</td><td class="td-r">6,210</td><td class="td-r">18.8k</td><td class="td-r">490</td><td class="td-r">158</td><td class="td-r">0.84%</td></tr>
+        <tr><td><span class="td-name">Distributor Network Expansion</span><span class="td-sub">Aug 1 – Aug 31, 2025</span></td><td><span class="td-badge b-sky">LinkedIn</span></td><td>Awareness</td><td class="td-r">4,190</td><td class="td-r">13.3k</td><td class="td-r">310</td><td class="td-r">106</td><td class="td-r">0.80%</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="3">Totals</td><td class="td-r">24,600</td><td class="td-r">80.9k</td><td class="td-r">1,840</td><td class="td-r">612</td><td class="td-r">0.76%</td></tr></tfoot>
+    </table>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-brand">Prepared by <strong>Mindful</strong> &nbsp;·&nbsp; mindful.pub &nbsp;·&nbsp; a { parameter : 1 } product</div>
+  <div class="footer-note">Data aggregated from connected advertising, content, and audience systems.</div>
+</div>
+
+</div>
+<script>
+function tog(btn) {
+  var body = btn.nextElementSibling;
+  var ch = btn.querySelector('.chevron');
+  var open = body.classList.toggle('open');
+  ch.classList.toggle('open', open);
+}
+function setPreset(btn, s, e) {
+  document.querySelectorAll('.dp-preset').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('date-start').value = s;
+  document.getElementById('date-end').value = e;
+  applyRange();
+}
+function onDateChange() {
+  document.querySelectorAll('.dp-preset').forEach(b => b.classList.remove('active'));
+}
+function applyRange() {
+  var s = document.getElementById('date-start').value;
+  var e = document.getElementById('date-end').value;
+  if (!s || !e) return;
+  var fmt = d => { var p = d.split('-'); var m = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; return m[+p[1]-1]+' '+(+p[2])+', '+p[0]; };
+  document.getElementById('range-label').textContent = fmt(s) + ' – ' + fmt(e);
+}
+</script>
+</body>
+</html>
