@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cross-Channel Audience Intelligence — LBM Journal</title>
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', -apple-system, sans-serif; font-feature-settings: 'cv02','cv03','cv04','cv11'; background: #f3f2ee; color: #1a1a1a; font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+.page { max-width: 980px; margin: 0 auto; background: #fff; min-height: 100vh; display: flex; flex-direction: column; }
+
+/* HEADER */
+.header { background: linear-gradient(160deg, #0a1628 0%, #0f2847 50%, #153a6b 100%); padding: 28px 48px 0; }
+.co-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.co-brand-mindful { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #6a88b8; }
+.co-brand-mindful span { color: #a8c0d8; }
+.co-brand-sep { color: #2a4a72; font-size: 14px; }
+.co-brand-baxter { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #6a88b8; }
+.co-brand-baxter em { color: #1a9a74; font-style: normal; }
+.header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 20px; }
+.report-type { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #6a88b8; margin-bottom: 6px; }
+.advertiser-name { font-size: 24px; font-weight: 600; color: #fff; line-height: 1.2; }
+.report-sub { font-size: 12px; color: #6a88b8; margin-top: 5px; }
+.header-badge { background: rgba(26,154,116,0.15); border: 1px solid rgba(26,154,116,0.3); border-radius: 6px; padding: 10px 16px; text-align: center; flex-shrink: 0; }
+.header-badge-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #1a9a74; margin-bottom: 4px; }
+.header-badge-val { font-size: 22px; font-weight: 700; color: #fff; line-height: 1; }
+.header-badge-sub { font-size: 10px; color: #6a88b8; margin-top: 3px; }
+.header-divider { border: none; border-top: 1px solid rgba(255,255,255,0.08); }
+.summary-bar { display: grid; grid-template-columns: repeat(4, 1fr); padding: 18px 0; }
+.h-stat { padding: 0 20px; border-left: 1px solid rgba(255,255,255,0.08); }
+.h-stat:first-child { padding-left: 0; border-left: none; }
+.h-stat-val { font-size: 20px; font-weight: 600; color: #fff; }
+.h-stat-label { font-size: 10px; color: #6a88b8; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+.h-stat-source { font-size: 9px; color: #2a4a72; margin-top: 3px; font-weight: 500; letter-spacing: 0.05em; }
+
+/* SEGMENT OVERVIEW */
+.segment-section { padding: 28px 48px; background: #f3f2ee; border-bottom: 1px solid #e4e2dc; }
+.eyebrow { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: #b0ada4; margin-bottom: 6px; }
+.section-title { font-size: 17px; font-weight: 600; color: #111; margin-bottom: 4px; }
+.section-sub { font-size: 12px; color: #888; margin-bottom: 22px; }
+.seg-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 24px; }
+.seg-card { border-radius: 10px; padding: 18px; position: relative; overflow: hidden; }
+.seg-card.overlap { background: linear-gradient(135deg, #1a3a6b 0%, #153a6b 100%); border: 1px solid rgba(37,99,196,0.4); }
+.seg-card.digital { background: #fff; border: 1px solid #e4e2dc; }
+.seg-card.print { background: #fff; border: 1px solid #e4e2dc; }
+.seg-card.unreached { background: #faf9f7; border: 1px dashed #d4d0c8; }
+.seg-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px; }
+.seg-card.overlap .seg-label { color: rgba(168,192,216,0.7); }
+.seg-card.digital .seg-label { color: #2563c4; }
+.seg-card.print .seg-label { color: #1a9a74; }
+.seg-card.unreached .seg-label { color: #b0ada4; }
+.seg-count { font-size: 28px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+.seg-card.overlap .seg-count { color: #fff; }
+.seg-card.digital .seg-count { color: #111; }
+.seg-card.print .seg-count { color: #111; }
+.seg-card.unreached .seg-count { color: #aaa; }
+.seg-desc { font-size: 11px; line-height: 1.5; margin-bottom: 14px; }
+.seg-card.overlap .seg-desc { color: rgba(168,192,216,0.8); }
+.seg-card.digital .seg-desc { color: #666; }
+.seg-card.print .seg-desc { color: #666; }
+.seg-card.unreached .seg-desc { color: #aaa; }
+.seg-buying { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; }
+.seg-card.digital .seg-buying, .seg-card.print .seg-buying { border-top-color: #eeecea; }
+.seg-card.unreached .seg-buying { border-top-color: #e4e2dc; }
+.seg-buying-val { font-size: 20px; font-weight: 700; }
+.seg-card.overlap .seg-buying-val { color: #4ade80; }
+.seg-card.digital .seg-buying-val { color: #2563c4; }
+.seg-card.print .seg-buying-val { color: #1a9a74; }
+.seg-card.unreached .seg-buying-val { color: #ccc; }
+.seg-buying-label { font-size: 10px; margin-top: 2px; }
+.seg-card.overlap .seg-buying-label { color: rgba(168,192,216,0.6); }
+.seg-card.digital .seg-buying-label { color: #999; }
+.seg-card.print .seg-buying-label { color: #999; }
+.seg-card.unreached .seg-buying-label { color: #ccc; }
+.seg-source-pills { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 10px; }
+.seg-pill { font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 3px; letter-spacing: 0.04em; }
+.pill-mindful { background: rgba(37,99,196,0.15); color: #6a9fd8; }
+.pill-baxter { background: rgba(26,154,116,0.15); color: #1a9a74; }
+.seg-card.overlap .pill-mindful { background: rgba(37,99,196,0.3); color: #a8c0d8; }
+.seg-card.overlap .pill-baxter { background: rgba(26,154,116,0.25); color: #4ade80; }
+
+/* LIFT CHART */
+.lift-section { padding: 28px 48px; border-bottom: 1px solid #e4e2dc; }
+.lift-callout { background: linear-gradient(135deg, #0f2847, #153a6b); border-radius: 10px; padding: 20px 24px; margin-bottom: 24px; display: flex; align-items: center; gap: 24px; }
+.lift-callout-stat { text-align: center; flex-shrink: 0; }
+.lift-callout-stat .big { font-size: 42px; font-weight: 700; color: #4ade80; line-height: 1; }
+.lift-callout-stat .lbl { font-size: 10px; color: #6a88b8; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+.lift-callout-divider { width: 1px; background: rgba(255,255,255,0.08); align-self: stretch; }
+.lift-callout-text { font-size: 13px; color: #a8c0d8; line-height: 1.7; }
+.lift-callout-text strong { color: #fff; }
+.lift-bars { display: flex; flex-direction: column; gap: 12px; }
+.lift-row { display: flex; align-items: center; gap: 14px; }
+.lift-row-label { font-size: 12px; font-weight: 500; color: #444; width: 160px; flex-shrink: 0; }
+.lift-row-label small { display: block; font-size: 10px; color: #b0ada4; font-weight: 400; }
+.lift-bar-wrap { flex: 1; height: 28px; background: #f3f2ee; border-radius: 5px; overflow: hidden; position: relative; }
+.lift-bar { height: 100%; border-radius: 5px; display: flex; align-items: center; padding-left: 10px; font-size: 12px; font-weight: 600; color: #fff; transition: width 0.3s; }
+.lift-bar.b-overlap { background: linear-gradient(90deg, #1a3a6b, #2563c4); }
+.lift-bar.b-digital { background: #2563c4; }
+.lift-bar.b-print { background: #1a9a74; }
+.lift-bar.b-unreached { background: #e4e2dc; }
+.lift-bar.b-unreached span { color: #aaa; }
+.lift-pct { font-size: 13px; font-weight: 600; width: 40px; text-align: right; flex-shrink: 0; }
+.lift-delta { font-size: 11px; font-weight: 600; min-width: 50px; }
+.delta-up { color: #1a9a74; }
+.delta-base { color: #aaa; }
+
+/* PRINT DETAIL */
+.print-section { padding: 28px 48px; border-bottom: 1px solid #e4e2dc; background: #fafaf8; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.detail-card { background: #fff; border: 1px solid #e4e2dc; border-radius: 10px; padding: 18px; }
+.detail-card-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #b0ada4; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #eeecea; }
+.influence-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.inf-item { background: #f9f8f5; border-radius: 6px; padding: 10px 12px; }
+.inf-val { font-size: 18px; font-weight: 700; color: #111; }
+.inf-label { font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+.action-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid #f2f1ed; font-size: 12px; }
+.action-row:last-child { border-bottom: none; }
+.action-type { font-size: 9px; font-weight: 600; padding: 1px 5px; border-radius: 2px; flex-shrink: 0; }
+.type-prelim { background: #e8ecff; color: #3a4ab0; }
+.type-active { background: #ddf5ee; color: #1a7a5a; }
+.action-name { color: #444; flex: 1; }
+.action-pct { font-weight: 600; color: #111; min-width: 32px; text-align: right; }
+.action-bar-wrap { width: 60px; height: 3px; background: #e4e2dc; border-radius: 2px; }
+.action-bar { height: 3px; background: #1a9a74; border-radius: 2px; }
+
+/* DIGITAL DETAIL */
+.digital-section { padding: 28px 48px; border-bottom: 1px solid #e4e2dc; }
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+.stat-card { background: #f7f6f2; border-radius: 8px; padding: 12px 14px; }
+.s-val { font-size: 18px; font-weight: 600; color: #111; }
+.s-label { font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 0.07em; margin-top: 2px; }
+.s-source { font-size: 9px; color: #2563c4; font-weight: 600; margin-top: 4px; letter-spacing: 0.04em; }
+
+/* OPPORTUNITY */
+.opp-section { padding: 28px 48px; border-bottom: 1px solid #e4e2dc; background: #fafaf8; }
+.opp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.opp-card { border-radius: 10px; padding: 18px; }
+.opp-card.reinforce { background: #fff; border: 1px solid #e4e2dc; }
+.opp-card.expand { background: linear-gradient(135deg, #0f2847, #153a6b); }
+.opp-eyebrow { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 8px; }
+.opp-card.reinforce .opp-eyebrow { color: #1a9a74; }
+.opp-card.expand .opp-eyebrow { color: #6a88b8; }
+.opp-title { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+.opp-card.reinforce .opp-title { color: #111; }
+.opp-card.expand .opp-title { color: #fff; }
+.opp-body { font-size: 12px; line-height: 1.65; }
+.opp-card.reinforce .opp-body { color: #666; }
+.opp-card.expand .opp-body { color: #a8c0d8; }
+.opp-body strong { color: inherit; }
+.opp-card.expand .opp-body strong { color: #fff; }
+.opp-stat { font-size: 26px; font-weight: 700; margin-top: 14px; }
+.opp-card.reinforce .opp-stat { color: #1a9a74; }
+.opp-card.expand .opp-stat { color: #4ade80; }
+.opp-stat-label { font-size: 11px; margin-top: 2px; }
+.opp-card.reinforce .opp-stat-label { color: #999; }
+.opp-card.expand .opp-stat-label { color: #6a88b8; }
+
+/* METHODOLOGY */
+.method-bar { background: #f3f2ee; border-top: 1px solid #e4e2dc; padding: 14px 48px; display: flex; gap: 32px; }
+.method-item { display: flex; align-items: flex-start; gap: 8px; }
+.method-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.method-text { font-size: 11px; color: #888; line-height: 1.5; }
+.method-text strong { color: #555; }
+
+/* FOOTER */
+.footer { margin-top: auto; padding: 18px 48px; border-top: 1px solid #e4e2dc; display: flex; justify-content: space-between; align-items: center; }
+.footer-brand { font-size: 12px; color: #b0ada4; }
+.footer-brand strong { color: #5a7ab5; }
+.footer-note { font-size: 11px; color: #ccc; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="co-brand">
+    <div class="co-brand-mindful">Mindful <span>Publishing Intelligence</span></div>
+    <div class="co-brand-sep">+</div>
+    <div class="co-brand-baxter">Baxter <em>adViewPRO</em> Print Analytics</div>
+  </div>
+  <div class="header-top">
+    <div>
+      <div class="report-type">Cross-Channel Audience Intelligence Report</div>
+      <div class="advertiser-name">NewTechWood America</div>
+      <div class="report-sub">LBM Journal &nbsp;·&nbsp; February 2026 Issue &nbsp;·&nbsp; Print + Digital Campaign</div>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <div class="header-badge">
+        <div class="header-badge-label">Print Ad Influence</div>
+        <div class="header-badge-val">100%</div>
+        <div class="header-badge-sub">of readers influenced</div>
+      </div>
+      <div class="header-badge">
+        <div class="header-badge-label">Identified Audience</div>
+        <div class="header-badge-val">6,840</div>
+        <div class="header-badge-sub">verified professionals</div>
+      </div>
+    </div>
+  </div>
+  <hr class="header-divider">
+  <div class="summary-bar">
+    <div class="h-stat">
+      <div class="h-stat-val">3,210</div>
+      <div class="h-stat-label">Print + Digital</div>
+      <div class="h-stat-source">Both channels</div>
+    </div>
+    <div class="h-stat">
+      <div class="h-stat-val">3,630</div>
+      <div class="h-stat-label">Digital Only</div>
+      <div class="h-stat-source">Mindful identified</div>
+    </div>
+    <div class="h-stat">
+      <div class="h-stat-val">28,397</div>
+      <div class="h-stat-label">Print Only</div>
+      <div class="h-stat-source">Baxter circulation</div>
+    </div>
+    <div class="h-stat">
+      <div class="h-stat-val">67%</div>
+      <div class="h-stat-label">Buying Intent — Overlap</div>
+      <div class="h-stat-source">Print + Digital segment</div>
+    </div>
+  </div>
+</div>
+
+<!-- SEGMENT OVERVIEW -->
+<div class="segment-section">
+  <div class="eyebrow">Audience Segmentation</div>
+  <div class="section-title">Four segments. One complete picture.</div>
+  <div class="section-sub">Combining Baxter print reader data with Mindful's identified digital audience reveals where your investment is working — and where it isn't.</div>
+  <div class="seg-grid">
+
+    <div class="seg-card overlap">
+      <div class="seg-source-pills">
+        <span class="seg-pill pill-mindful">Mindful</span>
+        <span class="seg-pill pill-baxter">adViewPRO</span>
+      </div>
+      <div class="seg-label">Print + Digital</div>
+      <div class="seg-count">3,210</div>
+      <div class="seg-desc">Verified professionals confirmed in both print circulation and Mindful digital engagement. Your highest-value audience.</div>
+      <div class="seg-buying">
+        <div class="seg-buying-val">67%</div>
+        <div class="seg-buying-label">buying intent rate</div>
+      </div>
+    </div>
+
+    <div class="seg-card digital">
+      <div class="seg-source-pills">
+        <span class="seg-pill pill-mindful" style="background:rgba(37,99,196,0.1);color:#2563c4;">Mindful</span>
+      </div>
+      <div class="seg-label">Digital Only</div>
+      <div class="seg-count">3,630</div>
+      <div class="seg-desc">Identified and engaged in Mindful's digital channels. Not confirmed as print readers. High reinforcement potential.</div>
+      <div class="seg-buying">
+        <div class="seg-buying-val">44%</div>
+        <div class="seg-buying-label">engagement-based intent</div>
+      </div>
+    </div>
+
+    <div class="seg-card print">
+      <div class="seg-source-pills">
+        <span class="seg-pill pill-baxter" style="background:rgba(26,154,116,0.1);color:#1a9a74;">adViewPRO</span>
+      </div>
+      <div class="seg-label">Print Only</div>
+      <div class="seg-count">28,397</div>
+      <div class="seg-desc">Reached in print. Not yet in Mindful's identified digital audience. The largest segment — and the biggest reinforcement opportunity.</div>
+      <div class="seg-buying">
+        <div class="seg-buying-val">43%</div>
+        <div class="seg-buying-label">buying actions (Baxter)</div>
+      </div>
+    </div>
+
+    <div class="seg-card unreached">
+      <div class="seg-source-pills">
+        <span class="seg-pill pill-mindful" style="background:#eeecea;color:#b0ada4;">Mindful</span>
+      </div>
+      <div class="seg-label">Unreached</div>
+      <div class="seg-count">1,840</div>
+      <div class="seg-desc">Known LBM Journal audience with no confirmed exposure to this campaign in either channel. Identified and available.</div>
+      <div class="seg-buying">
+        <div class="seg-buying-val">—</div>
+        <div class="seg-buying-label">no campaign exposure</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- LIFT CHART -->
+<div class="lift-section">
+  <div class="eyebrow">The Cross-Channel Effect</div>
+  <div class="section-title" style="margin-bottom:16px;">Print alone works. Print and digital together works harder.</div>
+
+  <div class="lift-callout">
+    <div class="lift-callout-stat">
+      <div class="big">+56%</div>
+      <div class="lbl">Buying intent lift</div>
+    </div>
+    <div class="lift-callout-divider"></div>
+    <div class="lift-callout-text">
+      Professionals reached in <strong>both print and digital</strong> show a 56% higher buying intent rate than print-only readers — 67% vs. 43%. This is the data point publishers have always believed but never been able to prove. <strong>This report proves it.</strong>
+    </div>
+  </div>
+
+  <div class="lift-bars">
+    <div class="lift-row">
+      <div class="lift-row-label">Print + Digital<small>Mindful + adViewPRO</small></div>
+      <div class="lift-bar-wrap"><div class="lift-bar b-overlap" style="width:67%"><span>67%</span></div></div>
+      <div class="lift-pct" style="color:#4ade80;font-weight:700;">67%</div>
+      <div class="lift-delta delta-up">+56% vs print</div>
+    </div>
+    <div class="lift-row">
+      <div class="lift-row-label">Digital Only<small>Mindful identified</small></div>
+      <div class="lift-bar-wrap"><div class="lift-bar b-digital" style="width:44%"><span>44%</span></div></div>
+      <div class="lift-pct" style="color:#2563c4;">44%</div>
+      <div class="lift-delta delta-up">+2% vs print</div>
+    </div>
+    <div class="lift-row">
+      <div class="lift-row-label">Print Only<small>Baxter adViewPRO baseline</small></div>
+      <div class="lift-bar-wrap"><div class="lift-bar b-print" style="width:43%"><span>43%</span></div></div>
+      <div class="lift-pct" style="color:#1a9a74;">43%</div>
+      <div class="lift-delta delta-base">baseline</div>
+    </div>
+    <div class="lift-row">
+      <div class="lift-row-label">Unreached<small>No campaign exposure</small></div>
+      <div class="lift-bar-wrap"><div class="lift-bar b-unreached" style="width:8%"><span style="color:#aaa"></span></div></div>
+      <div class="lift-pct" style="color:#ccc;">—</div>
+      <div class="lift-delta delta-base" style="color:#ddd;">opportunity</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRINT DETAIL -->
+<div class="print-section">
+  <div class="eyebrow" style="margin-bottom:16px;">Print Performance &nbsp;·&nbsp; Baxter adViewPRO &nbsp;·&nbsp; February 2026</div>
+  <div class="two-col">
+    <div class="detail-card">
+      <div class="detail-card-label">Ad exposure + influence</div>
+      <div class="influence-grid">
+        <div class="inf-item"><div class="inf-val">82%</div><div class="inf-label">Recall Seeing</div></div>
+        <div class="inf-item"><div class="inf-val">100%</div><div class="inf-label">Total Ad Influence</div></div>
+        <div class="inf-item"><div class="inf-val">51%</div><div class="inf-label">Read Some</div></div>
+        <div class="inf-item"><div class="inf-val">31%</div><div class="inf-label">Read Most</div></div>
+        <div class="inf-item"><div class="inf-val">79%</div><div class="inf-label">Liked the Ad</div></div>
+        <div class="inf-item"><div class="inf-val">60%</div><div class="inf-label">Newly Aware</div></div>
+      </div>
+    </div>
+    <div class="detail-card">
+      <div class="detail-card-label">Buying actions taken</div>
+      <div class="action-row"><span class="action-type type-prelim">Prelim</span><span class="action-name">Consider use/purchase</span><div class="action-bar-wrap"><div class="action-bar" style="width:100%"></div></div><span class="action-pct">22%</span></div>
+      <div class="action-row"><span class="action-type type-prelim">Prelim</span><span class="action-name">Visit advertiser website</span><div class="action-bar-wrap"><div class="action-bar" style="width:73%"></div></div><span class="action-pct">16%</span></div>
+      <div class="action-row"><span class="action-type type-prelim">Prelim</span><span class="action-name">Discuss advertised product</span><div class="action-bar-wrap"><div class="action-bar" style="width:64%"></div></div><span class="action-pct">14%</span></div>
+      <div class="action-row"><span class="action-type type-prelim">Prelim</span><span class="action-name">Request more information</span><div class="action-bar-wrap"><div class="action-bar" style="width:23%"></div></div><span class="action-pct">5%</span></div>
+      <div class="action-row"><span class="action-type type-prelim">Prelim</span><span class="action-name">Save the ad</span><div class="action-bar-wrap"><div class="action-bar" style="width:23%"></div></div><span class="action-pct">5%</span></div>
+      <div class="action-row"><span class="action-type type-active">Active</span><span class="action-name">Try product / service</span><div class="action-bar-wrap"><div class="action-bar" style="width:0%;background:#2563c4"></div></div><span class="action-pct">0%</span></div>
+      <div style="margin-top:12px;padding-top:10px;border-top:1px solid #eeecea;display:flex;justify-content:space-between;align-items:baseline;">
+        <span style="font-size:11px;color:#888;">One or more buying actions</span>
+        <span style="font-size:16px;font-weight:700;color:#1a9a74;">43%</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DIGITAL DETAIL -->
+<div class="digital-section">
+  <div class="eyebrow" style="margin-bottom:16px;">Digital Performance &nbsp;·&nbsp; Mindful &nbsp;·&nbsp; Jan 15 – Feb 28, 2026</div>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="s-val">6,840</div><div class="s-label">Verified Professionals</div><div class="s-source">Mindful identified</div></div>
+    <div class="stat-card"><div class="s-val">284.6k</div><div class="s-label">Total Impressions</div><div class="s-source">Web + newsletter</div></div>
+    <div class="stat-card"><div class="s-val">4,210</div><div class="s-label">Unique Engagements</div><div class="s-source">Clicks + content</div></div>
+    <div class="stat-card"><div class="s-val">18.4%</div><div class="s-label">Engagement Rate</div><div class="s-source">vs. 6.2% avg</div></div>
+  </div>
+  <div style="background:#f9f8f5;border-radius:8px;padding:14px 18px;font-size:12px;color:#666;line-height:1.7;">
+    NewTechWood America's digital campaign ran concurrently with the February print issue. <strong style="color:#111;">60% of Newly Aware print readers</strong> — those encountering the brand for the first time — represent the highest reinforcement opportunity in the identified digital audience. This group's buying intent is particularly sensitive to digital follow-through.
+  </div>
+</div>
+
+<!-- OPPORTUNITY -->
+<div class="opp-section">
+  <div class="eyebrow" style="margin-bottom:16px;">What to do next</div>
+  <div class="opp-grid">
+    <div class="opp-card reinforce">
+      <div class="opp-eyebrow">Reinforce</div>
+      <div class="opp-title">28,397 print readers have no digital touchpoint yet.</div>
+      <div class="opp-body">These readers saw the ad — 43% took a buying action — but were never reinforced digitally. A targeted digital campaign to LBM Journal's known audience in the decking and building materials category could move a meaningful share of this group into the higher-intent <strong>Print + Digital</strong> segment.</div>
+      <div class="opp-stat">+56%</div>
+      <div class="opp-stat-label">projected buying intent lift with digital reinforcement</div>
+    </div>
+    <div class="opp-card expand">
+      <div class="opp-eyebrow">Expand</div>
+      <div class="opp-title">1,840 identified professionals haven't seen this campaign at all.</div>
+      <div class="opp-body">These are known LBM Journal audience members — verified by Mindful, matched to relevant job titles and companies — with <strong>zero campaign exposure</strong> in either channel. They are identified, reachable, and categorically relevant. This is the cleanest growth opportunity in the audience.</div>
+      <div class="opp-stat">1,840</div>
+      <div class="opp-stat-label">verified professionals, zero current exposure</div>
+    </div>
+  </div>
+</div>
+
+<!-- METHODOLOGY -->
+<div class="method-bar">
+  <div class="method-item">
+    <div class="method-dot" style="background:#1a9a74"></div>
+    <div class="method-text"><strong>Baxter adViewPRO:</strong> Survey-based print ad recall. Panel drawn from LBM Journal circulation (31,607). Base = 100 respondents. February 2026 issue.</div>
+  </div>
+  <div class="method-item">
+    <div class="method-dot" style="background:#2563c4"></div>
+    <div class="method-text"><strong>Mindful:</strong> First-party behavioral data. Identified by verified email and company domain. Continuous. Jan 15 – Feb 28, 2026 campaign window.</div>
+  </div>
+  <div class="method-item">
+    <div class="method-dot" style="background:#153a6b"></div>
+    <div class="method-text"><strong>Overlap methodology:</strong> Print circulation matched to Mindful known audience via email domain and company. Buying intent in overlap segment derived from combined signal scoring.</div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-brand">Prepared by <strong>Mindful</strong> + Baxter adViewPRO &nbsp;·&nbsp; mindful.pub &nbsp;·&nbsp; a { parameter : 1 } product</div>
+  <div class="footer-note">Proof of concept. Digital figures are illustrative; print figures sourced from Baxter adViewPRO February 2026.</div>
+</div>
+
+</div>
+</body>
+</html>
