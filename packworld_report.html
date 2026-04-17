@@ -588,6 +588,34 @@
   </div>
 </div>
 
+<div style="margin-bottom:36px;">
+  <div class="section-header">
+    <div class="section-label">
+      <div class="section-num" style="background:var(--accent-teal);">?</div>
+      <div>
+        <div class="section-title">Ask your data</div>
+        <div class="section-subtitle">Questions about your audience, your advertisers, or your revenue opportunity.</div>
+      </div>
+    </div>
+    <div class="section-tag">Intelligence layer</div>
+  </div>
+
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div id="chat-messages" style="padding:16px 20px;display:flex;flex-direction:column;gap:12px;min-height:80px;max-height:340px;overflow-y:auto;">
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <div style="width:26px;height:26px;border-radius:50%;background:rgba(74,158,255,0.15);border:1px solid rgba(74,158,255,0.3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--accent-blue);flex-shrink:0;">PI</div>
+        <div style="background:rgba(21,58,107,0.5);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--text-secondary);line-height:1.6;max-width:88%;">
+          I have the full context of this report. Ask me anything about your audience, your advertiser performance, your revenue gaps, or what you should prioritize. Try something like: <span style="color:var(--accent-blue);cursor:pointer;" onclick="fillQ('Which advertiser category has the highest audience fit but no current campaign?')">"Which advertiser category has the highest audience fit but no current campaign?"</span> or <span style="color:var(--accent-blue);cursor:pointer;" onclick="fillQ('How do I explain the engagement depth methodology to a skeptical advertiser?')">"How do I explain the engagement depth methodology to a skeptical advertiser?"</span>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid var(--border);padding:12px 16px;display:flex;gap:10px;align-items:flex-end;">
+      <textarea id="chat-input" placeholder="Ask a question about your data..." rows="1" style="flex:1;background:rgba(21,58,107,0.3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--text-primary);font-family:'Inter',sans-serif;resize:none;outline:none;line-height:1.5;" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendQ();}"></textarea>
+      <button onclick="sendQ()" style="background:var(--accent-blue);border:none;border-radius:8px;padding:10px 16px;font-size:12px;font-weight:600;color:var(--navy);cursor:pointer;white-space:nowrap;height:40px;">Ask</button>
+    </div>
+  </div>
+</div>
+
 <div class="report-footer">
   <div>
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
@@ -601,4 +629,117 @@
 </div>
 
 </body>
+<script>
+const REPORT_CONTEXT = `You are the intelligence layer behind an Audience Revenue Intelligence Report for Packaging World, a PMMI Media Group publication, for David Newcorn, President & CEO.
+
+Report data for April 2026:
+- Known audience: 38,240 verified professionals (up 22% YoY)
+- In active intent: 7,810 (up 38% vs last month)
+- Engagement rate: 41.2% (up 9% vs prior 90 days)
+
+Audience by role: Packaging engineers/R&D 38% (14,531), Operations/plant managers 24% (9,178), Sustainability/environment 16% (6,118), Purchasing/procurement 13% (4,971), Brand owners/marketing 9% (3,442)
+
+Top intent topics: Sustainable/recyclable packaging +44% (8,210 users), Automation & robotics +29% (5,940 users), Flexible packaging +21% (4,520 users), Labeling & coding +14% (3,110 users), Filling & sealing +3% (1,580 users)
+
+Top companies by engagement depth: Procter & Gamble (412 users, high intent), Nestlé USA (338, high), Unilever (291, high), General Mills (247, mid), Kraft Heinz (218, mid), Colgate-Palmolive (184, mid), PepsiCo (156, low), Abbott Nutrition (129, low)
+
+Advertiser campaigns:
+- Rockwell Automation (Connected Packaging Line Campaign, Jan-Apr 2026): 9,840 verified reach, 2,180 in-market, 4,310 cross-channel touch, 4m48s avg session. Renewal-ready. 13 net-new companies identified with engagement depth: Campbell Soup, Church & Dwight, Spectrum Brands, Energizer, Prestige Consumer Healthcare, Treehouse Foods, Post Holdings, Snyders-Lance, B&G Foods, Sovos Brands, Utz Brands, Inventure Foods, Amplify Snack Brands.
+- Enercon Industries (Surface Treating, Feb-Apr 2026): 3,420 verified reach, 290 in-market, 11.4% content engagement (below 19% avg), 148 return visits. Renewal at risk. Recommendation: reposition into sustainable film processing content cluster.
+
+Revenue intelligence:
+- Addressable advertiser market: $2.86M
+- Current annual capture: $1.08M (38%)
+- Uncaptured opportunity: $1.78M (62%)
+
+Top 3 prospects (no active campaign):
+1. Schubert North America — robotic packaging, $52-74K est value, automation cluster fit
+2. Syntegon Technology — filling & packaging systems, $44-62K, flexible packaging cluster
+3. Sealed Air Corporation — sustainable packaging, $38-55K, sustainability cluster
+
+Action brief:
+1. Gate sustainable packaging content cluster — losing ~610 contacts/month, $38-55K/yr advertiser value
+2. Bring 13-company list to Rockwell renewal — current spend $68K, expansion opportunity $28-44K
+3. Launch automation ROI content series — 5,940 active researchers, Schubert/Syntegon opportunity $52-74K
+
+Engagement depth scoring: composite score per company domain combining breadth (distinct users), depth (session time vs site avg, scroll depth, return frequency), cross-channel signals (content + email + ad exposure on same identity), and recency weighting. Three tiers: High, Mid, Low.
+
+Intent scoring: based on content cluster specificity (category vs spec-level content), session depth within cluster, return visit frequency, gate/form interactions, and cross-channel recency convergence.
+
+Revenue gap: addressable market estimated from audience composition × category CPM benchmarks. Directional, not a guarantee. Gap reflects categories where audience over-indexes but no active advertiser campaign exists.
+
+Important: All data is derived from the publisher's own first-party systems — content engagement, registration data, email opens, ad impressions unified under a shared identity layer. No advertiser pixel or third-party data required. The 13-company list reflects engagement with Packaging World content — not confirmed visits to Rockwell's site.
+
+Answer questions helpfully, specifically, and honestly. If something requires data not in this report, say so clearly. Keep responses concise and actionable. You are speaking to a sophisticated publishing executive.`;
+
+async function sendQ() {
+  const input = document.getElementById('chat-input');
+  const q = input.value.trim();
+  if (!q) return;
+  input.value = '';
+  input.style.height = 'auto';
+
+  addMessage(q, 'user');
+  const thinking = addMessage('...', 'bot', true);
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: REPORT_CONTEXT,
+        messages: [{role: 'user', content: q}]
+      })
+    });
+    const data = await res.json();
+    const answer = data.content?.[0]?.text || 'No response received.';
+    thinking.remove();
+    addMessage(answer, 'bot');
+  } catch(e) {
+    thinking.remove();
+    addMessage('Unable to reach the intelligence layer. Please try again.', 'bot');
+  }
+}
+
+function fillQ(text) {
+  document.getElementById('chat-input').value = text;
+  document.getElementById('chat-input').focus();
+}
+
+function addMessage(text, role, isTemp=false) {
+  const container = document.getElementById('chat-messages');
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'display:flex;gap:10px;align-items:flex-start;';
+
+  const avatar = document.createElement('div');
+  if (role === 'user') {
+    avatar.style.cssText = 'width:26px;height:26px;border-radius:50%;background:rgba(29,184,138,0.15);border:1px solid rgba(29,184,138,0.3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#1db88a;flex-shrink:0;';
+    avatar.textContent = 'DN';
+  } else {
+    avatar.style.cssText = 'width:26px;height:26px;border-radius:50%;background:rgba(74,158,255,0.15);border:1px solid rgba(74,158,255,0.3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#4a9eff;flex-shrink:0;';
+    avatar.textContent = 'PI';
+  }
+
+  const bubble = document.createElement('div');
+  bubble.style.cssText = `border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.6;max-width:88%;white-space:pre-wrap;${role==='user' ? 'background:rgba(29,184,138,0.08);border:1px solid rgba(29,184,138,0.2);color:#8ba0c0;margin-left:auto;' : 'background:rgba(21,58,107,0.5);border:1px solid rgba(74,158,255,0.15);color:#8ba0c0;'}`;
+  bubble.textContent = text;
+
+  if (role === 'user') {
+    wrap.style.flexDirection = 'row-reverse';
+  }
+
+  wrap.appendChild(avatar);
+  wrap.appendChild(bubble);
+  container.appendChild(wrap);
+  container.scrollTop = container.scrollHeight;
+  return wrap;
+}
+
+document.getElementById('chat-input').addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+});
+</script>
 </html>
