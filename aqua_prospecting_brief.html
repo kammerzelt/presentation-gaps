@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advertiser Prospecting Intelligence — AQUA Magazine</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0a1628; --navy-mid: #0f2847; --navy-light: #153a6b;
+    --accent-blue: #4a9eff; --accent-teal: #1db88a; --accent-amber: #f0a030; --accent-red: #e05050;
+    --text-primary: #f0f4ff; --text-secondary: #8ba0c0; --text-muted: #546880;
+    --border: rgba(74,158,255,0.15); --border-strong: rgba(74,158,255,0.3);
+    --card-bg: rgba(15,40,71,0.6); --card-bg-strong: rgba(21,58,107,0.4);
+  }
+  body { font-family:'Inter',sans-serif; background:var(--navy); color:var(--text-primary); font-size:13px; line-height:1.6; -webkit-font-smoothing:antialiased; max-width:860px; margin:0 auto; padding:32px 24px 64px; }
+  .report-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:28px; padding-bottom:20px; border-bottom:1px solid var(--border); }
+  .logo-bracket { font-size:13px; font-weight:500; color:var(--accent-blue); letter-spacing:-0.5px; }
+  .logo-sep { color:var(--text-muted); margin:0 6px; }
+  .product-name { font-size:11px; font-weight:600; color:var(--accent-blue); letter-spacing:1.5px; text-transform:uppercase; }
+  .brand-mark { display:flex; align-items:center; gap:12px; }
+  .report-meta { text-align:right; }
+  .pub-name { font-size:15px; font-weight:600; color:var(--text-primary); }
+  .report-title { font-size:11px; color:var(--text-secondary); margin-top:2px; }
+  .report-issue { font-size:11px; color:var(--text-muted); margin-top:4px; }
+  .intro-strip { background:rgba(21,58,107,0.4); border:1px solid var(--border); border-radius:10px; padding:16px 20px; margin-bottom:24px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+  .intro-greeting { font-size:14px; font-weight:500; color:var(--text-primary); }
+  .intro-sub { font-size:12px; color:var(--text-secondary); margin-top:3px; max-width:500px; line-height:1.5; }
+  .period-badge { background:rgba(74,158,255,0.12); border:1px solid rgba(74,158,255,0.3); border-radius:6px; padding:6px 14px; font-size:11px; font-weight:600; color:var(--accent-blue); letter-spacing:0.5px; white-space:nowrap; text-transform:uppercase; }
+  .summary-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:32px; }
+  .stat-card { background:var(--card-bg); border:1px solid var(--border); border-radius:10px; padding:16px 18px; }
+  .stat-label { font-size:10px; font-weight:600; color:var(--text-muted); letter-spacing:0.8px; text-transform:uppercase; margin-bottom:8px; }
+  .stat-value { font-size:26px; font-weight:300; color:var(--text-primary); letter-spacing:-0.5px; line-height:1; }
+  .stat-delta { display:inline-flex; align-items:center; gap:3px; font-size:11px; font-weight:500; margin-top:6px; }
+  .delta-up { color:var(--accent-teal); } .delta-warn { color:var(--accent-amber); } .delta-neutral { color:var(--text-muted); }
+  .stat-context { font-size:10px; color:var(--text-muted); margin-top:2px; }
+  .section { margin-bottom:32px; }
+  .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .section-label { display:flex; align-items:center; gap:10px; }
+  .section-num { width:22px; height:22px; border-radius:50%; background:var(--accent-blue); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:var(--navy); flex-shrink:0; }
+  .section-title { font-size:13px; font-weight:600; color:var(--text-primary); }
+  .section-subtitle { font-size:11px; color:var(--text-secondary); margin-top:1px; }
+  .section-tag { font-size:10px; font-weight:600; color:var(--accent-blue); letter-spacing:0.8px; text-transform:uppercase; }
+  .card { background:var(--card-bg); border:1px solid var(--border); border-radius:10px; padding:20px; }
+  .card+.card { margin-top:10px; }
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .card-title { font-size:10px; font-weight:600; color:var(--text-muted); letter-spacing:0.8px; text-transform:uppercase; margin-bottom:14px; }
+  .divider { height:1px; background:var(--border); margin:16px 0; }
+  .tag-pill { display:inline-block; font-size:10px; font-weight:600; letter-spacing:0.5px; padding:2px 8px; border-radius:4px; }
+  .tag-linkedin { background:rgba(74,158,255,0.12); color:var(--accent-blue); border:1px solid rgba(74,158,255,0.25); }
+  .tag-tradeshow { background:rgba(29,184,138,0.1); color:var(--accent-teal); border:1px solid rgba(29,184,138,0.2); }
+  .tag-funding { background:rgba(240,160,48,0.1); color:var(--accent-amber); border:1px solid rgba(240,160,48,0.2); }
+  .tag-expansion { background:rgba(74,158,255,0.1); color:var(--accent-blue); border:1px solid rgba(74,158,255,0.2); }
+  .tag-ma { background:rgba(224,80,80,0.1); color:var(--accent-red); border:1px solid rgba(224,80,80,0.2); }
+  .tag-pr { background:rgba(29,184,138,0.08); color:var(--accent-teal); border:1px solid rgba(29,184,138,0.15); }
+  .tag-wellness { background:rgba(168,85,247,0.1); color:#c084fc; border:1px solid rgba(168,85,247,0.2); }
+  .sig-pip { width:8px; height:8px; border-radius:2px; }
+  .sig-filled { background:var(--accent-teal); }
+  .sig-empty { background:rgba(255,255,255,0.08); }
+  .signal-score { display:inline-flex; align-items:center; gap:3px; }
+  .prospect-row { padding:14px 0; border-bottom:1px solid rgba(74,158,255,0.07); }
+  .prospect-row:last-child { border-bottom:none; padding-bottom:0; }
+  .prospect-top { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:6px; }
+  .prospect-name-block { flex:1; }
+  .prospect-name { font-size:13px; font-weight:600; color:var(--text-primary); }
+  .prospect-type { font-size:11px; color:var(--text-muted); margin-top:1px; }
+  .prospect-meta { display:flex; gap:6px; align-items:center; flex-shrink:0; flex-wrap:wrap; justify-content:flex-end; }
+  .prospect-signal-text { font-size:12px; color:var(--text-secondary); line-height:1.5; margin-bottom:6px; }
+  .outreach-angle { background:rgba(74,158,255,0.06); border:1px solid rgba(74,158,255,0.15); border-radius:6px; padding:8px 12px; font-size:11px; color:var(--text-secondary); line-height:1.5; }
+  .outreach-label { font-size:10px; font-weight:700; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:3px; }
+  .company-table { width:100%; border-collapse:collapse; }
+  .company-table th { font-size:10px; font-weight:600; color:var(--text-muted); letter-spacing:0.8px; text-transform:uppercase; padding:0 0 8px; text-align:left; border-bottom:1px solid var(--border); }
+  .company-table td { font-size:12px; color:var(--text-secondary); padding:8px 0; border-bottom:1px solid rgba(74,158,255,0.07); vertical-align:top; }
+  .company-table tr:last-child td { border-bottom:none; }
+  .company-name { color:var(--text-primary); font-weight:500; }
+  .company-sub { font-size:10px; color:var(--text-muted); margin-top:1px; }
+  .action-card { border-radius:10px; border:1px solid; padding:18px 20px; margin-bottom:10px; }
+  .action-card.act-now { background:rgba(224,80,80,0.06); border-color:rgba(224,80,80,0.25); }
+  .action-card.revenue-opp { background:rgba(240,160,48,0.06); border-color:rgba(240,160,48,0.2); }
+  .action-card.strategic { background:rgba(74,158,255,0.06); border-color:rgba(74,158,255,0.2); }
+  .action-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:10px; }
+  .priority-tag { font-size:10px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; padding:3px 9px; border-radius:4px; flex-shrink:0; }
+  .tag-urgent { background:rgba(224,80,80,0.15); color:var(--accent-red); }
+  .tag-revenue { background:rgba(240,160,48,0.15); color:var(--accent-amber); }
+  .tag-strategic { background:rgba(74,158,255,0.15); color:var(--accent-blue); }
+  .action-title { font-size:13px; font-weight:600; color:var(--text-primary); line-height:1.4; margin-top:1px; margin-right:12px; }
+  .action-body { font-size:12px; color:var(--text-secondary); line-height:1.6; margin-bottom:12px; }
+  .action-impact { display:flex; gap:20px; flex-wrap:wrap; }
+  .impact-item { display:flex; flex-direction:column; gap:2px; }
+  .impact-label { font-size:10px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.7px; }
+  .impact-value { font-size:14px; font-weight:500; }
+  .impact-value.red { color:var(--accent-red); } .impact-value.amber { color:var(--accent-amber); } .impact-value.blue { color:var(--accent-blue); } .impact-value.teal { color:var(--accent-teal); }
+  .teaser-strip { background:rgba(21,58,107,0.5); border:1px solid rgba(74,158,255,0.25); border-radius:10px; padding:20px 24px; margin-bottom:32px; }
+  .teaser-eyebrow { font-size:10px; font-weight:700; color:var(--accent-blue); letter-spacing:1.2px; text-transform:uppercase; margin-bottom:8px; }
+  .teaser-headline { font-size:14px; font-weight:500; color:var(--text-primary); line-height:1.5; margin-bottom:8px; }
+  .teaser-body { font-size:12px; color:var(--text-secondary); line-height:1.6; }
+  .signal-legend { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+  .legend-item { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text-muted); }
+  .report-footer { margin-top:36px; padding-top:20px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+  .footer-brand { font-size:11px; color:var(--text-muted); }
+  .footer-note { font-size:10px; color:var(--text-muted); text-align:right; max-width:340px; line-height:1.5; }
+  @media(max-width:620px){ .summary-grid{grid-template-columns:repeat(2,1fr);} .two-col{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+
+<div class="report-header">
+  <div class="brand-mark">
+    <span class="logo-bracket">{ parameter : 1 }</span>
+    <span class="logo-sep">|</span>
+    <span class="product-name">Publishing Intelligence</span>
+  </div>
+  <div class="report-meta">
+    <div class="pub-name">AQUA Magazine</div>
+    <div class="report-title">Advertiser Prospecting Intelligence Brief</div>
+    <div class="report-issue">April 2026 &nbsp;·&nbsp; For Jared at AQUA Magazine &nbsp;·&nbsp; aquamagazine.com</div>
+  </div>
+</div>
+
+<div class="intro-strip">
+  <div>
+    <div class="intro-greeting">Jared — these companies are spending to reach pool and spa professionals. Just not through AQUA.</div>
+    <div class="intro-sub">Across five public signal sources — LinkedIn Ad Library, trade show data, M&A activity, new product launches, and VC funding — we identified 18 companies actively signaling marketing spend in the pool and spa market with no confirmed presence in AQUA's current advertiser base.</div>
+  </div>
+  <div class="period-badge">April 2026</div>
+</div>
+
+<div class="summary-grid">
+  <div class="stat-card">
+    <div class="stat-label">Companies identified</div>
+    <div class="stat-value">18</div>
+    <div class="stat-delta delta-up">Across 5 signal sources</div>
+    <div class="stat-context">Not confirmed in advertiser base</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Active LinkedIn spenders</div>
+    <div class="stat-value">10</div>
+    <div class="stat-delta delta-up">Running campaigns now</div>
+    <div class="stat-context">Targeting pool &amp; spa professionals</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">M&A positioning signals</div>
+    <div class="stat-value">4</div>
+    <div class="stat-delta delta-warn">Post-acquisition windows open</div>
+    <div class="stat-context">Combined entities need market presence</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Emerging category</div>
+    <div class="stat-value">Cold plunge</div>
+    <div class="stat-delta delta-warn">Fastest-growing segment</div>
+    <div class="stat-context">Multiple companies ramping spend</div>
+  </div>
+</div>
+
+<!-- METHODOLOGY -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-label">
+      <div class="section-num" style="background:var(--text-muted);color:var(--navy);">i</div>
+      <div>
+        <div class="section-title">Signal methodology</div>
+        <div class="section-subtitle">Each source is independently verifiable. Multi-signal companies rank highest.</div>
+      </div>
+    </div>
+    <div class="section-tag">How we scored</div>
+  </div>
+  <div class="card" style="padding:16px 20px;">
+    <div class="signal-legend">
+      <div class="legend-item"><span class="tag-pill tag-linkedin">LinkedIn Ads</span><span style="margin-left:4px;">Active campaign in Ad Library targeting pool/spa professionals</span></div>
+      <div class="legend-item"><span class="tag-pill tag-pr">New product</span><span style="margin-left:4px;">Product launch or commercialization creating awareness need</span></div>
+      <div class="legend-item"><span class="tag-pill tag-ma">M&amp;A</span><span style="margin-left:4px;">Recent acquisition creating combined entity repositioning need</span></div>
+      <div class="legend-item"><span class="tag-pill tag-funding">Funding</span><span style="margin-left:4px;">Recent VC/PE investment signaling marketing ramp ahead</span></div>
+      <div class="legend-item"><span class="tag-pill tag-expansion">US Entry</span><span style="margin-left:4px;">Foreign company building North American market presence</span></div>
+      <div class="legend-item"><span class="tag-pill tag-wellness">Wellness trend</span><span style="margin-left:4px;">Cold plunge / contrast therapy — fastest-growing adjacent segment</span></div>
+    </div>
+    <div style="font-size:11px;color:var(--text-muted);line-height:1.6;border-top:1px solid var(--border);padding-top:12px;">All data sourced from public records only — LinkedIn Ad Library, trade show announcements, press releases, and funding databases. No proprietary access required. Verified April 2026.</div>
+  </div>
+</div>
+
+<!-- SECTION 1: ACTIVE LINKEDIN SPENDERS -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-label">
+      <div class="section-num">1</div>
+      <div>
+        <div class="section-title">Active LinkedIn Spenders — Not in Your Base</div>
+        <div class="section-subtitle">Companies running campaigns right now targeting pool and spa professionals. AQUA's readers. Someone else's advertisers.</div>
+      </div>
+    </div>
+    <div class="section-tag">Highest urgency</div>
+  </div>
+
+  <div class="card">
+    <div class="prospect-row">
+      <div class="prospect-top">
+        <div class="prospect-name-block">
+          <div class="prospect-name">Fairland Group / iGarden</div>
+          <div class="prospect-type">AI pool heat pumps, robotics, smart water management &nbsp;·&nbsp; China — active US/European expansion</div>
+        </div>
+        <div class="prospect-meta">
+          <span class="tag-pill tag-linkedin">LinkedIn Ads</span>
+          <span class="tag-pill tag-expansion">US Entry</span>
+          <span class="tag-pill tag-tradeshow">Piscina Barcelona</span>
+          <div class="signal-score"><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span></div>
+        </div>
+      </div>
+      <div class="prospect-signal-text">The highest-volume LinkedIn advertiser in the pool equipment category by a wide margin — running eight or more separate campaigns across pool heating, robotics, pumping, and smart water management. Recently became official partner of the Fédération Française de Natation (French National Swimming Federation). Won TIME, IFA, and CES innovation awards. Actively recruiting US and European distributors with their iGarden ecosystem. At Piscina Barcelona 2025, their director presented the iGarden global expansion strategy. Multiple sustained campaigns = real marketing budget in active deployment.</div>
+      <div class="outreach-angle">
+        <div class="outreach-label">Outreach angle</div>
+        Fairland is spending heavily on LinkedIn to reach distributor networks and pool professionals in North America. AQUA reaches exactly those buyers — retailers, builders, service pros — who make purchasing decisions on heat pumps and automation equipment. The pitch: your readers buy what Fairland makes. LinkedIn gets them awareness; AQUA gets them credibility with the trade.
+      </div>
+    </div>
+
+    <div class="prospect-row">
+      <div class="prospect-top">
+        <div class="prospect-name-block">
+          <div class="prospect-name">Pedrollo Group USA / Superior Pump</div>
+          <div class="prospect-type">Variable speed pool pumps — BLUE FORCE™ with Flow IQ™ &nbsp;·&nbsp; Italian manufacturer, US division</div>
+        </div>
+        <div class="prospect-meta">
+          <span class="tag-pill tag-linkedin">LinkedIn Ads</span>
+          <span class="tag-pill tag-pr">New Product</span>
+          <span class="tag-pill tag-tradeshow">Trade shows</span>
+          <div class="signal-score"><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span></div>
+        </div>
+      </div>
+      <div class="prospect-signal-text">Running five-plus LinkedIn campaigns for the new BLUE FORCE™ variable speed pool pump with Flow IQ™ smart technology — simultaneously exhibiting at Atlantic City Pool &amp; Spa Show and the Everything Under the Sun Expo in Orlando. Multiple creative formats, consistent spend. New product launches are the single strongest advertising trigger in trade publishing. They have a story to tell and an audience to reach right now.</div>
+      <div class="outreach-angle">
+        <div class="outreach-label">Outreach angle</div>
+        New variable speed pump technology with smart flow monitoring maps directly to AQUA's equipment and technology editorial. A new product spotlight or sponsored content placement at launch is the natural fit. They're already spending to create awareness — AQUA is the verified trade audience they're trying to reach.
+      </div>
+    </div>
+
+    <div class="prospect-row">
+      <div class="prospect-top">
+        <div class="prospect-name-block">
+          <div class="prospect-name">Poolsure (An Aquasol Company)</div>
+          <div class="prospect-type">Commercial pool chemical automation &nbsp;·&nbsp; US-based</div>
+        </div>
+        <div class="prospect-meta">
+          <span class="tag-pill tag-linkedin">LinkedIn Ads</span>
+          <div class="signal-score"><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-empty"></span><span class="sig-pip sig-empty"></span></div>
+        </div>
+      </div>
+      <div class="prospect-signal-text">Running six or more LinkedIn campaigns with consistent messaging: <em>"Stop wasting hours on manual pool testing."</em> Targeting commercial pool operators and facilities managers with automated chemical dosing solutions. US-based, active sustained campaign, clear commercial pool focus. The volume of repeated ads signals a real marketing budget in consistent deployment.</div>
+      <div class="outreach-angle">
+        <div class="outreach-label">Outreach angle</div>
+        AQUA covers commercial pool operations extensively. Poolsure is spending to reach exactly that audience on LinkedIn. A newsletter sponsorship or product feature in a commercial pool issue would deliver verified commercial pool operators directly.
+      </div>
+    </div>
+
+    <div class="prospect-row">
+      <div class="prospect-top">
+        <div class="prospect-name-block">
+          <div class="prospect-name">Cloudastructure</div>
+          <div class="prospect-type">AI-powered pool safety and drowning prevention technology</div>
+        </div>
+        <div class="prospect-meta">
+          <span class="tag-pill tag-linkedin">LinkedIn Ads</span>
+          <span class="tag-pill tag-pr">Active Webinars</span>
+          <div class="signal-score"><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-empty"></span></div>
+        </div>
+      </div>
+      <div class="prospect-signal-text">Running multiple LinkedIn campaigns hosting webinars with Dr. Tom Griffiths, former Penn State aquatics director — covering VGB compliance, drowning prevention, and pool safety liability. Targeting property managers, facility operators, and HOA decision-makers. Content marketing approach with a sustained campaign over multiple months. Pool safety is a core AQUA editorial topic and audience concern.</div>
+      <div class="outreach-angle">
+        <div class="outreach-label">Outreach angle</div>
+        Their webinar content is editorial-quality material AQUA's audience cares about. A sponsored webinar or safety-focused content partnership gives Cloudastructure reach and credibility with verified pool professionals — far beyond what LinkedIn property manager targeting achieves.
+      </div>
+    </div>
+
+    <div class="prospect-row">
+      <div class="prospect-top">
+        <div class="prospect-name-block">
+          <div class="prospect-name">Nuvonic</div>
+          <div class="prospect-type">UV pool disinfection — UVShield product launch &nbsp;·&nbsp; UK/International</div>
+        </div>
+        <div class="prospect-meta">
+          <span class="tag-pill tag-linkedin">LinkedIn Ads</span>
+          <span class="tag-pill tag-pr">New Product</span>
+          <div class="signal-score"><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-empty"></span></div>
+        </div>
+      </div>
+      <div class="prospect-signal-text">Three separate LinkedIn creative campaigns all introducing UVShield — described as "a new era of UV pool disinfection." Long-standing industry player launching a new flagship product with dedicated marketing budget behind it. Product directly relevant to AQUA's water treatment and commercial pool coverage. Active North American awareness push.</div>
+      <div class="outreach-angle">
+        <div class="outreach-label">Outreach angle</div>
+        New product from an established UV player — exactly the kind of technology story AQUA covers. A product focus or technical feature on UV disinfection advances positions Nuvonic in front of the commercial and residential pool operators evaluating water treatment upgrades.
+      </div>
+    </div>
+
+    <div class="prospect-row">
+      <div class="prospect-top">
+        <div class="prospect-name-block">
+          <div class="prospect-name">Evosus</div>
+          <div class="prospect-type">Pool and spa business management software</div>
+        </div>
+        <div class="prospect-meta">
+          <span class="tag-pill tag-linkedin">LinkedIn Ads</span>
+          <div class="signal-score"><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-empty"></span><span class="sig-pip sig-empty"></span></div>
+        </div>
+      </div>
+      <div class="prospect-signal-text">LinkedIn campaign targeting pool and spa professionals: <em>"Most pool pros know their craft. Operational systems is what sets successful businesses apart."</em> Business management software built specifically for the pool and spa trade — targeting the retail, service, and dealer segment that reads AQUA. Software for the industry is a growing and underserved advertising category in pool trade media.</div>
+      <div class="outreach-angle">
+        <div class="outreach-label">Outreach angle</div>
+        AQUA's readers are the business owners Evosus is trying to reach. A business operations or technology content placement connects their product story to the audience that needs it.
+      </div>
+    </div>
+
+    <div class="prospect-row">
+      <div class="prospect-top">
+        <div class="prospect-name-block">
+          <div class="prospect-name">WaterGuru</div>
+          <div class="prospect-type">AI pool water management system — SENSE platform</div>
+        </div>
+        <div class="prospect-meta">
+          <span class="tag-pill tag-linkedin">LinkedIn Ads</span>
+          <span class="tag-pill tag-pr">AI Product</span>
+          <div class="signal-score"><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-empty"></span><span class="sig-pip sig-empty"></span></div>
+        </div>
+      </div>
+      <div class="prospect-signal-text">Multiple LinkedIn campaigns: <em>"Perfectly balanced water every day. Receive professional water treatment advice with WaterGuru SENSE."</em> AI-powered connected pool water management. Growing category as pool owners and service pros seek smart automation. Active LinkedIn spend with consistent creative messaging.</div>
+      <div class="outreach-angle">
+        <div class="outreach-label">Outreach angle</div>
+        Smart pool technology is a fast-growing editorial topic for AQUA. WaterGuru's AI angle is the kind of innovation story that drives engagement with AQUA's retailer and service professional audience.
+      </div>
+    </div>
+
+    <div class="prospect-row">
+      <div class="prospect-top">
+        <div class="prospect-name-block">
+          <div class="prospect-name">THE WAVE TALK</div>
+          <div class="prospect-type">AI deep learning sensor for pool water quality — turbidity &amp; bacteria</div>
+        </div>
+        <div class="prospect-meta">
+          <span class="tag-pill tag-linkedin">LinkedIn Ads</span>
+          <span class="tag-pill tag-pr">Emerging Tech</span>
+          <div class="signal-score"><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-empty"></span><span class="sig-pip sig-empty"></span></div>
+        </div>
+      </div>
+      <div class="prospect-signal-text">Four identical LinkedIn campaigns promoting an AI deep learning sensor chip for measuring turbidity and bacteria in pool water. Emerging technology company in active awareness-building mode. Water quality monitoring technology is directly relevant to commercial aquatic operators and service professionals — AQUA's core audience.</div>
+      <div class="outreach-angle">
+        <div class="outreach-label">Outreach angle</div>
+        Emerging pool tech with a compelling AI story. AQUA's commercial and service readership is the exact audience evaluating new monitoring technology. A technology spotlight would introduce them to a validated professional audience.
+      </div>
+    </div>
+
+    <div class="prospect-row">
+      <div class="prospect-top">
+        <div class="prospect-name-block">
+          <div class="prospect-name">Balboa Water Group</div>
+          <div class="prospect-type">Smart spa and hot tub technology — Purezone connected system</div>
+        </div>
+        <div class="prospect-meta">
+          <span class="tag-pill tag-linkedin">LinkedIn Ads</span>
+          <span class="tag-pill tag-pr">New Product</span>
+          <div class="signal-score"><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-empty"></span><span class="sig-pip sig-empty"></span></div>
+        </div>
+      </div>
+      <div class="prospect-signal-text">LinkedIn campaign promoting Purezone smart connected spa technology, recently featured in EuroSpaPoolNews. Smart spa technology and connectivity is a growing editorial topic. Balboa is an established player actively marketing new connected product lines. Hot tub dealers and spa retailers are exactly AQUA's audience.</div>
+      <div class="outreach-angle">
+        <div class="outreach-label">Outreach angle</div>
+        Connected spa technology story with a new product angle. AQUA reaches the hot tub dealers and spa retailers who stock and recommend Balboa products to end customers.
+      </div>
+    </div>
+
+    <div class="prospect-row" style="padding-bottom:0;border-bottom:none;">
+      <div class="prospect-top">
+        <div class="prospect-name-block">
+          <div class="prospect-name">Air Products Leisure &amp; Hospitality Gases</div>
+          <div class="prospect-type">CO₂ pH control system (CarboStore™) for commercial pools</div>
+        </div>
+        <div class="prospect-meta">
+          <span class="tag-pill tag-linkedin">LinkedIn Ads</span>
+          <div class="signal-score"><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-empty"></span><span class="sig-pip sig-empty"></span></div>
+        </div>
+      </div>
+      <div class="prospect-signal-text">Multiple LinkedIn campaigns targeting pool professionals with CO₂ pH control technology. Copy specifically addresses commercial pool operators: <em>"Revolutionise your pool pH control with the CarboStore™ system."</em> UK/international company with active North American outreach. Water chemistry and commercial operations are core AQUA coverage areas.</div>
+      <div class="outreach-angle">
+        <div class="outreach-label">Outreach angle</div>
+        Commercial chemical management story for an audience of operators who manage pool chemistry daily. A commercial pool water care feature or product placement reaches the right professional buyer.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2: M&A POSITIONING -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-label">
+      <div class="section-num">2</div>
+      <div>
+        <div class="section-title">Post-M&amp;A Positioning Windows</div>
+        <div class="section-subtitle">Recent consolidation is creating combined entities that need to tell new market stories. Marketing spend unlocks 6–12 months post-close.</div>
+      </div>
+    </div>
+    <div class="section-tag">Strategic timing</div>
+  </div>
+
+  <div class="card">
+    <table class="company-table">
+      <thead>
+        <tr>
+          <th style="width:28%">Company</th>
+          <th style="width:30%">Deal</th>
+          <th>Why this matters for ad spend</th>
+          <th style="text-align:right">Signal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="company-name">SPS PoolCare</div>
+            <div class="company-sub">Pool service — largest US consolidator</div>
+          </td>
+          <td style="font-size:11px;color:var(--text-secondary);">Acquired Pool Troopers January 2026 — 191st acquisition, largest to date. Now performs 2M+ weekly pool services across 19 markets in five states.</td>
+          <td style="font-size:11px;color:var(--text-secondary);">The #1 and #2 US pool service companies just became one. A combined entity of this scale needs to establish its unified brand identity with the trade — builders, dealers, and industry professionals who need to know who SPS is and what it stands for. AQUA is the publication those professionals read.</td>
+          <td style="text-align:right;"><span class="tag-pill tag-ma">M&amp;A</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="company-name">Azureon</div>
+            <div class="company-sub">PE-backed Northeast pool service platform</div>
+          </td>
+          <td style="font-size:11px;color:var(--text-secondary);">Formed 2024 through merger of five Northeastern companies backed by O2 Investment Partners. Now 11 locations across five states, still actively acquiring.</td>
+          <td style="font-size:11px;color:var(--text-secondary);">A PE-backed platform built from five brands needs to establish a new unified identity with manufacturers, suppliers, and industry peers. Emerging consolidators use trade press to signal arrival and credibility.</td>
+          <td style="text-align:right;"><span class="tag-pill tag-ma">M&amp;A</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="company-name">Fluidra</div>
+            <div class="company-sub">Global pool equipment leader</div>
+          </td>
+          <td style="font-size:11px;color:var(--text-secondary);">Acquired Variopool (Netherlands) — movable pool floors, walls, and aquatic playgrounds. Also launched €20M Fluidra Ventures CVC fund investing in pool tech startups.</td>
+          <td style="font-size:11px;color:var(--text-secondary);">Portfolio expansion into specialty aquatic infrastructure plus a VC fund positioning them as the innovation engine of the industry. New capabilities need new awareness with AQUA's commercial and design-focused readership.</td>
+          <td style="text-align:right;"><span class="tag-pill tag-ma">M&amp;A</span><span style="display:block;margin-top:4px;" class="tag-pill tag-funding">CVC</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="company-name">Sunlighten / Ice Barrel</div>
+            <div class="company-sub">Contrast therapy — sauna + cold plunge</div>
+          </td>
+          <td style="font-size:11px;color:var(--text-secondary);">Sunlighten acquired key assets of Ice Barrel May 2025, creating Ice Barrel LLC. First major consolidation in the cold plunge space.</td>
+          <td style="font-size:11px;color:var(--text-secondary);">Combined sauna + cold plunge portfolio. As contrast therapy crosses into the pool and spa trade channel, this is the first combined entity in the space — and needs to reach AQUA's spa dealer and wellness-oriented retailer audience.</td>
+          <td style="text-align:right;"><span class="tag-pill tag-ma">M&amp;A</span><span style="display:block;margin-top:4px;" class="tag-pill tag-wellness">Wellness</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:12px;background:rgba(240,160,48,0.07);border:1px solid rgba(240,160,48,0.2);border-radius:8px;padding:12px 14px;font-size:11px;color:var(--text-secondary);line-height:1.6;">
+      <strong style="color:var(--accent-amber);font-weight:600;">Timing note:</strong> SPS PoolCare closed January 2026. The integration quiet period typically lasts 3–6 months. Q2–Q3 2026 is when combined entity brand-building spend typically unlocks. Reaching out now with a specific positioning concept — rather than a rate card — is the right approach.
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3: COLD PLUNGE / WELLNESS -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-label">
+      <div class="section-num">3</div>
+      <div>
+        <div class="section-title">Cold Plunge &amp; Wellness — The Emerging Advertiser Category</div>
+        <div class="section-subtitle">The fastest-growing adjacent segment in the pool and spa industry. Multiple companies scaling marketing spend right now.</div>
+      </div>
+    </div>
+    <div class="section-tag">Category opportunity</div>
+  </div>
+
+  <div class="card">
+    <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px;line-height:1.6;">Cold water immersion has moved from niche athletic recovery to mainstream consumer and commercial wellness. The Cleveland Guardians' hydrotherapy room was covered by AQUA itself. Contrast therapy (cold plunge + sauna) is becoming a standard offering at spas, fitness centers, and high-end residential builds. These companies are spending aggressively to reach the dealers, spa operators, and builders who serve that market — AQUA's exact audience.</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="background:rgba(21,58,107,0.4);border-radius:8px;padding:14px;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;">
+          <div class="company-name">Plunge</div>
+          <span class="tag-pill tag-wellness">Wellness</span>
+        </div>
+        <div class="company-sub" style="margin-bottom:6px;">Cold plunge &amp; contrast therapy — residential and commercial</div>
+        <div style="font-size:11px;color:var(--text-secondary);line-height:1.5;">Just launched All-In Gen 2 flagship product. Established a research partnership with the Medical University of South Carolina. Fastest growing direct-to-consumer cold plunge brand entering the commercial channel. Active press and marketing. Reaching spa dealers and commercial buyers is their next growth stage.</div>
+      </div>
+
+      <div style="background:rgba(21,58,107,0.4);border-radius:8px;padding:14px;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;">
+          <div class="company-name">RENU Therapy</div>
+          <span class="tag-pill tag-wellness">Wellness</span>
+        </div>
+        <div class="company-sub" style="margin-bottom:6px;">Premium cold plunge systems — Cold Stoic 3.0</div>
+        <div style="font-size:11px;color:var(--text-secondary);line-height:1.5;">Launched Cold Stoic 3.0 in June 2024 with enhanced temperature stability and improved filtration. Premium commercial-grade cold plunge targeting health clubs, spas, and athletic facilities. New product launch with active distribution expansion. Fits AQUA's commercial spa readership directly.</div>
+      </div>
+
+      <div style="background:rgba(21,58,107,0.4);border-radius:8px;padding:14px;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;">
+          <div class="company-name">Allcast Plunge Pools</div>
+          <span class="tag-pill tag-linkedin">LinkedIn Ads</span>
+        </div>
+        <div class="company-sub" style="margin-bottom:6px;">Modular commercial plunge pool systems</div>
+        <div style="font-size:11px;color:var(--text-secondary);line-height:1.5;">Active LinkedIn campaign: <em>"6 plunge pools installed in a single day."</em> Modular commercial installation targeting spas, fitness centers, and high-end builders. This is a direct AQUA advertiser profile — commercial, builder-facing, installation-focused.</div>
+      </div>
+
+      <div style="background:rgba(21,58,107,0.4);border-radius:8px;padding:14px;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;">
+          <div class="company-name">Splash</div>
+          <span class="tag-pill tag-funding">Funded</span>
+        </div>
+        <div class="company-sub" style="margin-bottom:6px;">Pool service industry tech platform — San Diego</div>
+        <div style="font-size:11px;color:var(--text-secondary);line-height:1.5;">Raised $4.5M pre-seed in April 2024 to transform the pool service industry. Recently funded company entering commercialization phase. Marketing ramp typically follows 6–12 months after funding close. Pool service software companies are an underserved but growing advertiser category for trade publications.</div>
+      </div>
+    </div>
+
+    <div style="margin-top:12px;background:rgba(168,85,247,0.06);border:1px solid rgba(168,85,247,0.2);border-radius:8px;padding:12px 14px;font-size:11px;color:var(--text-secondary);line-height:1.6;">
+      <strong style="color:#c084fc;font-weight:600;">Category editorial opportunity:</strong> A dedicated cold plunge / contrast therapy product focus section — similar to AQUA's existing product focus issues — would unlock an entirely new advertiser category. These companies have marketing budget and need trade press credibility to reach spa dealers, pool builders, and commercial operators. AQUA is uniquely positioned as the bridge between the wellness trend and the trade professional who installs it.
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4: PRIORITY CALL LIST -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-label">
+      <div class="section-num">4</div>
+      <div>
+        <div class="section-title">Priority Call List</div>
+        <div class="section-subtitle">Top 5 by signal strength, audience fit, and timing. Each has a specific reason to call this month.</div>
+      </div>
+    </div>
+    <div class="section-tag">Act this month</div>
+  </div>
+
+  <div class="card">
+    <table class="company-table">
+      <thead>
+        <tr>
+          <th style="width:24%">Company</th>
+          <th style="width:16%">Signals</th>
+          <th>Why this month specifically</th>
+          <th style="text-align:right;white-space:nowrap;">Est. value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="company-name">Fairland / iGarden</div>
+            <div class="company-sub">Pool heating &amp; smart equipment</div>
+          </td>
+          <td>
+            <div class="signal-score" style="margin-bottom:4px;"><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span></div>
+            <span class="tag-pill tag-linkedin">LinkedIn</span>
+          </td>
+          <td style="font-size:11px;color:var(--text-secondary);">Highest volume LinkedIn spender in the category. Multiple sustained campaigns. Active US distributor expansion. PSP Expo 2026 in New Orleans is November — approaching them now about a pre-show campaign package gives you a timely, specific reason to call.</td>
+          <td style="text-align:right;"><div style="font-size:13px;font-weight:600;color:var(--accent-teal);">$20–36K</div></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="company-name">Pedrollo / Superior Pump</div>
+            <div class="company-sub">BLUE FORCE pump launch</div>
+          </td>
+          <td>
+            <div class="signal-score" style="margin-bottom:4px;"><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span></div>
+            <span class="tag-pill tag-pr">New product</span>
+          </td>
+          <td style="font-size:11px;color:var(--text-secondary);">Active new product campaign right now. They're already spending. The conversation is simple: you're spending to reach pool professionals — here's the verified professional audience you're not currently reaching. New product launches have the shortest sales cycle in trade advertising.</td>
+          <td style="text-align:right;"><div style="font-size:13px;font-weight:600;color:var(--accent-teal);">$18–30K</div></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="company-name">SPS PoolCare</div>
+            <div class="company-sub">Post-acquisition positioning</div>
+          </td>
+          <td>
+            <div class="signal-score" style="margin-bottom:4px;"><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span></div>
+            <span class="tag-pill tag-ma">M&amp;A</span>
+          </td>
+          <td style="font-size:11px;color:var(--text-secondary);">Pool Troopers deal closed January 2026. Integration quiet period ending Q2. They now lead the US service industry and need to establish that story with the trade. Bring a specific editorial concept about industry consolidation — not a rate card. Highest potential value on this list.</td>
+          <td style="text-align:right;"><div style="font-size:13px;font-weight:600;color:var(--accent-teal);">$28–48K</div></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="company-name">Cloudastructure</div>
+            <div class="company-sub">AI pool safety technology</div>
+          </td>
+          <td>
+            <div class="signal-score" style="margin-bottom:4px;"><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-empty"></span></div>
+            <span class="tag-pill tag-linkedin">LinkedIn</span>
+          </td>
+          <td style="font-size:11px;color:var(--text-secondary);">Pool season is opening now — their campaigns reference this timing explicitly. Drowning prevention and pool safety is a perennial AQUA editorial topic. The webinar approach shows they understand content marketing. A sponsored webinar or safety-focused content partnership is the natural offer.</td>
+          <td style="text-align:right;"><div style="font-size:13px;font-weight:600;color:var(--accent-teal);">$14–22K</div></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="company-name">Plunge</div>
+            <div class="company-sub">Cold plunge category leader</div>
+          </td>
+          <td>
+            <div class="signal-score" style="margin-bottom:4px;"><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-filled"></span><span class="sig-pip sig-empty"></span></div>
+            <span class="tag-pill tag-wellness">Wellness</span>
+          </td>
+          <td style="font-size:11px;color:var(--text-secondary);">All-In Gen 2 just launched. MUSC research partnership announced. Actively expanding into commercial channel. The pitch: AQUA reaches the spa dealers, pool builders, and commercial operators who are adding cold plunge to their offerings. That's their next market and AQUA is the door.</td>
+          <td style="text-align:right;"><div style="font-size:13px;font-weight:600;color:var(--accent-teal);">$16–26K</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ACTION BRIEF -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-label">
+      <div class="section-num">5</div>
+      <div>
+        <div class="section-title">Action Brief</div>
+        <div class="section-subtitle">Three moves. This month.</div>
+      </div>
+    </div>
+    <div class="section-tag">What to do</div>
+  </div>
+
+  <div class="action-card act-now">
+    <div class="action-header">
+      <div class="action-title">Call Pedrollo/Superior Pump and Fairland this week — both have active campaigns spending right now to reach your readers</div>
+      <div class="priority-tag tag-urgent">This week</div>
+    </div>
+    <div class="action-body">Both companies are running sustained LinkedIn campaigns targeting pool professionals. Pedrollo just launched a new product with real marketing budget behind it. Fairland is in aggressive North American expansion mode. The pitch isn't "here's our media kit" — it's "you're paying LinkedIn to reach professionals who already read AQUA. Here's what that looks like." Neither conversation requires a proposal. Both require a call this week while the campaigns are live.</div>
+    <div class="action-impact">
+      <div class="impact-item"><div class="impact-label">Combined est. value</div><div class="impact-value red">$38–66K</div></div>
+      <div class="impact-item"><div class="impact-label">Urgency</div><div class="impact-value red">Campaigns live now</div></div>
+      <div class="impact-item"><div class="impact-label">Fit</div><div class="impact-value red">Direct editorial match</div></div>
+    </div>
+  </div>
+
+  <div class="action-card revenue-opp">
+    <div class="action-header">
+      <div class="action-title">Approach SPS PoolCare about a combined entity positioning campaign before Q3 — the integration window is closing</div>
+      <div class="priority-tag tag-revenue">Revenue</div>
+    </div>
+    <div class="action-body">SPS PoolCare + Pool Troopers closed January 2026. They are now the undisputed #1 US pool service company performing 2 million weekly services. They have a story to tell the industry and Q2–Q3 is when post-acquisition brand building spend typically unlocks. Bring a specific editorial concept — a profile, a thought leadership series, a category report on service consolidation — not a display rate card. You're positioning AQUA as the platform where the industry leader announces its arrival to the trade.</div>
+    <div class="action-impact">
+      <div class="impact-item"><div class="impact-label">Est. campaign value</div><div class="impact-value amber">$28–48K</div></div>
+      <div class="impact-item"><div class="impact-label">Timing window</div><div class="impact-value amber">Q2–Q3 2026</div></div>
+      <div class="impact-item"><div class="impact-label">Pitch angle</div><div class="impact-value amber">Industry debut</div></div>
+    </div>
+  </div>
+
+  <div class="action-card strategic">
+    <div class="action-header">
+      <div class="action-title">Build a cold plunge product focus section for the 2026 editorial calendar — it unlocks an entirely new advertiser category</div>
+      <div class="priority-tag tag-strategic">Strategic</div>
+    </div>
+    <div class="action-body">Cold plunge and contrast therapy is the fastest-growing adjacent category in the pool and spa trade. AQUA already covered it — the Cleveland Guardians hydrotherapy room appeared in the magazine. Plunge, RENU Therapy, Allcast, Ice Barrel, Sunlighten, Chill Tubs, and others are all spending to reach spa dealers, commercial operators, and pool builders — AQUA's exact audience. A dedicated cold plunge / wellness product focus issue or section creates a natural hook to call 8–10 companies in this emerging segment with a specific, timely offer rather than a generic sponsorship pitch.</div>
+    <div class="action-impact">
+      <div class="impact-item"><div class="impact-label">Target companies</div><div class="impact-value blue">8–10</div></div>
+      <div class="impact-item"><div class="impact-label">Category est. value</div><div class="impact-value blue">$60–100K</div></div>
+      <div class="impact-item"><div class="impact-label">Timeline</div><div class="impact-value blue">Q3 2026 issue</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TEASER -->
+<div class="teaser-strip">
+  <div class="teaser-eyebrow">This is just the public data layer</div>
+  <div class="teaser-headline">Every company in this brief was identified using signals anyone could theoretically find. Imagine what it looks like when it's combined with what only AQUA knows.</div>
+  <div class="teaser-body">This brief identified 18 companies using public data alone — LinkedIn Ad Library, trade show records, funding announcements, M&A filings, and press releases. None of it required access to your systems. A deeper intelligence layer — one built on AQUA's own first-party audience data, reader engagement depth, verified professional identities, and content intent signals — would surface not just who should be advertising with you, but which of your readers are actively evaluating these companies' products right now. That's the conversation we'd like to have with you next.</div>
+</div>
+
+<!-- CHAT -->
+<div style="margin-bottom:36px;">
+  <div class="section-header">
+    <div class="section-label">
+      <div class="section-num" style="background:var(--accent-teal);">?</div>
+      <div>
+        <div class="section-title">Ask about this data</div>
+        <div class="section-subtitle">Questions about any company, signal, or outreach approach in this brief.</div>
+      </div>
+    </div>
+    <div class="section-tag">Intelligence layer</div>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div id="chat-messages" style="padding:16px 20px;display:flex;flex-direction:column;gap:12px;min-height:80px;max-height:340px;overflow-y:auto;">
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <div style="width:26px;height:26px;border-radius:50%;background:rgba(74,158,255,0.15);border:1px solid rgba(74,158,255,0.3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--accent-blue);flex-shrink:0;">PI</div>
+        <div style="background:rgba(21,58,107,0.5);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--text-secondary);line-height:1.6;max-width:88%;">
+          I have the full context of this brief. Ask about any company, signal, or outreach approach. Try: <span style="color:var(--accent-blue);cursor:pointer;" onclick="fillQ('Which company on this list is the easiest first call and why?')">"Which is the easiest first call?"</span> or <span style="color:var(--accent-blue);cursor:pointer;" onclick="fillQ('How do I pitch AQUA against LinkedIn ads to a pool equipment company?')">"How do I pitch against LinkedIn ads?"</span>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid var(--border);padding:12px 16px;display:flex;gap:10px;align-items:flex-end;">
+      <textarea id="chat-input" placeholder="Ask a question about the brief..." rows="1" style="flex:1;background:rgba(21,58,107,0.3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--text-primary);font-family:'Inter',sans-serif;resize:none;outline:none;line-height:1.5;" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendQ();}"></textarea>
+      <button onclick="sendQ()" style="background:var(--accent-blue);border:none;border-radius:8px;padding:10px 16px;font-size:12px;font-weight:600;color:var(--navy);cursor:pointer;white-space:nowrap;height:40px;">Ask</button>
+    </div>
+  </div>
+</div>
+
+<div class="report-footer">
+  <div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+      <span class="logo-bracket" style="font-size:11px;">{ parameter : 1 }</span>
+      <span style="font-size:10px;color:var(--text-muted)">|</span>
+      <span style="font-size:10px;font-weight:600;color:var(--accent-blue);letter-spacing:1px;text-transform:uppercase;">Mindful</span>
+    </div>
+    <div class="footer-brand">mindful.pub &nbsp;·&nbsp; sales@mindful.pub</div>
+  </div>
+  <div class="footer-note">Built from public data only — LinkedIn Ad Library, PSP Expo records, funding announcements, M&A press releases. No proprietary data sources. Produced manually for AQUA Magazine as a proof of concept, April 2026.</div>
+</div>
+
+</body>
+<script>
+const REPORT_CONTEXT = `You are the intelligence layer behind an Advertiser Prospecting Intelligence Brief for AQUA Magazine (aquamagazine.com), prepared for Jared at AQUA. This brief was produced by Parameter1 / Mindful Publishing Intelligence as a proof of concept.
+
+AQUA Magazine is the business magazine for pool and spa professionals — serving retailers, builders, and service pros since 1976. 15,000+ audited subscribers. PSP Expo is their flagship industry trade show connection.
+
+SECTION 1 — Active LinkedIn Spenders:
+1. Fairland Group / iGarden — Chinese pool heat pump/robotics/smart water company. Highest-volume LinkedIn advertiser in pool equipment category. 8+ campaigns. FFN official partner. TIME/IFA/CES awards. Active US/European distributor expansion. Est. value $20-36K.
+2. Pedrollo Group USA / Superior Pump — Italian pump manufacturer launching BLUE FORCE variable speed pool pump with Flow IQ technology. 5+ LinkedIn campaigns. Active at Atlantic City and Everything Under the Sun Expo. Est. value $18-30K.
+3. Poolsure (Aquasol Company) — Commercial pool chemical automation. 6+ LinkedIn campaigns. "Stop wasting hours on manual pool testing." US-based. Est. value $12-20K.
+4. Cloudastructure — AI pool safety/drowning prevention. Multiple webinar campaigns with Dr. Tom Griffiths (Penn State aquatics). Targeting property managers and facility operators. Est. value $14-22K.
+5. Nuvonic — UV pool disinfection, launching UVShield. 3 LinkedIn campaigns. UK-based building North American presence. Est. value $10-18K.
+6. Evosus — Pool and spa business management software. LinkedIn targeting pool/spa pros. "Most pool pros know their craft. Operational systems sets successful businesses apart." Est. value $8-14K.
+7. WaterGuru — AI pool water management (SENSE platform). Multiple LinkedIn campaigns. "Perfectly balanced water every day." Est. value $8-14K.
+8. THE WAVE TALK — AI deep learning sensor for pool water quality. 4 LinkedIn campaigns. Emerging tech, awareness-building. Est. value $6-12K.
+9. Balboa Water Group — Smart spa technology, Purezone system. LinkedIn + EuroSpaPoolNews featured. Est. value $10-18K.
+10. Air Products Leisure & Hospitality Gases — CO2 pH control (CarboStore) for commercial pools. Multiple LinkedIn campaigns. UK-based. Est. value $8-14K.
+
+SECTION 2 — M&A Positioning:
+- SPS PoolCare: Acquired Pool Troopers January 2026. 191st acquisition. Now #1 US pool service, 2M+ weekly services, 19 markets, 5 states. Combined entity needs to establish trade identity. Est. value $28-48K.
+- Azureon: PE-backed (O2 Investment Partners), formed 2024 from 5 Northeast companies. 11 locations, 5 states, still acquiring. Est. value $12-20K.
+- Fluidra: Acquired Variopool (Netherlands, movable pool floors/walls). Launched €20M Fluidra Ventures CVC fund. New capabilities + innovation positioning. Est. value $20-36K.
+- Sunlighten/Ice Barrel: Sunlighten acquired Ice Barrel assets May 2025. First major cold plunge consolidation. Contrast therapy portfolio reaching spa dealer channel.
+
+SECTION 3 — Cold Plunge & Wellness:
+- Plunge: Just launched All-In Gen 2. MUSC research partnership. Expanding commercial. Est. value $16-26K.
+- RENU Therapy: Cold Stoic 3.0 launch June 2024. Premium commercial systems. Est. value $10-18K.
+- Allcast Plunge Pools: LinkedIn campaign "6 plunge pools in a single day." Modular commercial. Direct AQUA profile. Est. value $10-16K.
+- Splash: $4.5M pre-seed April 2024. Pool service tech platform. Marketing ramp approaching. Est. value $8-14K.
+
+PRIORITY CALL LIST:
+1. Fairland/iGarden — $20-36K, LinkedIn + US expansion, PSP Expo 2026 package angle
+2. Pedrollo/Superior Pump — $18-30K, active new product launch, call this week
+3. SPS PoolCare — $28-48K, post-acquisition positioning, Q2-Q3 window
+4. Cloudastructure — $14-22K, pool season timing, webinar partnership angle
+5. Plunge — $16-26K, commercial expansion, cold plunge category
+
+ACTION BRIEF:
+1. Call Pedrollo and Fairland this week — both spending on LinkedIn now
+2. Contact SPS PoolCare before Q3 — combined entity positioning window
+3. Build cold plunge product focus section — unlocks 8-10 new advertisers, $60-100K category
+
+PSP Expo 2026: November 17-19, New Orleans. Pre-show campaign packages are a natural outreach vehicle for European and international companies.
+
+NORTHSTAR TEASER: This used public data only. A deeper version connected to AQUA's first-party reader engagement data would show which readers are actively evaluating these products — turning a prospecting list into a verified intent audience.
+
+Answer questions helpfully and specifically about any company, signal, outreach approach, or methodology. Keep responses concise and actionable. You're speaking to a B2B trade publishing professional.`;
+
+async function sendQ() {
+  const input = document.getElementById('chat-input');
+  const q = input.value.trim();
+  if (!q) return;
+  input.value = '';
+  input.style.height = 'auto';
+  addMessage(q, 'user');
+  const thinking = addMessage('...', 'bot', true);
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: REPORT_CONTEXT,
+        messages: [{role: 'user', content: q}]
+      })
+    });
+    const data = await res.json();
+    const answer = data.content?.[0]?.text || 'No response received.';
+    thinking.remove();
+    addMessage(answer, 'bot');
+  } catch(e) {
+    thinking.remove();
+    addMessage('Unable to reach the intelligence layer. Please try again.', 'bot');
+  }
+}
+function fillQ(text) { document.getElementById('chat-input').value = text; document.getElementById('chat-input').focus(); }
+function addMessage(text, role, isTemp=false) {
+  const container = document.getElementById('chat-messages');
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'display:flex;gap:10px;align-items:flex-start;';
+  const avatar = document.createElement('div');
+  if (role === 'user') {
+    avatar.style.cssText = 'width:26px;height:26px;border-radius:50%;background:rgba(29,184,138,0.15);border:1px solid rgba(29,184,138,0.3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#1db88a;flex-shrink:0;';
+    avatar.textContent = 'AQ';
+  } else {
+    avatar.style.cssText = 'width:26px;height:26px;border-radius:50%;background:rgba(74,158,255,0.15);border:1px solid rgba(74,158,255,0.3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#4a9eff;flex-shrink:0;';
+    avatar.textContent = 'PI';
+  }
+  const bubble = document.createElement('div');
+  bubble.style.cssText = `border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.6;max-width:88%;white-space:pre-wrap;${role==='user'?'background:rgba(29,184,138,0.08);border:1px solid rgba(29,184,138,0.2);color:#8ba0c0;margin-left:auto;':'background:rgba(21,58,107,0.5);border:1px solid rgba(74,158,255,0.15);color:#8ba0c0;'}`;
+  bubble.textContent = text;
+  if (role==='user') wrap.style.flexDirection='row-reverse';
+  wrap.appendChild(avatar); wrap.appendChild(bubble);
+  container.appendChild(wrap);
+  container.scrollTop = container.scrollHeight;
+  return wrap;
+}
+document.getElementById('chat-input').addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+});
+</script>
+</html>
