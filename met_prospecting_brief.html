@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advertiser Prospecting Intelligence — Manufacturing Engineering & Technology</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--navy:#0a1628;--navy-mid:#0f2847;--navy-light:#153a6b;
+--accent-blue:#4a9eff;--accent-teal:#1db88a;--accent-amber:#f0a030;--accent-red:#e05050;--accent-green:#2eb872;
+--text-primary:#f0f4ff;--text-secondary:#8ba0c0;--text-muted:#546880;
+--border:rgba(74,158,255,0.15);--border-strong:rgba(74,158,255,0.3);
+--card-bg:rgba(15,40,71,0.6);--card-bg-strong:rgba(21,58,107,0.4)
+}
+body{font-family:'Inter',sans-serif;background:var(--navy);color:var(--text-primary);font-size:13px;line-height:1.6;-webkit-font-smoothing:antialiased;max-width:880px;margin:0 auto;padding:32px 24px 64px}
+.report-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.brand-mark{display:flex;align-items:center;gap:12px}
+.logo-bracket{font-size:13px;font-weight:500;color:var(--accent-blue);letter-spacing:-0.5px}
+.product-name{font-size:11px;font-weight:600;color:var(--accent-blue);letter-spacing:1.5px;text-transform:uppercase}
+.report-meta{text-align:right}
+.pub-name{font-size:16px;font-weight:600;color:var(--text-primary)}
+.pub-sub{font-size:11px;color:var(--text-secondary);margin-top:2px}
+.report-date{font-size:11px;color:var(--text-muted);margin-top:4px}
+.intro-strip{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin-bottom:24px;display:flex;gap:16px;align-items:flex-start}
+.intro-icon{width:32px;height:32px;background:rgba(74,158,255,0.15);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+.intro-text{font-size:12px;color:var(--text-secondary);line-height:1.6}
+.intro-text strong{color:var(--text-primary)}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+.stat-card{background:var(--card-bg-strong);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+.stat-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+.stat-value{font-size:22px;font-weight:700;color:var(--accent-blue)}
+.stat-sub{font-size:10px;color:var(--text-secondary);margin-top:2px}
+.section-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;margin-top:32px}
+.section-tag{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:3px 8px;border-radius:4px}
+.tag-blue{background:rgba(74,158,255,0.15);color:var(--accent-blue)}
+.tag-amber{background:rgba(240,160,48,0.15);color:var(--accent-amber)}
+.tag-teal{background:rgba(29,184,138,0.15);color:var(--accent-teal)}
+.tag-red{background:rgba(224,80,80,0.15);color:var(--accent-red)}
+.section-title{font-size:14px;font-weight:600;color:var(--text-primary)}
+.company-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:8px}
+.company-card{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:16px}
+.company-card:hover{border-color:var(--border-strong)}
+.company-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.company-name{font-size:13px;font-weight:600;color:var(--text-primary)}
+.company-sub{font-size:11px;color:var(--text-secondary);margin-top:1px}
+.signal-badge{display:flex;align-items:center;gap:4px;font-size:9px;font-weight:600;padding:3px 7px;border-radius:4px;white-space:nowrap;flex-shrink:0}
+.badge-hot{background:rgba(224,80,80,0.15);color:var(--accent-red)}
+.badge-active{background:rgba(74,158,255,0.15);color:var(--accent-blue)}
+.badge-launch{background:rgba(240,160,48,0.15);color:var(--accent-amber)}
+.badge-funded{background:rgba(29,184,138,0.15);color:var(--accent-teal)}
+.badge-intel{background:rgba(148,100,220,0.15);color:#a87de0}
+.company-desc{font-size:11px;color:var(--text-secondary);line-height:1.55;margin-bottom:10px}
+.company-desc strong{color:var(--text-primary)}
+.signal-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.signal-pill{font-size:9px;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,0.06);color:var(--text-muted);border:1px solid rgba(255,255,255,0.08)}
+.outreach-hint{font-size:10px;color:var(--accent-teal);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+.call-list{margin-bottom:8px}
+.call-row{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--card-bg);border:1px solid var(--border);border-radius:8px;margin-bottom:8px}
+.call-rank{width:22px;height:22px;border-radius:50%;background:rgba(74,158,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--accent-blue);flex-shrink:0}
+.call-company{flex:1}
+.call-name{font-size:12px;font-weight:600;color:var(--text-primary)}
+.call-reason{font-size:10px;color:var(--text-secondary);margin-top:2px}
+.call-est{text-align:right;flex-shrink:0}
+.call-revenue{font-size:12px;font-weight:600;color:var(--accent-teal)}
+.call-label{font-size:9px;color:var(--text-muted)}
+.action-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:8px}
+.action-card{background:var(--card-bg-strong);border:1px solid var(--border);border-radius:8px;padding:16px}
+.action-num{font-size:28px;font-weight:700;color:rgba(74,158,255,0.25);margin-bottom:6px}
+.action-title{font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:6px}
+.action-desc{font-size:11px;color:var(--text-secondary);line-height:1.55}
+.intel-card{background:rgba(148,100,220,0.08);border:1px solid rgba(148,100,220,0.2);border-radius:8px;padding:16px;margin-bottom:8px}
+.intel-header{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#a87de0;margin-bottom:8px}
+.intel-body{font-size:11px;color:var(--text-secondary);line-height:1.55}
+.intel-body strong{color:var(--text-primary)}
+.teaser-strip{background:linear-gradient(135deg,rgba(74,158,255,0.08),rgba(29,184,138,0.08));border:1px solid rgba(74,158,255,0.2);border-radius:8px;padding:18px 20px;display:flex;align-items:center;gap:16px;margin-top:32px}
+.teaser-left{flex:1}
+.teaser-title{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:4px}
+.teaser-sub{font-size:11px;color:var(--text-secondary)}
+.teaser-cta{font-size:11px;font-weight:600;color:var(--accent-blue);white-space:nowrap;padding:8px 16px;border:1px solid rgba(74,158,255,0.3);border-radius:6px;background:rgba(74,158,255,0.08);cursor:pointer}
+.chat-panel{background:rgba(15,40,71,0.8);border:1px solid var(--border-strong);border-radius:12px;overflow:hidden;margin-top:32px}
+.chat-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.chat-dot{width:8px;height:8px;border-radius:50%;background:var(--accent-teal)}
+.chat-title{font-size:12px;font-weight:600;color:var(--text-primary)}
+.chat-sub{font-size:10px;color:var(--text-muted);margin-left:auto}
+.chat-body{padding:16px;min-height:120px;max-height:280px;overflow-y:auto}
+.chat-msg{margin-bottom:10px}
+.msg-role{font-size:9px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;margin-bottom:3px}
+.msg-user{color:var(--accent-blue)}
+.msg-ai{color:var(--accent-teal)}
+.msg-text{font-size:11px;color:var(--text-secondary);line-height:1.55;padding:8px 12px;border-radius:6px;background:rgba(255,255,255,0.04)}
+.chat-input-row{border-top:1px solid var(--border);padding:12px 16px;display:flex;gap:10px;align-items:flex-end}
+#chat-input{flex:1;background:rgba(21,58,107,0.3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--text-primary);font-family:'Inter',sans-serif;resize:none;outline:none;line-height:1.5}
+#chat-input::placeholder{color:var(--text-muted)}
+.chat-send{background:var(--accent-blue);border:none;border-radius:8px;padding:10px 16px;font-size:12px;font-weight:600;color:var(--navy);cursor:pointer;height:40px;white-space:nowrap}
+.quick-q{display:inline-block;font-size:10px;color:var(--accent-blue);cursor:pointer;margin-right:8px;margin-bottom:4px}
+.quick-q:hover{text-decoration:underline}
+.report-footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start}
+.footer-brand{font-size:10px;color:var(--text-muted);margin-top:3px}
+.footer-note{font-size:9px;color:var(--text-muted);max-width:360px;text-align:right;line-height:1.5}
+@media(max-width:600px){
+.stat-grid{grid-template-columns:repeat(2,1fr)}
+.company-grid{grid-template-columns:1fr}
+.action-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="report-header">
+  <div class="brand-mark">
+    <span class="logo-bracket">{ parameter : 1 }</span>
+    <span style="color:var(--text-muted);font-size:11px">|</span>
+    <span class="product-name">Mindful</span>
+  </div>
+  <div class="report-meta">
+    <div class="pub-name">Manufacturing Engineering &amp; Technology</div>
+    <div class="pub-sub">SME Media — Prepared for Ryan Elliott</div>
+    <div class="report-date">Advertiser Prospecting Intelligence Brief · April 2026</div>
+  </div>
+</div>
+
+<div class="intro-strip">
+  <div class="intro-icon">&#9678;</div>
+  <div class="intro-text">
+    This brief surfaces companies <strong>actively spending to reach manufacturing engineers right now</strong> — through LinkedIn paid campaigns, new product launches, and funded growth — who are not currently in MET's advertiser base. Signals were pulled across 7 LinkedIn Ad Library searches, IMTS 2024 exhibitor data, and manufacturing tech funding news. <strong>IMTS 2026 is 5 months away</strong> (Sept 14–19). Companies building brand presence now are doing it deliberately.
+  </div>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="stat-label">LinkedIn Searches</div>
+    <div class="stat-value">7</div>
+    <div class="stat-sub">manufacturing automation, CNC, additive mfg, robotics, mfg software, aerospace, metrology</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Prospect Companies</div>
+    <div class="stat-value">15</div>
+    <div class="stat-sub">active LinkedIn spenders reaching your audience</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Total Est. Revenue</div>
+    <div class="stat-value" style="color:var(--accent-teal)">$240K+</div>
+    <div class="stat-sub">annual opportunity if 8 of 15 close at mid-range</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">IMTS 2026</div>
+    <div class="stat-value" style="color:var(--accent-amber)">5mo</div>
+    <div class="stat-sub">companies gearing up are in active brand-building mode now</div>
+  </div>
+</div>
+
+<!-- SECTION 1: ACTIVE LINKEDIN SPENDERS -->
+<div class="section-header">
+  <span class="section-tag tag-blue">Section 1</span>
+  <span class="section-title">Active LinkedIn Spenders — Reaching Your Audience Without You</span>
+</div>
+
+<div class="company-grid">
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">Intrinsic</div><div class="company-sub">Google / Alphabet · Industrial Robotics Software</div></div>
+      <span class="signal-badge badge-hot">&#9679; Hot</span>
+    </div>
+    <div class="company-desc">Google's industrial robotics software division is running LinkedIn campaigns explicitly targeting small and medium-sized machine shop owners asking: <strong>"Have you considered how AI can help you achieve high-mix production?"</strong> They are spending paid media dollars to reach the exact audience that reads MET. Multiple active campaigns.</div>
+    <div class="signal-row">
+      <span class="signal-pill">2+ active LinkedIn ads</span>
+      <span class="signal-pill">targets SMB machine shops</span>
+      <span class="signal-pill">Google/Alphabet budget</span>
+      <span class="signal-pill">perfect MET editorial fit</span>
+    </div>
+    <div class="outreach-hint">&#9650; Ask them why they're paying LinkedIn to reach your subscribers instead of advertising in MET directly.</div>
+  </div>
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">Vericut (CGTech)</div><div class="company-sub">Irvine, CA · CNC Simulation &amp; Verification Software</div></div>
+      <span class="signal-badge badge-active">&#9679; Active</span>
+    </div>
+    <div class="company-desc">One of the most consistent LinkedIn advertisers in the CNC and aerospace searches. Running an <strong>"aerospace design revision checklist"</strong> campaign specifically for machining teams — downloadable asset, multi-ad campaign across search terms. US company, direct fit for MET's engineering audience. Likely a past advertiser; if lapsed, this confirms they're back in spend mode.</div>
+    <div class="signal-row">
+      <span class="signal-pill">4+ active ad variants</span>
+      <span class="signal-pill">CNC + aerospace searches</span>
+      <span class="signal-pill">downloadable lead gen</span>
+    </div>
+    <div class="outreach-hint">&#9650; High-value call. If they're not currently in MET, this is an easy win — they're already paying to reach your readers.</div>
+  </div>
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">Fictiv</div><div class="company-sub">San Francisco, CA · On-Demand CNC &amp; Sheet Metal</div></div>
+      <span class="signal-badge badge-active">&#9679; Active</span>
+    </div>
+    <div class="company-desc">Highest-volume single advertiser in the CNC machining search. Running a full content campaign series: <strong>"Master CNC Design," "CNC Machining Design Stack," "Essential Tips for Precision CNC."</strong> 8+ ad variants. Recently partnered with MISUMI for BOM sourcing. Fast-growing US manufacturing platform targeting engineers who design and spec parts — core MET reader.</div>
+    <div class="signal-row">
+      <span class="signal-pill">8+ active ad variants</span>
+      <span class="signal-pill">MISUMI partnership</span>
+      <span class="signal-pill">US company, growth stage</span>
+    </div>
+    <div class="outreach-hint">&#9650; They're running a sustained awareness campaign to engineers. MET is a direct extension of that strategy.</div>
+  </div>
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">Path Robotics</div><div class="company-sub">Columbus, OH · Autonomous Welding Cells</div></div>
+      <span class="signal-badge badge-hot">&#9679; Live Now</span>
+    </div>
+    <div class="company-desc">Running a <strong>live demo campaign this week</strong> — April 29 webinar where the system "scans a real part, builds its own weld plan, and adapts to part variation in real time." Target: manufacturers with high-mix production and variable parts. US company, Ohio-based, directly relevant to MET's job shop and Tier 1 supplier audience. Likely series-funded and growing US distribution.</div>
+    <div class="signal-row">
+      <span class="signal-pill">live webinar April 29</span>
+      <span class="signal-pill">Ohio-based</span>
+      <span class="signal-pill">high-mix manufacturing</span>
+    </div>
+    <div class="outreach-hint">&#9650; Call this week while the demo campaign is live — they're actively spending on awareness right now.</div>
+  </div>
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">1factory</div><div class="company-sub">Quality Management Software for Manufacturers</div></div>
+      <span class="signal-badge badge-active">&#9679; Active</span>
+    </div>
+    <div class="company-desc">Appeared in both <strong>manufacturing software and aerospace searches</strong>. Was at IMTS 2024 (booth #134350). Running multiple campaigns: NCR/CAPA workflows, document control, training management. "550+ customers, rated 4.9/5." The quality and inspection beat is core SME editorial territory. Active LinkedIn spend confirms ongoing marketing investment.</div>
+    <div class="signal-row">
+      <span class="signal-pill">IMTS 2024 exhibitor</span>
+      <span class="signal-pill">2 search term overlap</span>
+      <span class="signal-pill">QMS / inspection</span>
+    </div>
+    <div class="outreach-hint">&#9650; Strong editorially and commercially. IMTS 2024 presence + LinkedIn spend = real marketing budget.</div>
+  </div>
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">AutomationWithinReach (AWR)</div><div class="company-sub">CNC Robotic Machine Tending</div></div>
+      <span class="signal-badge badge-active">&#9679; Active</span>
+    </div>
+    <div class="company-desc">Running 4+ campaigns across manufacturing automation and CNC searches. Message is tight and SME-relevant: <strong>"Reduce labor strain, improve consistency, increase CNC uptime with robotic machine tending."</strong> Targets small and mid-size shops with automation ROI. North American market focus.</div>
+    <div class="signal-row">
+      <span class="signal-pill">4+ ad variants</span>
+      <span class="signal-pill">CNC + automation</span>
+      <span class="signal-pill">SMB shop focus</span>
+    </div>
+    <div class="outreach-hint">&#9650; Exactly the buyer profile that reads MET. Good entry-level advertiser with a targeted message.</div>
+  </div>
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">Conexiom</div><div class="company-sub">Order Automation for Manufacturers</div></div>
+      <span class="signal-badge badge-active">&#9679; Active</span>
+    </div>
+    <div class="company-desc">Multiple campaigns in the manufacturing software search. Message: <strong>"Customer service teams spend up to 80% of their day keying order data from emails — there's a smarter way."</strong> Mid-market manufacturer focus, real-world pain point, US-oriented. Operations efficiency is adjacent to MET's editorial and commercial base.</div>
+    <div class="signal-row">
+      <span class="signal-pill">3+ active campaigns</span>
+      <span class="signal-pill">mid-market focus</span>
+      <span class="signal-pill">manufacturing ops</span>
+    </div>
+    <div class="outreach-hint">&#9650; Good mid-funnel advertiser for the manufacturing software/ERP editorial angle.</div>
+  </div>
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">Aleran Software</div><div class="company-sub">Milwaukee, WI · Connected Commerce for Manufacturers</div></div>
+      <span class="signal-badge badge-active">&#9679; Active</span>
+    </div>
+    <div class="company-desc">Milwaukee-based manufacturer-focused commerce platform. <strong>Hosted a live event April 23 in Milwaukee</strong> — "AI Insights for Manufacturing Operations." Multiple LinkedIn ad variants. Midwest manufacturing focus, regional angle aligns with SME's community. Targeting manufacturer sales operations and digital transformation.</div>
+    <div class="signal-row">
+      <span class="signal-pill">Milwaukee-based</span>
+      <span class="signal-pill">live event April 23</span>
+      <span class="signal-pill">AI + mfg sales ops</span>
+    </div>
+    <div class="outreach-hint">&#9650; Hometown angle for SME. A Midwest manufacturer-focused software company advertising in MET is a natural fit.</div>
+  </div>
+
+</div>
+
+<!-- SECTION 2: NEW PRODUCT LAUNCH SIGNALS -->
+<div class="section-header">
+  <span class="section-tag tag-amber">Section 2</span>
+  <span class="section-title">New Product Launches — Active Marketing Moments</span>
+</div>
+
+<div class="company-grid">
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">HP Additive Manufacturing</div><div class="company-sub">HP Inc. · 3D Printing Solutions</div></div>
+      <span class="signal-badge badge-launch">&#9650; Launch Now</span>
+    </div>
+    <div class="company-desc">HP unveiled the <strong>Multi Jet Fusion 1200 3D Printer at RAPID+TCT this week</strong> — described as bringing professional 3D printing into reach for a broader tier of manufacturers. Multiple LinkedIn campaigns running simultaneously. Major company in peak product launch campaign mode. RAPID+TCT is the additive manufacturing show equivalent of IMTS — the launch will drive weeks of follow-on activity.</div>
+    <div class="signal-row">
+      <span class="signal-pill">new product launch this week</span>
+      <span class="signal-pill">RAPID+TCT 2026</span>
+      <span class="signal-pill">HP enterprise budget</span>
+    </div>
+    <div class="outreach-hint">&#9650; Product launches need media. Call this week — the window to attach to a launch cycle is now.</div>
+  </div>
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">Velo3D</div><div class="company-sub">Metal Additive Manufacturing</div></div>
+      <span class="signal-badge badge-launch">&#9650; At Show Now</span>
+    </div>
+    <div class="company-desc">At RAPID+TCT <strong>booth 2143 this week</strong>. Running multiple LinkedIn campaigns with aerospace/defense angle — "Vigoride 7 heading to orbit with a Velo3D printed fuel tank." Active editorial coverage in Additive Manufacturing Media. Metal AM for high-performance parts in aerospace, defense, and oil &amp; gas — directly in MET's orbit.</div>
+    <div class="signal-row">
+      <span class="signal-pill">RAPID+TCT booth 2143</span>
+      <span class="signal-pill">aerospace + defense</span>
+      <span class="signal-pill">3+ active campaigns</span>
+    </div>
+    <div class="outreach-hint">&#9650; Catch them post-show when budgets and campaign learnings are fresh.</div>
+  </div>
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">Nikon SLM Solutions</div><div class="company-sub">Metal Additive Manufacturing Systems</div></div>
+      <span class="signal-badge badge-active">&#9679; Active</span>
+    </div>
+    <div class="company-desc">Heavy sustained LinkedIn advertiser in additive manufacturing — running a multi-ad series around a <strong>white paper on metal AM applications</strong> in aerospace, defense, and industrial manufacturing. Nikon brand behind the industrial AM play. Multiple campaigns targeting design engineers and manufacturing leaders.</div>
+    <div class="signal-row">
+      <span class="signal-pill">7+ active ad variants</span>
+      <span class="signal-pill">Nikon brand backing</span>
+      <span class="signal-pill">white paper campaign</span>
+    </div>
+    <div class="outreach-hint">&#9650; Consistent long-term LinkedIn spend = marketing budget reality. MET is the editorial home for this audience.</div>
+  </div>
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">Kawasaki Robotics</div><div class="company-sub">EMEA Division · New CP110L Palletizer</div></div>
+      <span class="signal-badge badge-launch">&#9650; New Product</span>
+    </div>
+    <div class="company-desc">Running active LinkedIn campaigns around the <strong>new CP110L palletizing robot launch</strong> — "engineered for high-speed palletizing, increase capacity without increasing space." Campaign is currently live and building awareness before broader rollout. Kawasaki is a known industrial robotics player with US market presence and distribution.</div>
+    <div class="signal-row">
+      <span class="signal-pill">CP110L product launch</span>
+      <span class="signal-pill">palletizing / automation</span>
+      <span class="signal-pill">US distribution</span>
+    </div>
+    <div class="outreach-hint">&#9650; New product launch = advertising budget unlocked. Right timing for a MET conversation.</div>
+  </div>
+
+</div>
+
+<!-- SECTION 3: FUNDED / EMERGING -->
+<div class="section-header">
+  <span class="section-tag tag-teal">Section 3</span>
+  <span class="section-title">Funded &amp; Emerging — Companies With Fresh Capital to Spend</span>
+</div>
+
+<div class="company-grid">
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">VulcanForms</div><div class="company-sub">Digital Metal Manufacturing at Scale</div></div>
+      <span class="signal-badge badge-funded">&#9650; $220M Raised</span>
+    </div>
+    <div class="company-desc">Just received a <strong>$220M investment co-led by Eclipse Ventures</strong> as part of Eclipse's $1.3B fund dedicated to physical AI and manufacturing. VulcanForms builds industrial-scale metal additive manufacturing infrastructure — precision parts at production volumes. Defense, aerospace, and industrial sectors. Post-funding = marketing budget activation.</div>
+    <div class="signal-row">
+      <span class="signal-pill">$220M from Eclipse</span>
+      <span class="signal-pill">metal AM at scale</span>
+      <span class="signal-pill">defense + aerospace</span>
+    </div>
+    <div class="outreach-hint">&#9650; Post-funding companies prioritize brand building. Call now — they have budget and a mandate to be visible.</div>
+  </div>
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">Forge Nano</div><div class="company-sub">Advanced Manufacturing · NASDAQ Listing Announced</div></div>
+      <span class="signal-badge badge-funded">&#9650; Going Public</span>
+    </div>
+    <div class="company-desc">Announced plans to list on NASDAQ via SPAC merger — self-described as a <strong>"U.S. Advanced Manufacturing Leader for AI-Era Chips and Defense Batteries."</strong> Atomic layer deposition technology enabling high-performance battery and semiconductor manufacturing. Post-announcement = aggressive visibility push. US-manufactured, defense-adjacent angle fits MET's coverage.</div>
+    <div class="signal-row">
+      <span class="signal-pill">NASDAQ via SPAC</span>
+      <span class="signal-pill">AI chips + defense</span>
+      <span class="signal-pill">US advanced mfg</span>
+    </div>
+    <div class="outreach-hint">&#9650; Pre-IPO companies want industry credibility. MET is exactly the editorial venue they need to establish it.</div>
+  </div>
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">Rootstock Software</div><div class="company-sub">Manufacturing ERP on Salesforce</div></div>
+      <span class="signal-badge badge-active">&#9679; Active</span>
+    </div>
+    <div class="company-desc">Active LinkedIn advertiser in manufacturing software search. Message: <strong>"61% of manufacturers plan to increase enterprise software spending."</strong> Salesforce-native manufacturing ERP targeting mid-market manufacturers. US company with a growing installed base. Manufacturing digital transformation is a consistent MET editorial thread.</div>
+    <div class="signal-row">
+      <span class="signal-pill">Salesforce-native ERP</span>
+      <span class="signal-pill">mid-market focus</span>
+      <span class="signal-pill">active LinkedIn spend</span>
+    </div>
+    <div class="outreach-hint">&#9650; ERP is a high-consideration purchase requiring trusted editorial context. MET provides exactly that.</div>
+  </div>
+
+</div>
+
+<!-- COMPETITIVE INTELLIGENCE -->
+<div style="margin-top:24px">
+<div class="section-header">
+  <span class="section-tag tag-red">Intel</span>
+  <span class="section-title">Competitive Signal — Who Else Is Chasing Your Audience</span>
+</div>
+<div class="intel-card">
+  <div class="intel-header">&#9650; Modern Machine Shop (Gardner Business Media) — Active LinkedIn Advertiser</div>
+  <div class="intel-body"><strong>Modern Machine Shop appeared multiple times across your search terms</strong> — running paid LinkedIn campaigns with headlines like "AI on the Shop Floor" and "AI for Manufacturers" specifically targeting the same manufacturing engineering audience MET serves. Gardner is spending paid media to reach your subscribers. This confirms the audience is active and accessible on LinkedIn — and that competitor publications have identified this. It also means any prospect currently advertising with MMS is a warm lead for MET with a clear competitive pitch.</div>
+</div>
+</div>
+
+<hr class="divider">
+
+<!-- PRIORITY CALL LIST -->
+<div class="section-header">
+  <span class="section-tag tag-blue">Priority</span>
+  <span class="section-title">Priority Call List — Rank-Ordered by Signal Strength &amp; Revenue Potential</span>
+</div>
+
+<div class="call-list">
+  <div class="call-row">
+    <div class="call-rank">1</div>
+    <div class="call-company">
+      <div class="call-name">HP Additive Manufacturing</div>
+      <div class="call-reason">New product launch this week at RAPID+TCT. Peak marketing moment. Major budget, enterprise campaign active.</div>
+    </div>
+    <div class="call-est"><div class="call-revenue">$30–50K</div><div class="call-label">est. annual value</div></div>
+  </div>
+  <div class="call-row">
+    <div class="call-rank">2</div>
+    <div class="call-company">
+      <div class="call-name">Intrinsic (Google / Alphabet)</div>
+      <div class="call-reason">Google's industrial software arm is paying LinkedIn to reach MET's subscribers. The most direct gap to close.</div>
+    </div>
+    <div class="call-est"><div class="call-revenue">$25–45K</div><div class="call-label">est. annual value</div></div>
+  </div>
+  <div class="call-row">
+    <div class="call-rank">3</div>
+    <div class="call-company">
+      <div class="call-name">Vericut (CGTech)</div>
+      <div class="call-reason">Consistent heavy LinkedIn spend in CNC + aerospace. US company. Perfect MET editorial fit. Easy conversation.</div>
+    </div>
+    <div class="call-est"><div class="call-revenue">$20–35K</div><div class="call-label">est. annual value</div></div>
+  </div>
+  <div class="call-row">
+    <div class="call-rank">4</div>
+    <div class="call-company">
+      <div class="call-name">VulcanForms</div>
+      <div class="call-reason">$220M just raised. Metal AM at industrial scale. Post-funding marketing budget unlocked.</div>
+    </div>
+    <div class="call-est"><div class="call-revenue">$18–32K</div><div class="call-label">est. annual value</div></div>
+  </div>
+  <div class="call-row">
+    <div class="call-rank">5</div>
+    <div class="call-company">
+      <div class="call-name">Velo3D</div>
+      <div class="call-reason">At RAPID+TCT booth 2143 this week. Aerospace + defense angle. Catch post-show while momentum is high.</div>
+    </div>
+    <div class="call-est"><div class="call-revenue">$18–30K</div><div class="call-label">est. annual value</div></div>
+  </div>
+  <div class="call-row">
+    <div class="call-rank">6</div>
+    <div class="call-company">
+      <div class="call-name">Fictiv</div>
+      <div class="call-reason">Highest-volume CNC advertiser on LinkedIn. Running a sustained multi-campaign awareness push at engineers.</div>
+    </div>
+    <div class="call-est"><div class="call-revenue">$15–28K</div><div class="call-label">est. annual value</div></div>
+  </div>
+  <div class="call-row">
+    <div class="call-rank">7</div>
+    <div class="call-company">
+      <div class="call-name">Path Robotics</div>
+      <div class="call-reason">Live demo campaign running now (April 29). Ohio-based. High-mix manufacturing audience is core MET.</div>
+    </div>
+    <div class="call-est"><div class="call-revenue">$12–22K</div><div class="call-label">est. annual value</div></div>
+  </div>
+  <div class="call-row">
+    <div class="call-rank">8</div>
+    <div class="call-company">
+      <div class="call-name">1factory</div>
+      <div class="call-reason">At IMTS 2024. Two LinkedIn search overlaps. QMS is a perennial MET editorial category.</div>
+    </div>
+    <div class="call-est"><div class="call-revenue">$10–18K</div><div class="call-label">est. annual value</div></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- THREE-ACTION BRIEF -->
+<div class="section-header">
+  <span class="section-tag tag-amber">Actions</span>
+  <span class="section-title">Three Actions — Do These This Week</span>
+</div>
+
+<div class="action-grid">
+  <div class="action-card">
+    <div class="action-num">01</div>
+    <div class="action-title">Call HP Additive Manufacturing today</div>
+    <div class="action-desc">They just launched the MJ Fusion 1200 at RAPID+TCT. A product launch needs media support in the first two weeks or the budget gets reallocated. This is a now-or-wait-a-year call. Lead with the launch angle, not the brand pitch.</div>
+  </div>
+  <div class="action-card">
+    <div class="action-num">02</div>
+    <div class="action-title">Ask Intrinsic why they're paying LinkedIn rates</div>
+    <div class="action-desc">Google is paying $8–15 CPMs to reach manufacturing engineers on LinkedIn. A full-page MET ad hits the same audience at a fraction of the cost-per-engineer. The pitch writes itself: "You're reaching the right people — just inefficiently." This is a math conversation, not a brand conversation.</div>
+  </div>
+  <div class="action-card">
+    <div class="action-num">03</div>
+    <div class="action-title">Use IMTS 2026 as the urgency lever</div>
+    <div class="action-desc">IMTS is September 14–19 — 5 months away. Every company on this list that plans to exhibit or sponsor is in brand-building mode right now. MET is the editorial vehicle of record for the show. Use IMTS 2026 to open every conversation: "Companies that build awareness in MET before IMTS arrive at the show as a known name, not a stranger."</div>
+  </div>
+</div>
+
+<!-- TEASER -->
+<div class="teaser-strip">
+  <div class="teaser-left">
+    <div class="teaser-title">This is a proof of concept. Imagine this for every publisher in your portfolio, every month.</div>
+    <div class="teaser-sub">The Northstar Publisher Intelligence Brief — built on Mindful CMS with live signal synthesis across LinkedIn Ad Library, trade show data, funding announcements, and M&amp;A. Automated. Branded. Yours.</div>
+  </div>
+  <div class="teaser-cta">Learn about the full platform &#8250;</div>
+</div>
+
+<!-- AI CHAT LAYER -->
+<div class="chat-panel">
+  <div class="chat-header">
+    <div class="chat-dot"></div>
+    <div class="chat-title">Brief Intelligence — Ask Anything</div>
+    <div class="chat-sub">Powered by Mindful AI · Context-loaded</div>
+  </div>
+  <div class="chat-body" id="chat-body">
+    <div style="margin-bottom:12px">
+      <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px">Try asking:</div>
+      <span class="quick-q" onclick="fillQ('Which company on this list is the easiest first call and why?')">"Easiest first call?"</span>
+      <span class="quick-q" onclick="fillQ('How do I pitch MET against LinkedIn ads to a company like Intrinsic?')">"Pitch vs. LinkedIn?"</span>
+      <span class="quick-q" onclick="fillQ('Which companies here are likely already advertising with Modern Machine Shop?')">"MMS overlap?"</span>
+      <span class="quick-q" onclick="fillQ('What is the IMTS 2026 pitch angle I should use with every company on this list?')">"IMTS pitch angle?"</span>
+    </div>
+  </div>
+  <div class="chat-input-row">
+    <textarea id="chat-input" placeholder="Ask a question about the brief..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendQ();}"></textarea>
+    <button class="chat-send" onclick="sendQ()">Ask</button>
+  </div>
+</div>
+
+<div class="report-footer">
+  <div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+      <span class="logo-bracket" style="font-size:11px">{ parameter : 1 }</span>
+      <span style="font-size:10px;color:var(--text-muted)">|</span>
+      <span style="font-size:10px;font-weight:600;color:var(--accent-blue);letter-spacing:1px;text-transform:uppercase">Mindful</span>
+    </div>
+    <div class="footer-brand">mindful.pub &nbsp;·&nbsp; sales@mindful.pub</div>
+  </div>
+  <div class="footer-note">Built from public data — LinkedIn Ad Library (7 search terms), IMTS 2024 exhibitor records, manufacturing tech funding announcements. Produced manually for SME Media / Manufacturing Engineering &amp; Technology as a proof of concept, April 2026.</div>
+</div>
+
+<script>
+const BRIEF_CONTEXT = `You are the intelligence assistant for an Advertiser Prospecting Brief prepared for Ryan Elliott at SME Media / Manufacturing Engineering & Technology (MET). MET is the flagship publication of SME — Society of Manufacturing Engineers — launched as Manufacturing Engineering & Technology in August 2025. It reaches 100,000+ manufacturing professionals covering automation, robotics, CNC, additive manufacturing, metrology, and aerospace/defense manufacturing. IMTS 2026 (International Manufacturing Technology Show) is September 14-19, 2026 — 5 months away — produced by AMT in Chicago.
+
+PRIORITY PROSPECTS AND SIGNALS:
+1. HP Additive Manufacturing — launched HP Multi Jet Fusion 1200 at RAPID+TCT this week. Active LinkedIn campaigns. Est. $30-50K/yr.
+2. Intrinsic (Google/Alphabet) — Google's industrial robotics software. Multiple LinkedIn ads explicitly targeting small/medium machine shop owners — the exact MET subscriber. Est. $25-45K/yr.
+3. Vericut (CGTech) — Irvine CA. CNC simulation software. 4+ active LinkedIn campaigns in CNC + aerospace searches. Aerospace design revision checklist campaign. Est. $20-35K/yr.
+4. VulcanForms — just raised $220M from Eclipse Ventures. Digital metal manufacturing at scale. Defense/aerospace. Est. $18-32K/yr.
+5. Velo3D — metal AM, at RAPID+TCT booth 2143 this week. Aerospace + defense. Est. $18-30K/yr.
+6. Fictiv — on-demand CNC/sheet metal platform. Highest-volume CNC advertiser on LinkedIn. 8+ ad variants. Est. $15-28K/yr.
+7. Path Robotics — autonomous welding cells, Columbus OH. Live demo campaign April 29. Est. $12-22K/yr.
+8. 1factory — QMS software. Was at IMTS 2024. Two LinkedIn search overlaps. Est. $10-18K/yr.
+9. AutomationWithinReach (AWR) — CNC robotic machine tending. Multiple campaigns. SMB shop focus.
+10. Aleran Software — Milwaukee-based. April 23 event for manufacturers. Local Midwest angle.
+11. Kawasaki Robotics — new CP110L palletizer launching.
+12. Nikon SLM Solutions — heavy sustained AM advertiser.
+13. Conexiom — order automation for manufacturers.
+14. Rootstock Software — manufacturing ERP on Salesforce.
+15. Forge Nano — announcing NASDAQ listing via SPAC, US advanced mfg.
+
+COMPETITIVE INTEL: Modern Machine Shop (Gardner Business Media) is actively advertising on LinkedIn to reach manufacturing engineers — "AI on the Shop Floor," "AI for Manufacturers" campaigns. They are a direct competitor spending to reach MET's audience.
+
+THREE KEY ACTIONS: (1) Call HP Additive Manufacturing this week — new product launch window. (2) Pitch Intrinsic on cost efficiency: paying LinkedIn CPMs to reach engineers they could reach via MET more efficiently. (3) Use IMTS 2026 as urgency lever for every conversation — companies building brand presence now for the September show.
+
+Answer questions about this brief accurately. Help Ryan Elliott prioritize his outreach, craft pitches, and understand the signals. Be specific, direct, and actionable.`;
+
+const chatBody = document.getElementById('chat-body');
+const chatInput = document.getElementById('chat-input');
+
+function fillQ(q){chatInput.value=q;chatInput.focus();}
+
+function appendMsg(role,text){
+  const d=document.createElement('div');
+  d.className='chat-msg';
+  d.innerHTML=`<div class="msg-role ${role==='You'?'msg-user':'msg-ai'}">${role}</div><div class="msg-text">${text}</div>`;
+  chatBody.appendChild(d);
+  chatBody.scrollTop=chatBody.scrollHeight;
+}
+
+async function sendQ(){
+  const q=chatInput.value.trim();
+  if(!q)return;
+  chatInput.value='';
+  appendMsg('You',q);
+  const thinking=document.createElement('div');
+  thinking.className='chat-msg';
+  thinking.innerHTML='<div class="msg-role msg-ai">Brief AI</div><div class="msg-text" style="color:var(--text-muted)">Thinking...</div>';
+  chatBody.appendChild(thinking);
+  chatBody.scrollTop=chatBody.scrollHeight;
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:BRIEF_CONTEXT,
+        messages:[{role:'user',content:q}]
+      })
+    });
+    const data=await resp.json();
+    const text=data.content?.map(b=>b.text||'').join('')||'Unable to respond.';
+    chatBody.removeChild(thinking);
+    appendMsg('Brief AI',text);
+  }catch(e){
+    chatBody.removeChild(thinking);
+    appendMsg('Brief AI','Unable to connect. Check your network and try again.');
+  }
+}
+</script>
+</body>
+</html>
