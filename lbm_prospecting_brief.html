@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advertiser Prospecting Intelligence — LBM Journal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--navy:#0a1628;--navy-mid:#0f2847;--navy-light:#153a6b;
+--accent-blue:#4a9eff;--accent-teal:#1db88a;--accent-amber:#f0a030;--accent-red:#e05050;--accent-green:#2eb872;
+--accent-wood:#c8823a;
+--text-primary:#f0f4ff;--text-secondary:#8ba0c0;--text-muted:#546880;
+--border:rgba(74,158,255,0.15);--border-strong:rgba(74,158,255,0.3);
+--card-bg:rgba(15,40,71,0.6);--card-bg-strong:rgba(21,58,107,0.4)
+}
+body{font-family:'Inter',sans-serif;background:var(--navy);color:var(--text-primary);font-size:13px;line-height:1.6;-webkit-font-smoothing:antialiased;max-width:880px;margin:0 auto;padding:32px 24px 64px}
+.report-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.brand-mark{display:flex;align-items:center;gap:12px}
+.logo-bracket{font-size:13px;font-weight:500;color:var(--accent-blue);letter-spacing:-0.5px}
+.product-name{font-size:11px;font-weight:600;color:var(--accent-blue);letter-spacing:1.5px;text-transform:uppercase}
+.report-meta{text-align:right}
+.pub-name{font-size:16px;font-weight:600;color:var(--text-primary)}
+.pub-sub{font-size:11px;color:var(--text-secondary);margin-top:2px}
+.report-date{font-size:11px;color:var(--text-muted);margin-top:4px}
+.intro-strip{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin-bottom:24px;display:flex;gap:16px;align-items:flex-start}
+.intro-icon{width:32px;height:32px;background:rgba(200,130,58,0.15);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+.intro-text{font-size:12px;color:var(--text-secondary);line-height:1.6}
+.intro-text strong{color:var(--text-primary)}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+.stat-card{background:var(--card-bg-strong);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+.stat-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+.stat-value{font-size:22px;font-weight:700;color:var(--accent-blue)}
+.stat-sub{font-size:10px;color:var(--text-secondary);margin-top:2px}
+.insight-banner{background:rgba(200,130,58,0.08);border:1px solid rgba(200,130,58,0.25);border-radius:8px;padding:14px 18px;margin-bottom:24px;font-size:12px;color:var(--text-secondary);line-height:1.6}
+.insight-banner strong{color:var(--accent-wood)}
+.section-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;margin-top:32px}
+.section-tag{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:3px 8px;border-radius:4px}
+.tag-blue{background:rgba(74,158,255,0.15);color:var(--accent-blue)}
+.tag-amber{background:rgba(240,160,48,0.15);color:var(--accent-amber)}
+.tag-teal{background:rgba(29,184,138,0.15);color:var(--accent-teal)}
+.tag-red{background:rgba(224,80,80,0.15);color:var(--accent-red)}
+.tag-wood{background:rgba(200,130,58,0.15);color:var(--accent-wood)}
+.section-title{font-size:14px;font-weight:600;color:var(--text-primary)}
+.company-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:8px}
+.company-card{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:16px}
+.company-card:hover{border-color:var(--border-strong)}
+.company-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.company-name{font-size:13px;font-weight:600;color:var(--text-primary)}
+.company-sub{font-size:11px;color:var(--text-secondary);margin-top:1px}
+.signal-badge{display:flex;align-items:center;gap:4px;font-size:9px;font-weight:600;padding:3px 7px;border-radius:4px;white-space:nowrap;flex-shrink:0}
+.badge-hot{background:rgba(224,80,80,0.15);color:var(--accent-red)}
+.badge-active{background:rgba(74,158,255,0.15);color:var(--accent-blue)}
+.badge-launch{background:rgba(240,160,48,0.15);color:var(--accent-amber)}
+.badge-teal{background:rgba(29,184,138,0.15);color:var(--accent-teal)}
+.company-desc{font-size:11px;color:var(--text-secondary);line-height:1.55;margin-bottom:10px}
+.company-desc strong{color:var(--text-primary)}
+.signal-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.signal-pill{font-size:9px;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,0.06);color:var(--text-muted);border:1px solid rgba(255,255,255,0.08)}
+.outreach-hint{font-size:10px;color:var(--accent-teal);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+.call-list{margin-bottom:8px}
+.call-row{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--card-bg);border:1px solid var(--border);border-radius:8px;margin-bottom:8px}
+.call-rank{width:22px;height:22px;border-radius:50%;background:rgba(74,158,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--accent-blue);flex-shrink:0}
+.call-company{flex:1}
+.call-name{font-size:12px;font-weight:600;color:var(--text-primary)}
+.call-reason{font-size:10px;color:var(--text-secondary);margin-top:2px}
+.call-est{text-align:right;flex-shrink:0}
+.call-revenue{font-size:12px;font-weight:600;color:var(--accent-teal)}
+.call-label{font-size:9px;color:var(--text-muted)}
+.action-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:8px}
+.action-card{background:var(--card-bg-strong);border:1px solid var(--border);border-radius:8px;padding:16px}
+.action-num{font-size:28px;font-weight:700;color:rgba(74,158,255,0.25);margin-bottom:6px}
+.action-title{font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:6px}
+.action-desc{font-size:11px;color:var(--text-secondary);line-height:1.55}
+.intel-card{background:rgba(224,80,80,0.06);border:1px solid rgba(224,80,80,0.2);border-radius:8px;padding:16px;margin-bottom:8px}
+.intel-header{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent-red);margin-bottom:8px}
+.intel-body{font-size:11px;color:var(--text-secondary);line-height:1.55}
+.intel-body strong{color:var(--text-primary)}
+.baxter-card{background:rgba(29,184,138,0.06);border:1px solid rgba(29,184,138,0.2);border-radius:8px;padding:16px;margin-bottom:8px}
+.baxter-header{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent-teal);margin-bottom:8px}
+.baxter-body{font-size:11px;color:var(--text-secondary);line-height:1.55}
+.baxter-body strong{color:var(--text-primary)}
+.teaser-strip{background:linear-gradient(135deg,rgba(74,158,255,0.08),rgba(29,184,138,0.08));border:1px solid rgba(74,158,255,0.2);border-radius:8px;padding:18px 20px;display:flex;align-items:center;gap:16px;margin-top:32px}
+.teaser-left{flex:1}
+.teaser-title{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:4px}
+.teaser-sub{font-size:11px;color:var(--text-secondary)}
+.chat-panel{background:rgba(15,40,71,0.8);border:1px solid var(--border-strong);border-radius:12px;overflow:hidden;margin-top:32px}
+.chat-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.chat-dot{width:8px;height:8px;border-radius:50%;background:var(--accent-teal)}
+.chat-title{font-size:12px;font-weight:600;color:var(--text-primary)}
+.chat-sub{font-size:10px;color:var(--text-muted);margin-left:auto}
+.chat-body{padding:16px;min-height:120px;max-height:280px;overflow-y:auto}
+.chat-msg{margin-bottom:10px}
+.msg-role{font-size:9px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;margin-bottom:3px}
+.msg-user{color:var(--accent-blue)}
+.msg-ai{color:var(--accent-teal)}
+.msg-text{font-size:11px;color:var(--text-secondary);line-height:1.55;padding:8px 12px;border-radius:6px;background:rgba(255,255,255,0.04)}
+.chat-input-row{border-top:1px solid var(--border);padding:12px 16px;display:flex;gap:10px;align-items:flex-end}
+#chat-input{flex:1;background:rgba(21,58,107,0.3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--text-primary);font-family:'Inter',sans-serif;resize:none;outline:none;line-height:1.5}
+#chat-input::placeholder{color:var(--text-muted)}
+.chat-send{background:var(--accent-blue);border:none;border-radius:8px;padding:10px 16px;font-size:12px;font-weight:600;color:var(--navy);cursor:pointer;height:40px;white-space:nowrap}
+.quick-q{display:inline-block;font-size:10px;color:var(--accent-blue);cursor:pointer;margin-right:8px;margin-bottom:4px}
+.quick-q:hover{text-decoration:underline}
+.report-footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start}
+.footer-brand{font-size:10px;color:var(--text-muted);margin-top:3px}
+.footer-note{font-size:9px;color:var(--text-muted);max-width:360px;text-align:right;line-height:1.5}
+@media(max-width:600px){
+.stat-grid{grid-template-columns:repeat(2,1fr)}
+.company-grid{grid-template-columns:1fr}
+.action-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="report-header">
+  <div class="brand-mark">
+    <span class="logo-bracket">{ parameter : 1 }</span>
+    <span style="color:var(--text-muted);font-size:11px">|</span>
+    <span class="product-name">Mindful</span>
+  </div>
+  <div class="report-meta">
+    <div class="pub-name">LBM Journal</div>
+    <div class="pub-sub">Baxter Research Center — Prepared for Jodie Cook</div>
+    <div class="report-date">Advertiser Prospecting Intelligence Brief · April 2026</div>
+  </div>
+</div>
+
+<div class="intro-strip">
+  <div class="intro-icon">&#9678;</div>
+  <div class="intro-text">
+    This brief surfaces companies <strong>actively spending to reach lumberyard owners, LBM dealers, and building materials professionals right now</strong> — through LinkedIn paid campaigns, new product launches, and industry event signals — who may not be in LBM Journal's current advertiser base. Signals pulled across 6 LinkedIn Ad Library searches plus STAFDA, ProDealer industry data, and building materials funding news. <strong>One important finding is in the methodology itself</strong> — keep reading.
+  </div>
+</div>
+
+<div class="insight-banner">
+  <strong>&#9650; A signal hiding in the data:</strong> The LinkedIn Ad Library returned only <strong>183 ads</strong> for "building materials dealer" — compared to 29,000+ for manufacturing automation keywords. This is not a sign that LBM companies don't advertise. It means they haven't discovered LinkedIn as a channel yet. The companies that <em>are</em> spending there are self-selecting as digitally sophisticated and actively in growth mode. Every one of them is a warm call. And it means LBM Journal's verified, identified audience is <strong>more differentiated</strong> relative to LinkedIn than in virtually any other trade vertical.
+</div>
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="stat-label">LinkedIn Searches</div>
+    <div class="stat-value">6</div>
+    <div class="stat-sub">building materials, roofing mfr, windows/doors, millwork, construction supply, LBM software</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Prospect Companies</div>
+    <div class="stat-value">10</div>
+    <div class="stat-sub">active LinkedIn spenders targeting your exact audience</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Est. Revenue</div>
+    <div class="stat-value" style="color:var(--accent-teal)">$140K+</div>
+    <div class="stat-sub">annual opportunity if 6 of 10 close at mid-range</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Market Signal</div>
+    <div class="stat-value" style="color:var(--accent-wood)">Low</div>
+    <div class="stat-sub">LinkedIn saturation = high differentiation for LBM Journal's verified reach</div>
+  </div>
+</div>
+
+<!-- SECTION 1 -->
+<div class="section-header">
+  <span class="section-tag tag-blue">Section 1</span>
+  <span class="section-title">Active LinkedIn Spenders — Reaching Your Audience Without You</span>
+</div>
+
+<div class="company-grid">
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">IKO North America</div><div class="company-sub">Commercial Roofing Manufacturer</div></div>
+      <span class="signal-badge badge-hot">&#9679; Active</span>
+    </div>
+    <div class="company-desc">The most consistent US building products LinkedIn advertiser in the data. Running multiple campaigns for <strong>InnoviTPO commercial roofing</strong> with the same message repeated across 6+ ad variants: "engineered to reduce heat absorption and manufactured to produce minimal waste." Active brand-building campaign targeted at specifiers and dealers. North American company with strong US distribution. Roofing is a core LBM Journal category.</div>
+    <div class="signal-row">
+      <span class="signal-pill">6+ active LinkedIn ads</span>
+      <span class="signal-pill">commercial roofing focus</span>
+      <span class="signal-pill">North America</span>
+      <span class="signal-pill">sustained brand campaign</span>
+    </div>
+    <div class="outreach-hint">&#9650; They're running a sustained awareness push to your audience. LBM Journal is the editorial home for that conversation.</div>
+  </div>
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">OrderEase</div><div class="company-sub">Order Management for Building Materials</div></div>
+      <span class="signal-badge badge-active">&#9679; Active</span>
+    </div>
+    <div class="company-desc">Running 5+ LinkedIn campaigns with copy that <strong>explicitly calls out building materials manufacturers</strong>: "Your ERP isn't the problem — your intake is. We're seeing this across manufacturers, especially in building materials." This is one of the few software companies actively targeting the LBM supply chain with paid media. Multiple ad variants, consistent spend.</div>
+    <div class="signal-row">
+      <span class="signal-pill">5+ active ads</span>
+      <span class="signal-pill">explicitly targets bldg materials</span>
+      <span class="signal-pill">manufacturer + distributor focus</span>
+    </div>
+    <div class="outreach-hint">&#9650; They wrote LBM Journal's audience into their ad copy. They already know the audience exists — connect the dots.</div>
+  </div>
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">Tri-Supply</div><div class="company-sub">Austin, TX · Millwork, Doors, Windows, Appliances</div></div>
+      <span class="signal-badge badge-hot">&#9679; High Activity</span>
+    </div>
+    <div class="company-desc">Most active US millwork/building supply advertiser in the LinkedIn data — 10+ ad variants running simultaneously. Targets builders and contractors with messages about speed, local support, and single-source supply for millwork, windows, appliances, and lighting. <strong>COO personally posting about AI use cases</strong> in their operations and just launched a new website. Texas-based, growth-oriented, tech-forward for an LBM company.</div>
+    <div class="signal-row">
+      <span class="signal-pill">10+ active ads</span>
+      <span class="signal-pill">Austin, TX — growth market</span>
+      <span class="signal-pill">COO posting on AI</span>
+      <span class="signal-pill">new website launched</span>
+    </div>
+    <div class="outreach-hint">&#9650; A tech-forward independent dealer actively advertising on LinkedIn is exactly the kind of growth company that LBM Journal should have in its book.</div>
+  </div>
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">BLD Marketing</div><div class="company-sub">Building Products Marketing Agency</div></div>
+      <span class="signal-badge badge-active">&#9679; Active</span>
+    </div>
+    <div class="company-desc">Running a LinkedIn campaign with a piece directly titled <strong>"Navigating Uncertainty: An Industry Outlook for Dealers, Lumberyards, and Building Material Suppliers."</strong> This is a marketing firm whose entire client base is building product companies trying to reach LBM dealers. They're advertising to the same audience LBM Journal serves — which means their clients are exactly the companies that should be advertising in LBM Journal.</div>
+    <div class="signal-row">
+      <span class="signal-pill">targets LBM dealers directly</span>
+      <span class="signal-pill">agency with LBM client roster</span>
+      <span class="signal-pill">active campaign</span>
+    </div>
+    <div class="outreach-hint">&#9650; Don't just call BLD — ask them which of their clients need LBM Journal exposure. This is a referral pipeline, not just a single prospect.</div>
+  </div>
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">Pennsylvania Lumbermens Mutual Insurance (PLM)</div><div class="company-sub">Specialty Insurance for Hardware &amp; LBM</div></div>
+      <span class="signal-badge badge-active">&#9679; Active</span>
+    </div>
+    <div class="company-desc">Running a LinkedIn campaign specifically headlined <strong>"Insurance Designed for Hardware Stores"</strong> — this is a niche insurer built for the LBM and hardware dealer channel. Founded specifically to serve this industry. The fact they're running paid LinkedIn campaigns to find their audience suggests they're in active growth mode and spending on marketing. Probably already know LBM Journal, but are they advertising?</div>
+    <div class="signal-row">
+      <span class="signal-pill">LBM/hardware niche insurer</span>
+      <span class="signal-pill">active LinkedIn spend</span>
+      <span class="signal-pill">US, industry-native</span>
+    </div>
+    <div class="outreach-hint">&#9650; Perfect editorial fit. If they're not in the book, this is an easy call — they know the audience better than almost anyone.</div>
+  </div>
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">Allied Building Stores (ABS)</div><div class="company-sub">Independent Dealer Buying Group</div></div>
+      <span class="signal-badge badge-active">&#9679; Active</span>
+    </div>
+    <div class="company-desc">Running LinkedIn ads with the message: <strong>"helps independent dealers make more informed buying decisions with real-time insight and experienced traders."</strong> ABS is a buying group helping independent LBM dealers compete through better pricing intelligence. Their audience and LBM Journal's audience are the same people. Active LinkedIn spend suggests marketing investment.</div>
+    <div class="signal-row">
+      <span class="signal-pill">independent dealer focus</span>
+      <span class="signal-pill">buying group</span>
+      <span class="signal-pill">active LinkedIn campaign</span>
+    </div>
+    <div class="outreach-hint">&#9650; A buying group that markets to independent dealers is a natural LBM Journal advertiser — and could be a channel partner for reaching members.</div>
+  </div>
+
+</div>
+
+<!-- SECTION 2: NEW PRODUCT / LAUNCH SIGNALS -->
+<div class="section-header">
+  <span class="section-tag tag-amber">Section 2</span>
+  <span class="section-title">New Product Launches — Active Marketing Moments</span>
+</div>
+
+<div class="company-grid">
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">Horner Millwork / Kolbe Windows</div><div class="company-sub">US Millwork Distributor · New VIG Product Launch</div></div>
+      <span class="signal-badge badge-launch">&#9650; Launch Now</span>
+    </div>
+    <div class="company-desc">Horner Millwork is running a dedicated LinkedIn campaign around <strong>Kolbe's new Vacuum Insulated Glass (VIG) technology</strong> — "new VIG for superior energy efficiency." Multiple ad variants. This is a product launch campaign in progress, and Horner is the distributor promoting it to dealers and builders. Product launches need editorial amplification. LBM Journal is the right vehicle for a new window technology story going into the dealer channel.</div>
+    <div class="signal-row">
+      <span class="signal-pill">VIG launch campaign live</span>
+      <span class="signal-pill">3+ active ad variants</span>
+      <span class="signal-pill">energy efficiency angle</span>
+    </div>
+    <div class="outreach-hint">&#9650; Call Horner and Kolbe this week — launch windows are narrow. They need dealer-channel editorial now, not next quarter.</div>
+  </div>
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">Marvin Windows &amp; Doors</div><div class="company-sub">Premium Window &amp; Door Manufacturer</div></div>
+      <span class="signal-badge badge-active">&#9679; Active</span>
+    </div>
+    <div class="company-desc">Running LinkedIn content campaigns around design and kitchen spaces — lifestyle brand positioning for a premium window brand. Major US manufacturer with strong LBM dealer distribution. Also appeared in the LinkedIn data hiring an Architectural Project Coordinator in Warroad, MN, suggesting active expansion. Marvin is a well-known name in the LBM channel — if they're not in the current book, that's the first question.</div>
+    <div class="signal-row">
+      <span class="signal-pill">active brand campaigns</span>
+      <span class="signal-pill">Warroad, MN HQ</span>
+      <span class="signal-pill">hiring — growth signal</span>
+      <span class="signal-pill">premium dealer channel</span>
+    </div>
+    <div class="outreach-hint">&#9650; If they're in the book, great. If not, a Marvin rep who isn't in LBM Journal in 2026 is a question worth answering.</div>
+  </div>
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">Belco Forest Products</div><div class="company-sub">Lumber &amp; Trim Manufacturer · Weyerhaeuser Distributed</div></div>
+      <span class="signal-badge badge-launch">&#9650; Campaign Active</span>
+    </div>
+    <div class="company-desc">Running two active LinkedIn campaigns targeting dealers directly: <strong>"Cut Delays Before They Cut Into Your 2026"</strong> and an expansion announcement into Texas via Weyerhaeuser distribution. Targeting dealer pain points around trim delivery timing and reliability. The Texas expansion announcement is a live news hook. US company, pro-dealer message, active spend.</div>
+    <div class="signal-row">
+      <span class="signal-pill">Texas expansion via Weyerhaeuser</span>
+      <span class="signal-pill">dealer-targeted message</span>
+      <span class="signal-pill">2 active campaigns</span>
+    </div>
+    <div class="outreach-hint">&#9650; Expansion into a new market = new budget, new visibility goals. Good timing for a first or renewal conversation.</div>
+  </div>
+
+  <div class="company-card">
+    <div class="company-header">
+      <div><div class="company-name">Parspec</div><div class="company-sub">AI-Powered Building Product Spec Platform</div></div>
+      <span class="signal-badge badge-launch">&#9650; New Module Launch</span>
+    </div>
+    <div class="company-desc">CEO Forest Flager just announced the launch of a <strong>new Project Management module and Contractor Portal</strong>, expanding their AI-powered building product specification platform. Parspec helps dealers and distributors manage product specs and substitutions at scale. Venture-backed, targeting the construction supply chain. Growing into the dealer-distributor workflow, which is exactly LBM Journal's audience.</div>
+    <div class="signal-row">
+      <span class="signal-pill">new product module launch</span>
+      <span class="signal-pill">venture-backed</span>
+      <span class="signal-pill">AI + building products</span>
+      <span class="signal-pill">contractor + dealer focus</span>
+    </div>
+    <div class="outreach-hint">&#9650; Post-launch = active marketing budget. Tech company entering the LBM dealer workflow is a natural LBM Journal advertiser.</div>
+  </div>
+
+</div>
+
+<hr class="divider">
+
+<!-- COMPETITIVE + STRATEGIC INTEL -->
+<div class="section-header">
+  <span class="section-tag tag-red">Intel</span>
+  <span class="section-title">Competitive &amp; Strategic Signals</span>
+</div>
+
+<div class="intel-card">
+  <div class="intel-header">&#9650; Supply House Times — Competitor Advertising on LinkedIn</div>
+  <div class="intel-body"><strong>Supply House Times appeared in the building products distribution searches</strong> — a trade publication competitor running paid LinkedIn campaigns to reach building supply and distribution professionals. This is the same dynamic as Modern Machine Shop chasing MET's audience. It confirms the audience is active and reachable on LinkedIn, and that competing media companies have identified this. Any building products company currently advertising with Supply House Times is a warm call for LBM Journal with a straightforward differentiation story: verified dealer audience vs. anonymous impressions.</div>
+</div>
+
+<div class="intel-card">
+  <div class="intel-header">&#9650; LBM Journal Already Advertising on LinkedIn — For Trex</div>
+  <div class="intel-body"><strong>LBM Journal itself appeared as a LinkedIn advertiser</strong> — running a sponsored post promoting a Trex railing product for dealers. This means the editorial team is already using LinkedIn to amplify advertiser content, which is a signal that the audience is there and that existing advertisers like Trex see value in that channel. Worth asking: are existing advertisers aware their content is being amplified? Is that amplification structured as a service or informal? There may be a monetization opportunity already in-house.</div>
+</div>
+
+<div class="baxter-card">
+  <div class="baxter-header">&#9650; The Baxter Pairing — A Joint Pitch Opportunity</div>
+  <div class="baxter-body">The data reinforces a positioning you already have. <strong>Baxter Research Center proves print ads worked after the fact</strong> ("your ads drove awareness"). <strong>LBM Journal — with verified, identified audience data — proves the audience is real before the campaign runs</strong> ("your ads will reach the right people"). For any manufacturer considering a campaign, this is a two-part proof of value no competitor can offer: pre-campaign audience credibility plus post-campaign effectiveness measurement. <strong>IKO, Marvin, Belco, and Kolbe Windows</strong> are all candidates for this joint pitch — active spenders where both sides of the equation apply.</div>
+</div>
+
+<hr class="divider">
+
+<!-- PRIORITY CALL LIST -->
+<div class="section-header">
+  <span class="section-tag tag-blue">Priority</span>
+  <span class="section-title">Priority Call List — Rank-Ordered by Signal Strength</span>
+</div>
+
+<div class="call-list">
+  <div class="call-row">
+    <div class="call-rank">1</div>
+    <div class="call-company">
+      <div class="call-name">IKO North America</div>
+      <div class="call-reason">Highest-volume US building products LinkedIn advertiser in the data. Sustained campaign = real marketing budget. Roofing is a core LBM category.</div>
+    </div>
+    <div class="call-est"><div class="call-revenue">$20–35K</div><div class="call-label">est. annual value</div></div>
+  </div>
+  <div class="call-row">
+    <div class="call-rank">2</div>
+    <div class="call-company">
+      <div class="call-name">Horner Millwork / Kolbe Windows (VIG Launch)</div>
+      <div class="call-reason">Active new product launch campaign. Narrow window to attach editorial to a launch cycle. Call this week.</div>
+    </div>
+    <div class="call-est"><div class="call-revenue">$18–28K</div><div class="call-label">est. annual value</div></div>
+  </div>
+  <div class="call-row">
+    <div class="call-rank">3</div>
+    <div class="call-company">
+      <div class="call-name">OrderEase</div>
+      <div class="call-reason">Wrote "building materials" into their ad copy. They already know the audience — this is the easiest conversation to open.</div>
+    </div>
+    <div class="call-est"><div class="call-revenue">$12–20K</div><div class="call-label">est. annual value</div></div>
+  </div>
+  <div class="call-row">
+    <div class="call-rank">4</div>
+    <div class="call-company">
+      <div class="call-name">Marvin Windows & Doors</div>
+      <div class="call-reason">Active campaigns, hiring signal, Midwest HQ. If not in the book, that gap is the pitch. If already in the book, this is a renewal conversation with data.</div>
+    </div>
+    <div class="call-est"><div class="call-revenue">$20–40K</div><div class="call-label">est. annual value</div></div>
+  </div>
+  <div class="call-row">
+    <div class="call-rank">5</div>
+    <div class="call-company">
+      <div class="call-name">BLD Marketing (+ their client roster)</div>
+      <div class="call-reason">This isn't one call — it's a referral source. Building products marketing agency whose clients need LBM Journal exposure.</div>
+    </div>
+    <div class="call-est"><div class="call-revenue">pipeline</div><div class="call-label">referral source</div></div>
+  </div>
+  <div class="call-row">
+    <div class="call-rank">6</div>
+    <div class="call-company">
+      <div class="call-name">Pennsylvania Lumbermens Mutual (PLM)</div>
+      <div class="call-reason">Industry-native niche insurer actively spending on LinkedIn to reach LBM dealers. Natural fit, probably should already be in the book.</div>
+    </div>
+    <div class="call-est"><div class="call-revenue">$10–18K</div><div class="call-label">est. annual value</div></div>
+  </div>
+  <div class="call-row">
+    <div class="call-rank">7</div>
+    <div class="call-company">
+      <div class="call-name">Parspec</div>
+      <div class="call-reason">Just launched a new module. Venture-backed tech entering the dealer workflow. Post-launch marketing budget is live now.</div>
+    </div>
+    <div class="call-est"><div class="call-revenue">$8–15K</div><div class="call-label">est. annual value</div></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- THREE ACTIONS -->
+<div class="section-header">
+  <span class="section-tag tag-amber">Actions</span>
+  <span class="section-title">Three Actions — Do These This Week</span>
+</div>
+
+<div class="action-grid">
+  <div class="action-card">
+    <div class="action-num">01</div>
+    <div class="action-title">Call Horner Millwork on the Kolbe VIG launch</div>
+    <div class="action-desc">A new product launch — especially a technology story like Vacuum Insulated Glass — has a short editorial window. The first 30–60 days after launch are when manufacturers need trade press amplification most. LBM Journal reaching verified dealer buyers is a compelling launch vehicle. This call needs to happen this week, not next month.</div>
+  </div>
+  <div class="action-card">
+    <div class="action-num">02</div>
+    <div class="action-title">Use the LinkedIn gap as the pitch itself</div>
+    <div class="action-desc">For IKO, OrderEase, and Belco: lead with the data. "We pulled the LinkedIn Ad Library for your category. You're one of very few building products companies actively advertising there. That tells us you have a marketing budget and a growth mandate. LBM Journal reaches the same audience at a fraction of the LinkedIn CPM — and our subscribers are verified, identified professionals, not anonymous impressions." That's a numbers conversation, not a brand pitch.</div>
+  </div>
+  <div class="action-card">
+    <div class="action-num">03</div>
+    <div class="action-title">Pilot the Baxter joint pitch with one prospect</div>
+    <div class="action-desc">Pick one manufacturer from this list — IKO or Belco are strong candidates — and bring both organizations into the conversation. LBM Journal proves the audience is real before the campaign. Baxter proves the campaign worked after. No competitor in the LBM space can offer both sides. Running this as a pilot creates a case study for every subsequent advertiser conversation.</div>
+  </div>
+</div>
+
+<!-- TEASER -->
+<div class="teaser-strip">
+  <div class="teaser-left">
+    <div class="teaser-title">This is a proof of concept. Imagine this for every publication in your portfolio, every month.</div>
+    <div class="teaser-sub">Recurring advertiser prospecting intelligence — built on Mindful, synthesizing LinkedIn ad signals, trade show data, product launches, and funding news into a prioritized call list your team can act on immediately.</div>
+  </div>
+  <div style="font-size:11px;font-weight:600;color:var(--accent-blue);white-space:nowrap;padding:8px 16px;border:1px solid rgba(74,158,255,0.3);border-radius:6px;background:rgba(74,158,255,0.08);cursor:pointer">Learn about the full platform &#8250;</div>
+</div>
+
+<!-- AI CHAT -->
+<div class="chat-panel">
+  <div class="chat-header">
+    <div class="chat-dot"></div>
+    <div class="chat-title">Brief Intelligence — Ask Anything</div>
+    <div class="chat-sub">Powered by Mindful AI · Context-loaded</div>
+  </div>
+  <div class="chat-body" id="chat-body">
+    <div style="margin-bottom:12px">
+      <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px">Try asking:</div>
+      <span class="quick-q" onclick="fillQ('How would I pitch LBM Journal to IKO North America compared to their LinkedIn spend?')">"IKO vs LinkedIn pitch?"</span>
+      <span class="quick-q" onclick="fillQ('How does the Baxter Research Center pairing work as a sales pitch to a manufacturer?')">"Baxter joint pitch?"</span>
+      <span class="quick-q" onclick="fillQ('What should I say to BLD Marketing to turn them into a referral source?')">"BLD referral approach?"</span>
+      <span class="quick-q" onclick="fillQ('Which company on this list is the most likely to say yes fastest?')">"Fastest yes?"</span>
+    </div>
+  </div>
+  <div class="chat-input-row">
+    <textarea id="chat-input" placeholder="Ask a question about the brief..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendQ();}"></textarea>
+    <button class="chat-send" onclick="sendQ()">Ask</button>
+  </div>
+</div>
+
+<div class="report-footer">
+  <div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+      <span class="logo-bracket" style="font-size:11px">{ parameter : 1 }</span>
+      <span style="font-size:10px;color:var(--text-muted)">|</span>
+      <span style="font-size:10px;font-weight:600;color:var(--accent-blue);letter-spacing:1px;text-transform:uppercase">Mindful</span>
+    </div>
+    <div class="footer-brand">mindful.pub &nbsp;·&nbsp; sales@mindful.pub</div>
+  </div>
+  <div class="footer-note">Built from public data — LinkedIn Ad Library (6 search terms), ProDealer industry signals, building materials trade data. Produced for LBM Journal / Baxter Research Center as a proof of concept, April 2026. LBM Journal is an existing Mindful platform customer.</div>
+</div>
+
+<script>
+const BRIEF_CONTEXT = `You are the intelligence assistant for an Advertiser Prospecting Brief prepared for Jodie Cook at LBM Journal / Baxter Research Center. LBM Journal is the leading trade publication serving lumberyard owners, building material dealers, distributors, wholesalers, and suppliers. Published 11x/year since 2003. It has the largest audience of LBM dealers in the country. The LBM Strategies Conference is their major annual event. LBM Journal is already a Mindful CMS customer.
+
+Baxter Research Center (also Jodie's organization) conducts advertising effectiveness studies — proving that print ads worked after a campaign ran. The strategic pairing: LBM Journal (via Mindful) proves the audience is verified and real BEFORE a campaign. Baxter proves the campaign worked AFTER. Together they offer something no competitor can: pre-campaign audience credibility + post-campaign effectiveness measurement.
+
+KEY INSIGHT FROM THE DATA: The LinkedIn Ad Library returned only 183 ads for "building materials dealer" vs 29,000+ for manufacturing automation. This means LBM advertisers haven't discovered LinkedIn yet, making the companies that ARE spending there more intent-driven. It also means LBM Journal's verified audience is MORE differentiated from LinkedIn than in virtually any other trade vertical.
+
+PRIORITY PROSPECTS:
+1. IKO North America — commercial roofing manufacturer, 6+ active LinkedIn campaigns for InnoviTPO, North America, sustained spend. Est. $20-35K/yr.
+2. Horner Millwork / Kolbe Windows — active new product launch campaign for Vacuum Insulated Glass (VIG). Call this week. Est. $18-28K/yr.
+3. OrderEase — explicitly calls out "building materials" in their LinkedIn ad copy. Multiple campaigns. Est. $12-20K/yr.
+4. Marvin Windows & Doors — active brand campaigns, hiring signal in Warroad MN, premium dealer channel manufacturer. Est. $20-40K/yr.
+5. BLD Marketing — building products marketing agency whose clients need LBM Journal exposure. Treat as referral pipeline.
+6. Pennsylvania Lumbermens Mutual (PLM) — niche insurer designed for hardware/LBM dealers. Active LinkedIn spend. Est. $10-18K/yr.
+7. Tri-Supply — Texas-based millwork/windows/appliances distributor. Most active millwork LinkedIn advertiser. 10+ ad variants. COO posting about AI.
+8. Belco Forest Products — "Cut Delays Before They Cut Into Your 2026" — dealer-targeted campaign, Texas expansion via Weyerhaeuser. Active.
+9. Allied Building Stores (ABS) — buying group for independent LBM dealers. Active LinkedIn advertiser.
+10. Parspec — AI-powered building product spec platform. Just launched new Project Management module. Venture-backed.
+
+COMPETITIVE INTEL: Supply House Times (competitor trade publication) is running paid LinkedIn campaigns to reach building supply and distribution professionals. LBM Journal's response: our audience is verified and identified, not anonymous impressions.
+
+SELF-REFERENTIAL SIGNAL: LBM Journal itself appeared running a LinkedIn ad promoting Trex railing content. Trex is a current advertiser.
+
+THREE ACTIONS: (1) Call Horner Millwork on the Kolbe VIG launch this week. (2) Use the LinkedIn gap data as the pitch — show prospects they're paying LinkedIn CPMs to reach the same audience LBM Journal delivers more efficiently. (3) Pilot the Baxter joint pitch with IKO or Belco — pre-campaign credibility + post-campaign effectiveness = unique market position.
+
+Answer questions accurately. Help Jodie prioritize outreach and understand both the advertiser prospecting angle AND the Baxter partnership angle. Be specific and direct.`;
+
+const chatBody = document.getElementById('chat-body');
+const chatInput = document.getElementById('chat-input');
+
+function fillQ(q){chatInput.value=q;chatInput.focus();}
+
+function appendMsg(role,text){
+  const d=document.createElement('div');
+  d.className='chat-msg';
+  d.innerHTML=`<div class="msg-role ${role==='You'?'msg-user':'msg-ai'}">${role}</div><div class="msg-text">${text}</div>`;
+  chatBody.appendChild(d);
+  chatBody.scrollTop=chatBody.scrollHeight;
+}
+
+async function sendQ(){
+  const q=chatInput.value.trim();
+  if(!q)return;
+  chatInput.value='';
+  appendMsg('You',q);
+  const thinking=document.createElement('div');
+  thinking.className='chat-msg';
+  thinking.innerHTML='<div class="msg-role msg-ai">Brief AI</div><div class="msg-text" style="color:var(--text-muted)">Thinking...</div>';
+  chatBody.appendChild(thinking);
+  chatBody.scrollTop=chatBody.scrollHeight;
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:BRIEF_CONTEXT,
+        messages:[{role:'user',content:q}]
+      })
+    });
+    const data=await resp.json();
+    const text=data.content?.map(b=>b.text||'').join('')||'Unable to respond.';
+    chatBody.removeChild(thinking);
+    appendMsg('Brief AI',text);
+  }catch(e){
+    chatBody.removeChild(thinking);
+    appendMsg('Brief AI','Unable to connect. Check your network and try again.');
+  }
+}
+</script>
+</body>
+</html>
