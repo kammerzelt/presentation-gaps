@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACS Media Group | Advertiser Prospecting Intelligence Brief</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy-deep: #0a1628;
+    --navy-mid: #0f2847;
+    --navy-light: #153a6b;
+    --blue: #4a9eff;
+    --teal: #1db88a;
+    --amber: #f0a030;
+    --red: #e05050;
+    --purple: #9b6dff;
+    --text-primary: #f0f4ff;
+    --text-secondary: #8ba0c0;
+    --text-muted: #546880;
+    --card-bg: rgba(15,40,71,0.6);
+    --card-border: rgba(74,158,255,0.15);
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(160deg, var(--navy-deep) 0%, var(--navy-mid) 50%, var(--navy-light) 100%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .page { max-width: 860px; margin: 0 auto; padding: 32px 24px 80px; }
+
+  /* Header */
+  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--card-border); }
+  .brand-mark { font-size: 11px; font-weight: 600; color: var(--blue); letter-spacing: 0.06em; }
+  .brand-mark span { color: var(--text-muted); font-weight: 400; }
+  .pub-info { text-align: right; }
+  .pub-name { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+  .pub-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; letter-spacing: 0.05em; text-transform: uppercase; }
+
+  /* Intro strip */
+  .intro { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 20px 24px; margin-bottom: 20px; }
+  .intro-lead { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 10px; line-height: 1.4; }
+  .intro-lead em { color: var(--blue); font-style: normal; }
+  .intro p { color: var(--text-secondary); font-size: 12.5px; }
+
+  /* Stat grid */
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+  .stat-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 16px; }
+  .stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px; }
+  .stat-value { font-size: 22px; font-weight: 800; color: var(--blue); line-height: 1; margin-bottom: 4px; }
+  .stat-value.teal { color: var(--teal); }
+  .stat-value.amber { color: var(--amber); }
+  .stat-value.purple { color: var(--purple); }
+  .stat-sub { font-size: 10px; color: var(--text-muted); }
+
+  /* Signal methodology */
+  .method-card { background: rgba(74,158,255,0.04); border: 1px solid rgba(74,158,255,0.12); border-radius: 8px; padding: 16px 20px; margin-bottom: 28px; }
+  .method-title { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+  .method-signals { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+  .signal-chip { display: flex; align-items: center; gap: 5px; background: rgba(15,40,71,0.8); border: 1px solid var(--card-border); border-radius: 4px; padding: 4px 8px; font-size: 10px; color: var(--text-secondary); }
+  .signal-chip span { font-size: 11px; }
+  .method-note { font-size: 10px; color: var(--text-muted); }
+
+  /* Section header */
+  .section-header { margin: 32px 0 14px; }
+  .section-label { font-size: 10px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .section-title { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+  .section-desc { font-size: 12px; color: var(--text-secondary); }
+
+  /* Company card */
+  .company-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 18px 20px; margin-bottom: 12px; position: relative; }
+  .company-card.hot { border-color: rgba(240,160,48,0.3); }
+  .company-card.launch { border-color: rgba(29,184,138,0.3); }
+  .company-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .company-name { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+  .company-meta { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+  .status-dot { font-size: 11px; font-weight: 600; white-space: nowrap; }
+  .status-dot.active { color: var(--teal); }
+  .status-dot.hot { color: var(--amber); }
+  .status-dot.launch { color: var(--blue); }
+  .badges { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+  .badge { font-size: 9px; font-weight: 600; padding: 2px 7px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .badge.linkedin { background: rgba(74,158,255,0.15); color: var(--blue); border: 1px solid rgba(74,158,255,0.25); }
+  .badge.new-product { background: rgba(29,184,138,0.15); color: var(--teal); border: 1px solid rgba(29,184,138,0.25); }
+  .badge.academia { background: rgba(155,109,255,0.15); color: var(--purple); border: 1px solid rgba(155,109,255,0.25); }
+  .badge.pharma { background: rgba(240,160,48,0.15); color: var(--amber); border: 1px solid rgba(240,160,48,0.25); }
+  .badge.ai { background: rgba(74,158,255,0.12); color: #7ec8ff; border: 1px solid rgba(74,158,255,0.2); }
+  .badge.heavy-spend { background: rgba(224,80,80,0.12); color: #ff8080; border: 1px solid rgba(224,80,80,0.2); }
+  .company-body { font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px; }
+  .signal-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .stag { font-size: 10px; color: var(--text-muted); background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 3px; padding: 2px 6px; }
+  .outreach { background: rgba(74,158,255,0.06); border-left: 2px solid var(--blue); padding: 10px 14px; border-radius: 0 4px 4px 0; }
+  .outreach-label { font-size: 9px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
+  .outreach p { font-size: 12px; color: var(--text-secondary); }
+
+  /* Table */
+  .data-table { width: 100%; border-collapse: collapse; margin: 14px 0; }
+  .data-table th { font-size: 9px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--card-border); }
+  .data-table td { font-size: 11.5px; color: var(--text-secondary); padding: 10px 12px; border-bottom: 1px solid rgba(74,158,255,0.06); vertical-align: top; }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table .company-cell { font-weight: 600; color: var(--text-primary); }
+
+  /* Priority list */
+  .priority-table { width: 100%; border-collapse: collapse; margin: 14px 0; }
+  .priority-table th { font-size: 9px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--card-border); }
+  .priority-table td { font-size: 11.5px; color: var(--text-secondary); padding: 10px 12px; border-bottom: 1px solid rgba(74,158,255,0.06); vertical-align: top; }
+  .priority-table tr:last-child td { border-bottom: none; }
+  .rank { font-size: 16px; font-weight: 800; color: var(--blue); }
+  .company-cell { font-weight: 600; color: var(--text-primary); }
+  .revenue-cell { font-weight: 600; color: var(--teal); white-space: nowrap; }
+
+  /* Actions */
+  .actions { margin: 32px 0; }
+  .action-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 20px; margin-bottom: 12px; display: flex; gap: 18px; align-items: flex-start; }
+  .action-num { font-size: 28px; font-weight: 800; color: var(--blue); opacity: 0.4; line-height: 1; flex-shrink: 0; }
+  .action-title { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+  .action-body { font-size: 12px; color: var(--text-secondary); }
+
+  /* Competitor callout */
+  .competitor-callout { background: rgba(240,160,48,0.05); border: 1px solid rgba(240,160,48,0.2); border-radius: 8px; padding: 18px 20px; margin: 20px 0; }
+  .comp-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .comp-icon { font-size: 14px; }
+  .comp-title { font-size: 12px; font-weight: 700; color: var(--amber); }
+  .comp-body { font-size: 12px; color: var(--text-secondary); }
+
+  /* Emerging category */
+  .category-section { background: rgba(155,109,255,0.05); border: 1px solid rgba(155,109,255,0.15); border-radius: 8px; padding: 20px; margin: 20px 0; }
+  .cat-label { font-size: 10px; font-weight: 700; color: var(--purple); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .cat-title { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+  .cat-body { font-size: 12px; color: var(--text-secondary); margin-bottom: 14px; }
+
+  /* Teaser */
+  .teaser { background: rgba(74,158,255,0.05); border: 1px solid rgba(74,158,255,0.15); border-radius: 8px; padding: 20px 24px; margin: 32px 0 24px; text-align: center; }
+  .teaser p { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; }
+  .teaser-lead { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+  .teaser a { color: var(--blue); font-size: 12px; text-decoration: none; }
+
+  /* Chat widget */
+  .chat-widget { background: rgba(10,22,40,0.95); border: 1px solid var(--card-border); border-radius: 10px; overflow: hidden; margin-top: 24px; }
+  .chat-header { background: linear-gradient(135deg, rgba(74,158,255,0.15), rgba(29,184,138,0.1)); padding: 14px 18px; border-bottom: 1px solid var(--card-border); }
+  .chat-title { font-size: 12px; font-weight: 700; color: var(--text-primary); }
+  .chat-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+  .chat-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 16px; border-bottom: 1px solid var(--card-border); }
+  .chip { background: rgba(74,158,255,0.1); border: 1px solid rgba(74,158,255,0.2); border-radius: 20px; padding: 5px 12px; font-size: 11px; color: var(--blue); cursor: pointer; transition: all 0.15s; }
+  .chip:hover { background: rgba(74,158,255,0.2); }
+  .chat-body { height: 180px; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+  .chat-msg { max-width: 85%; }
+  .chat-msg.assistant { align-self: flex-start; }
+  .chat-msg.user { align-self: flex-end; }
+  .chat-bubble { padding: 9px 13px; border-radius: 8px; font-size: 12px; line-height: 1.5; }
+  .chat-msg.assistant .chat-bubble { background: rgba(74,158,255,0.1); border: 1px solid rgba(74,158,255,0.15); color: var(--text-secondary); }
+  .chat-msg.user .chat-bubble { background: rgba(74,158,255,0.2); border: 1px solid rgba(74,158,255,0.3); color: var(--text-primary); }
+  .chat-input-row { display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--card-border); }
+  .chat-input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); border-radius: 6px; padding: 9px 12px; color: var(--text-primary); font-family: 'Inter', sans-serif; font-size: 12px; outline: none; }
+  .chat-input::placeholder { color: var(--text-muted); }
+  .chat-input:focus { border-color: rgba(74,158,255,0.4); }
+  .chat-send { background: var(--blue); color: white; border: none; border-radius: 6px; padding: 9px 16px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; }
+  .chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* Footer */
+  .footer { text-align: center; padding-top: 24px; border-top: 1px solid var(--card-border); margin-top: 32px; }
+  .footer-brand { font-size: 12px; font-weight: 700; color: var(--blue); margin-bottom: 4px; }
+  .footer-links { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
+  .footer-note { font-size: 10px; color: var(--text-muted); max-width: 580px; margin: 0 auto; }
+
+  /* Meta row */
+  .meta-row { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+  .meta-pill { background: rgba(255,255,255,0.04); border: 1px solid var(--card-border); border-radius: 4px; padding: 4px 10px; font-size: 10px; color: var(--text-muted); }
+  .meta-pill strong { color: var(--text-secondary); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div>
+      <div class="brand-mark">{ parameter : 1 } <span>|</span> Publishing Intelligence</div>
+    </div>
+    <div class="pub-info">
+      <div class="pub-name">ACS Media Group</div>
+      <div class="pub-sub">Advertiser Prospecting Intelligence Brief</div>
+    </div>
+  </div>
+
+  <!-- Meta -->
+  <div class="meta-row">
+    <div class="meta-pill">April 2026</div>
+    <div class="meta-pill"><strong>Contact:</strong> Ryan · ACS Media Group</div>
+    <div class="meta-pill"><strong>Publication:</strong> C&EN + ACS Journals</div>
+    <div class="meta-pill"><strong>Audience:</strong> 151,000+ ACS Members</div>
+  </div>
+
+  <!-- Intro -->
+  <div class="intro">
+    <div class="intro-lead">Ryan — these companies are spending to reach <em>chemists, researchers, and R&D decision-makers</em>. Just not through C&EN or ACS Journals.</div>
+    <p>Across eight LinkedIn Ad Library searches spanning laboratory instruments, analytical software, drug discovery platforms, lab automation, ELN/LIMS systems, chemical supply chains, and scientific recruitment, we identified companies running active campaigns targeted directly at your audience. 21 companies surfaced with meaningful spend signals — none confirmed in the C&EN advertiser base. The analytical chemistry software category returned only 19 total ads on LinkedIn, a low-saturation signal that suggests ACS's readers are being underserved by competitors who haven't figured out how to reach them at scale.</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-label">Identified</div>
+      <div class="stat-value">21</div>
+      <div class="stat-sub">Companies with active spend signals targeting your audience</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Heavy Spenders</div>
+      <div class="stat-value teal">6</div>
+      <div class="stat-sub">Running multi-creative LinkedIn campaigns right now</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Market Signal</div>
+      <div class="stat-value amber">19</div>
+      <div class="stat-sub">Total ads in "analytical chemistry software" — very low saturation</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Emerging Category</div>
+      <div class="stat-value purple">AI</div>
+      <div class="stat-sub">Drug discovery AI platforms driving the heaviest new spend</div>
+    </div>
+  </div>
+
+  <!-- Signal methodology -->
+  <div class="method-card">
+    <div class="method-title">Signal Methodology</div>
+    <div class="method-signals">
+      <div class="signal-chip"><span>🔵</span> LinkedIn Ad Library</div>
+      <div class="signal-chip"><span>🧪</span> Academic Targeting</div>
+      <div class="signal-chip"><span>📊</span> Campaign Volume</div>
+      <div class="signal-chip"><span>🚀</span> New Product Launch</div>
+      <div class="signal-chip"><span>🤝</span> Platform Positioning</div>
+      <div class="signal-chip"><span>💊</span> Pharma / R&D Signals</div>
+    </div>
+    <div class="method-note">All data sourced from public LinkedIn Ad Library records only. Campaign volume assessed by number of active ad variants. Verified April 2026.</div>
+  </div>
+
+  <!-- Section 1: Active Spenders -->
+  <div class="section-header">
+    <div class="section-label">Section 01</div>
+    <div class="section-title">Active LinkedIn Spenders</div>
+    <div class="section-desc">Companies running campaigns right now targeting chemists and R&D professionals. C&EN's readers. Someone else's advertisers.</div>
+  </div>
+
+  <!-- SPECTRO -->
+  <div class="company-card hot">
+    <div class="company-header">
+      <div>
+        <div class="company-name">SPECTRO Analytical Instruments</div>
+        <div class="company-meta">Elemental Analysis Instruments · Germany / Global</div>
+      </div>
+      <div class="status-dot hot">▲ Hot</div>
+    </div>
+    <div class="badges">
+      <span class="badge linkedin">LinkedIn Ads</span>
+      <span class="badge academia">Academia Targeting</span>
+      <span class="badge heavy-spend">Heavy Spend</span>
+    </div>
+    <div class="company-body">SPECTRO is running one of the most concentrated academic-targeting campaigns in this data set — the same white paper ad ("New Performance and Scope for Elemental Analysis in Academia") appeared eight times across a single search, indicating a sustained high-frequency push. Their message addresses analytical chemists who are stuck with outdated instruments: "when analytical demands continue to grow while outdated instruments hold progress back, staying ahead becomes a challenge." That is the language of a company trying to replace entrenched capital equipment in university and government labs — precisely the purchasing influencers who read C&EN every week.</div>
+    <div class="signal-tags">
+      <span class="stag">8+ active ad variants</span>
+      <span class="stag">Academic targeting confirmed</span>
+      <span class="stag">Elemental analysis / ICP category</span>
+    </div>
+    <div class="outreach">
+      <div class="outreach-label">Outreach Angle</div>
+      <p>SPECTRO is spending heavily to reach lab directors and academic researchers on LinkedIn, but LinkedIn's chemistry audience is general — C&EN reaches the specific decision-makers who sign off on analytical instrument purchases. Their white paper campaign is designed to move someone from awareness to evaluation. ACS Journals' eTOC alerts and C&EN's instrument coverage sections place your platform exactly at the moment those evaluations begin. Lead with the specificity of ACS's 151,000 members: these aren't science-adjacent professionals — they are practicing chemists who recommend capital equipment.</p>
+    </div>
+  </div>
+
+  <!-- LUMICKS -->
+  <div class="company-card hot">
+    <div class="company-header">
+      <div>
+        <div class="company-name">LUMICKS</div>
+        <div class="company-meta">Drug Discovery Platform (Avidion) · Netherlands / Global</div>
+      </div>
+      <div class="status-dot hot">▲ Hot</div>
+    </div>
+    <div class="badges">
+      <span class="badge linkedin">LinkedIn Ads</span>
+      <span class="badge new-product">New Platform Launch</span>
+      <span class="badge pharma">Drug Discovery</span>
+      <span class="badge heavy-spend">Heavy Spend</span>
+    </div>
+    <div class="company-body">LUMICKS is running the most aggressive multi-angle drug discovery campaign in this data set. Their Avidion platform is being pushed from five distinct angles simultaneously: "Drug development timelines are slipping — what if you could reach patients 2 years faster?", "Low confidence in early data compounds risk — build 1.5x more confidence", "Halve your time to revenue by removing uncertainty", "Improve correlation from R² 0.6 to up to 0.9", and "Align your trials with the platform built for diagnostic success." This is a company in active growth mode with a platform built for exactly the drug discovery researchers who make up a significant portion of ACS's membership and journal audience.</div>
+    <div class="signal-tags">
+      <span class="stag">5+ distinct campaign angles</span>
+      <span class="stag">IND acceleration messaging</span>
+      <span class="stag">R&D budget targeting</span>
+    </div>
+    <div class="outreach">
+      <div class="outreach-label">Outreach Angle</div>
+      <p>LUMICKS is trying to change the calculation that drug discovery teams make about early-stage data confidence. That conversation happens in ACS journals — specifically in the journals covering biophysics, chemical biology, and medicinal chemistry that their target buyers read. A JACS or ACS Chemical Biology sponsorship puts Avidion in front of the exact researchers who present these data confidence problems to their PI or VP of R&D. LinkedIn gets them broad awareness; an ACS Journals eTOC placement gets them the decision-maker on a Tuesday morning when they're reviewing the week's literature.</p>
+    </div>
+  </div>
+
+  <!-- Beckman Coulter -->
+  <div class="company-card hot">
+    <div class="company-header">
+      <div>
+        <div class="company-name">Beckman Coulter Diagnostics</div>
+        <div class="company-meta">Clinical Diagnostics / Neuro Biomarkers · Brea, CA</div>
+      </div>
+      <div class="status-dot hot">▲ Hot</div>
+    </div>
+    <div class="badges">
+      <span class="badge linkedin">LinkedIn Ads</span>
+      <span class="badge pharma">Pharma / Biomarkers</span>
+      <span class="badge heavy-spend">Heavy Spend</span>
+    </div>
+    <div class="company-body">Beckman Coulter is running a massive, sustained campaign around their ACCESS neuro biomarker platform, with at least six distinct creative executions visible in a single search. The campaign message is focused on the RUO-to-IVD pathway — helping pharma R&D teams use the same testing platform in clinical research that will eventually be used for FDA submission. Their ad copy reads "Running trials on the same IVD-ready platform intended for future use isn't just smart — it's strategic." This is a capital commitment decision made by senior R&D and clinical operations professionals who consume peer-reviewed literature to validate platform choices.</div>
+    <div class="signal-tags">
+      <span class="stag">6+ active ad variants</span>
+      <span class="stag">ACCESS neuro biomarker campaign</span>
+      <span class="stag">RUO-to-IVD positioning</span>
+      <span class="stag">FDA submission messaging</span>
+    </div>
+    <div class="outreach">
+      <div class="outreach-label">Outreach Angle</div>
+      <p>Beckman Coulter's RUO-to-IVD argument is fundamentally a scientific credibility argument — they're asking trial teams to trust their platform with data that will go before regulators. The people making that decision read ACS journals and C&EN. If Beckman Coulter is spending this heavily on LinkedIn to reach these professionals, they already understand the budget is there. The question is channel quality. ACS's journal audience carries the editorial credibility that validates platform choices — that's a different value proposition than LinkedIn impression volume, and it's one Beckman Coulter's marketing team will understand immediately.</p>
+    </div>
+  </div>
+
+  <!-- Sapio Sciences -->
+  <div class="company-card">
+    <div class="company-header">
+      <div>
+        <div class="company-name">Sapio Sciences</div>
+        <div class="company-meta">AI-Powered LIMS / ELN (Elain) · Baltimore, MD</div>
+      </div>
+      <div class="status-dot active">● Active</div>
+    </div>
+    <div class="badges">
+      <span class="badge linkedin">LinkedIn Ads</span>
+      <span class="badge ai">AI Platform</span>
+      <span class="badge new-product">Elain Launch</span>
+    </div>
+    <div class="company-body">Sapio Sciences CEO Kevin Cramer is personally promoting Elain, their AI co-scientist LIMS/ELN product, with a pointed question: "Is the informatics industry hedging its bets on AI?" Their positioning directly challenges legacy lab informatics vendors, positioning Elain as "an AI research partner that helps scientists design experiments, capture results and accelerate discovery." This is a company actively disrupting an established category — exactly the kind of challenger brand that needs authoritative reach into the scientific community to establish credibility faster than incumbents can respond.</div>
+    <div class="signal-tags">
+      <span class="stag">CEO-led thought leadership campaign</span>
+      <span class="stag">LIMS / ELN category disruption</span>
+      <span class="stag">AI differentiation positioning</span>
+    </div>
+    <div class="outreach">
+      <div class="outreach-label">Outreach Angle</div>
+      <p>Sapio needs scientific credibility quickly, and the fastest path to that in the lab informatics market runs through trusted editorial environments. C&EN's technology coverage and ACS's journal ecosystem give Sapio a legitimacy signal that LinkedIn cannot. Frame it as an accelerant for what they're already trying to do: if their goal is to establish Elain as the AI LIMS that serious scientists adopt, getting in front of 151,000 ACS members is a more efficient path than building LinkedIn reach one post at a time.</p>
+    </div>
+  </div>
+
+  <!-- Section 2: Lab Informatics -->
+  <div class="section-header">
+    <div class="section-label">Section 02</div>
+    <div class="section-title">Lab Informatics — ELN & LIMS Spenders</div>
+    <div class="section-desc">A category in active transition, with multiple vendors competing to reach the same R&D audience.</div>
+  </div>
+
+  <!-- Agilent SLIMS -->
+  <div class="company-card">
+    <div class="company-header">
+      <div>
+        <div class="company-name">Agilent Technologies — SLIMS</div>
+        <div class="company-meta">Lab Informatics / LIMS · Santa Clara, CA</div>
+      </div>
+      <div class="status-dot active">● Active</div>
+    </div>
+    <div class="badges">
+      <span class="badge linkedin">LinkedIn Ads</span>
+      <span class="badge heavy-spend">Heavy Spend</span>
+    </div>
+    <div class="company-body">Agilent is running a heavy SLIMS campaign with a specific, quantified ROI claim anchored in customer proof: "See How Agilent SLIMS Saves 40 Hours Weekly in Labs." They are running at least five distinct ad variants for SLIMS covering different benefit angles — integration, efficiency, productivity, and customer testimonials. Agilent is already likely present in C&EN in some capacity given their instrument portfolio, but the SLIMS-specific campaign represents a distinct budget and a distinct audience (lab managers and informatics decision-makers vs. analytical chemists). That's a conversation about a second line item.</div>
+    <div class="signal-tags">
+      <span class="stag">5+ SLIMS-specific ad variants</span>
+      <span class="stag">"40 hours saved weekly" claim</span>
+      <span class="stag">Integration messaging</span>
+    </div>
+    <div class="outreach">
+      <div class="outreach-label">Outreach Angle</div>
+      <p>Even if Agilent already advertises with ACS on the instrument side, SLIMS is a separate product line with a separate buying committee and a separate campaign budget. The lab informatics buyer is a lab director or informatics manager — a C&EN reader. Ask the Agilent team whether their SLIMS budget is currently reaching ACS's audience, or whether it's running entirely through LinkedIn and trade events. If the latter, this is an incremental conversation, not a competitive one.</p>
+    </div>
+  </div>
+
+  <!-- BIOVIA -->
+  <div class="company-card">
+    <div class="company-header">
+      <div>
+        <div class="company-name">BIOVIA (Dassault Systemes)</div>
+        <div class="company-meta">Scientific Informatics / ELN · San Diego, CA</div>
+      </div>
+      <div class="status-dot active">● Active</div>
+    </div>
+    <div class="badges">
+      <span class="badge linkedin">LinkedIn Ads</span>
+      <span class="badge pharma">R&D Software</span>
+    </div>
+    <div class="company-body">BIOVIA is running a sustained ELN selection campaign built around doubt removal: "7 Considerations to Choose the Right ELN & Maximize Lab Efficiency" and "Avoid ELN Selection Pitfalls with 7 Key Considerations." This is a late-funnel awareness play targeting researchers who are already in an evaluation process. Three distinct ad variants for the same whitepaper suggest they're testing creative, which usually signals an active funded campaign with optimization happening in real time.</div>
+    <div class="signal-tags">
+      <span class="stag">3+ active ad variants</span>
+      <span class="stag">ELN evaluation targeting</span>
+      <span class="stag">Whitepaper lead gen</span>
+    </div>
+    <div class="outreach">
+      <div class="outreach-label">Outreach Angle</div>
+      <p>BIOVIA's whitepaper approach is designed to intercept researchers mid-evaluation. ACS Journals' eTOC alerts give them access to the same researchers at the moment they're deepest in scientific work — and therefore most aware of their informatics gaps. Position a JACS or ACS Chemical Biology placement as reaching evaluators at the exact moment they're forming the questions that lead to an ELN search.</p>
+    </div>
+  </div>
+
+  <!-- Section 3: Emerging Category -->
+  <div class="category-section">
+    <div class="cat-label">Emerging Category Signal</div>
+    <div class="cat-title">AI in Drug Discovery — A Category in Formation</div>
+    <div class="cat-body">Three companies surfaced in the drug discovery search running AI-specific positioning campaigns, a signal that a new advertising category is crystallizing around AI-powered R&D tools. LUMICKS (Avidion), Sapio Sciences (Elain), and PolarisQB (quantum-inspired AI for drug safety prediction) are all spending to reach the same researchers — medicinal chemists, computational chemists, and drug discovery leads — with AI-forward messaging. This is a category that C&EN is uniquely positioned to own editorially and commercially. PolarisQB's campaign specifically claims to "enable earlier elimination of toxic compounds" — a pain point every drug discovery chemist recognizes immediately. None of these companies appear to have significant ACS presence, which means a single coordinated pitch to all three could anchor C&EN as the editorial home of AI-driven drug discovery.</div>
+
+    <div class="company-card" style="margin-bottom: 0; border-color: rgba(155,109,255,0.2);">
+      <div class="company-header">
+        <div>
+          <div class="company-name">PolarisQB</div>
+          <div class="company-meta">Quantum-Inspired AI / Drug Safety · Durham, NC</div>
+        </div>
+        <div class="status-dot launch">◆ Launch</div>
+      </div>
+      <div class="badges">
+        <span class="badge linkedin">LinkedIn Ads</span>
+        <span class="badge ai">AI Platform</span>
+        <span class="badge new-product">New Results</span>
+      </div>
+      <div class="company-body">PolarisQB just announced new results demonstrating advances in drug safety prediction, framed as enabling "earlier elimination of toxic compounds." They are in active announcement mode, which typically corresponds to an increased marketing budget. Their quantum-inspired AI angle is novel enough that ACS's computational chemistry audience — readers of JACS, ACS Medicinal Chemistry Letters, and Journal of Chemical Information and Modeling — represents a high-value and highly specific reach opportunity no LinkedIn campaign can replicate.</div>
+      <div class="outreach">
+        <div class="outreach-label">Outreach Angle</div>
+        <p>PolarisQB just published results. That's a news cycle, and C&EN covers exactly this kind of computational chemistry breakthrough. Reach out this week — their communications team will be in active outreach mode and receptive to a conversation about reaching the ACS journal audience that reads and cites this type of work.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Competitive signal -->
+  <div class="competitor-callout">
+    <div class="comp-header">
+      <div class="comp-icon">▲</div>
+      <div class="comp-title">Self-Signal: ACS Is Already Advertising — On LinkedIn</div>
+    </div>
+    <div class="comp-body">ACS itself appeared in the "scientific recruitment" search, running paid LinkedIn ads promoting their job board to employers: "Stop wasting budget on unqualified applicants. Our recruitment packages help you reach engaged chemistry talent pools." This is a meaningful signal in two directions. First, the ACS sales team is already sophisticated about paid digital — they're spending money to drive revenue through LinkedIn, which means the internal culture understands performance-based advertising. Second, the companies ACS is trying to recruit as job board advertisers — pharma companies, biotech firms, instrument makers, CROs — are the same companies that should be in C&EN's advertising base. A prospecting brief showing those companies' active spend signals is a natural companion to the job board conversation.</div>
+  </div>
+
+  <!-- Priority Call List -->
+  <div class="section-header">
+    <div class="section-label">Priority Call List</div>
+    <div class="section-title">Ranked by Signal Strength and Timing</div>
+  </div>
+  <table class="priority-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Company</th>
+        <th>Why Now</th>
+        <th>Est. Annual Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="rank">01</span></td>
+        <td class="company-cell">SPECTRO Analytical Instruments</td>
+        <td>Active academic-targeting campaign, 8+ ad variants, directly calling out the instrument replacement decision</td>
+        <td class="revenue-cell">$25K–$60K</td>
+      </tr>
+      <tr>
+        <td><span class="rank">02</span></td>
+        <td class="company-cell">LUMICKS (Avidion)</td>
+        <td>5+ simultaneous campaign angles, active platform launch, drug discovery R&D audience perfectly matched to ACS Journals</td>
+        <td class="revenue-cell">$30K–$75K</td>
+      </tr>
+      <tr>
+        <td><span class="rank">03</span></td>
+        <td class="company-cell">Beckman Coulter Diagnostics</td>
+        <td>Massive ACCESS campaign, 6+ variants, RUO-to-IVD positioning built for scientific credibility — C&EN's lane</td>
+        <td class="revenue-cell">$40K–$90K</td>
+      </tr>
+      <tr>
+        <td><span class="rank">04</span></td>
+        <td class="company-cell">PolarisQB</td>
+        <td>Active results announcement cycle, quantum AI category, perfect fit for computational chemistry journal audience</td>
+        <td class="revenue-cell">$15K–$35K</td>
+      </tr>
+      <tr>
+        <td><span class="rank">05</span></td>
+        <td class="company-cell">Agilent SLIMS</td>
+        <td>Heavy spend, specific ROI claim, likely a distinct budget from existing Agilent instrument relationship</td>
+        <td class="revenue-cell">$20K–$50K</td>
+      </tr>
+      <tr>
+        <td><span class="rank">06</span></td>
+        <td class="company-cell">Sapio Sciences (Elain)</td>
+        <td>CEO-led launch campaign, category disruption positioning, needs editorial credibility that ACS uniquely provides</td>
+        <td class="revenue-cell">$12K–$30K</td>
+      </tr>
+      <tr>
+        <td><span class="rank">07</span></td>
+        <td class="company-cell">BIOVIA</td>
+        <td>Active ELN evaluation campaign targeting researchers mid-decision, whitepaper lead gen model translates well to eTOC</td>
+        <td class="revenue-cell">$20K–$45K</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Three Actions -->
+  <div class="actions">
+    <div class="section-header" style="margin-top: 16px;">
+      <div class="section-label">Do These This Week</div>
+      <div class="section-title">Three Priority Actions</div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">01</div>
+      <div>
+        <div class="action-title">Call SPECTRO Analytical Instruments' marketing team before their academic campaign rotates out</div>
+        <div class="action-body">SPECTRO is in the middle of a high-frequency whitepaper push targeting academic labs — the same audience that reads C&EN and submits to ACS Journals. This type of campaign typically runs 6–8 weeks before creative fatigue sets in and budget gets reallocated. Catching them now means catching them while the campaign is live and the team is actively evaluating channel performance. The pitch is simple: LinkedIn gives them volume. C&EN gives them the specific analytical chemists who approve capital equipment purchases. Those are different conversations with different people, and both are worth having.</div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">02</div>
+      <div>
+        <div class="action-title">Reach LUMICKS with a journal-specific proposal before their Avidion campaign stabilizes</div>
+        <div class="action-body">LUMICKS is running five simultaneous campaign angles, which means they have not yet identified their most efficient message. That's the moment to offer channel diversification — specifically an ACS Chemical Biology or JACS eTOC sponsorship with a matched audience argument. Drug discovery researchers who would evaluate Avidion are in those journals weekly. LUMICKS' marketing team is actively optimizing right now; a targeted reach proposal from ACS lands as a solution to their current measurement problem, not a cold sales conversation.</div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">03</div>
+      <div>
+        <div class="action-title">Contact PolarisQB this week — their announcement cycle is open right now</div>
+        <div class="action-body">PolarisQB just published new drug safety prediction results and is in active communications mode. The window for a company's marketing team to be receptive to an outreach placement conversation is widest in the two weeks following a significant announcement. ACS's computational chemistry journal audience — readers of JACS and ACS Medicinal Chemistry Letters — is the exact peer community that PolarisQB wants to reach with these results. Position a sponsored content or eTOC opportunity as a way to extend the announcement into the scientific community that will eventually cite and build on this work. That's a different value proposition than LinkedIn ads, and it's one their team will recognize.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Teaser -->
+  <div class="teaser">
+    <div class="teaser-lead">This is a proof of concept. Imagine this for every title in your portfolio, every month.</div>
+    <p>Automated signal collection across LinkedIn, trade events, M&A data, and funding announcements — synthesized into a prioritized call list your entire sales team can act on. No platform to learn. Just a report, delivered.</p>
+    <a href="https://mindful.pub">Learn about the full platform › mindful.pub</a>
+  </div>
+
+  <!-- Chat Widget -->
+  <div class="chat-widget">
+    <div class="chat-header">
+      <div class="chat-title">Brief Intelligence — Ask Anything</div>
+      <div class="chat-sub">Powered by Mindful AI · Context-loaded with this brief's data</div>
+    </div>
+    <div class="chat-chips">
+      <div class="chip" onclick="sendChip(this)">SPECTRO vs LinkedIn pitch?</div>
+      <div class="chip" onclick="sendChip(this)">Fastest yes in this list?</div>
+      <div class="chip" onclick="sendChip(this)">Which fits JACS specifically?</div>
+      <div class="chip" onclick="sendChip(this)">How to frame AI drug discovery category?</div>
+    </div>
+    <div class="chat-body" id="chatBody">
+      <div class="chat-msg assistant">
+        <div class="chat-bubble">Hi Ryan — I'm loaded with all the signal data from this brief. Ask me about any company, outreach angle, or how to frame a pitch for your team.</div>
+      </div>
+    </div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="chatInput" type="text" placeholder="Ask about any company or angle in this brief..." onkeydown="if(event.key==='Enter') sendMsg()">
+      <button class="chat-send" id="sendBtn" onclick="sendMsg()">Ask</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-brand">{ parameter : 1 } | Mindful</div>
+    <div class="footer-links">mindful.pub · sales@mindful.pub</div>
+    <div class="footer-note">Signal sources: LinkedIn Ad Library (8 searches across laboratory instruments, analytical chemistry software, contract research, lab automation, electronic lab notebooks, chemical supply, drug discovery platforms, and scientific recruitment). All data from public records. Verified April 2026.</div>
+  </div>
+
+</div>
+
+<script>
+const BRIEF_CONTEXT = `You are Brief Intelligence, an AI assistant embedded in an Advertiser Prospecting Intelligence Brief for ACS Media Group (Chemical & Engineering News and ACS Journals). You have been loaded with the following signal data from this brief:
+
+PUBLICATION: ACS Media Group — C&EN (Chemical & Engineering News) + 90+ ACS Journals
+CONTACT: Ryan at ACS Media Group
+AUDIENCE: 151,000+ ACS members — chemists, chemical engineers, pharmaceutical researchers, R&D professionals
+
+KEY COMPANIES IDENTIFIED (active LinkedIn spenders targeting this audience):
+
+1. SPECTRO Analytical Instruments (Germany) — Running 8+ variants of a whitepaper ad "New Performance and Scope for Elemental Analysis in Academia." Heavy academic targeting. Message: outdated instruments holding back analytical chemists. Perfect fit for C&EN instrument coverage audience. Est. value: $25K-$60K/year.
+
+2. LUMICKS (Avidion platform, Netherlands) — Largest campaign in the data set. 5+ simultaneous angles: "reach patients 2 years faster," "build 1.5x more confidence," "Halve time to revenue," "Improve correlation from R² 0.6 to 0.9." Drug discovery platform targeting R&D decision-makers. Perfect for ACS Chemical Biology, JACS. Est. value: $30K-$75K/year.
+
+3. Beckman Coulter Diagnostics — Massive ACCESS neuro biomarker campaign, 6+ ad variants. RUO-to-IVD positioning: running clinical trial data on the same platform intended for FDA submission. Targeting pharma R&D and clinical operations pros. Est. value: $40K-$90K/year.
+
+4. Sapio Sciences (Elain AI LIMS/ELN, Baltimore) — CEO Kevin Cramer running personal thought leadership campaign for Elain AI co-scientist. Disrupting legacy lab informatics. Needs editorial credibility fast. Est. value: $12K-$30K/year.
+
+5. Agilent Technologies — SLIMS campaign. "Saves 40 hours weekly in labs." 5+ ad variants. Likely a distinct budget from existing Agilent instrument relationship. Est. value: $20K-$50K/year.
+
+6. BIOVIA (Dassault Systemes) — ELN selection campaign. "7 Considerations to Choose the Right ELN." 3+ variants. Late-funnel evaluation targeting. Est. value: $20K-$45K/year.
+
+7. PolarisQB (Durham, NC) — Just announced new quantum-inspired AI drug safety prediction results. Active announcement cycle. Perfect for computational chemistry journal audience. Est. value: $15K-$35K/year.
+
+EMERGING CATEGORY: AI in Drug Discovery — LUMICKS, Sapio Sciences, PolarisQB all spending in this space simultaneously. C&EN is positioned to own this category editorially and commercially.
+
+META-SIGNAL: ACS itself is running LinkedIn ads to recruit job board advertisers — "Stop wasting budget on unqualified applicants. Our recruitment packages help you reach engaged chemistry talent pools." Signal: ACS sales team already sophisticated about digital, and the companies they're recruiting as job board advertisers overlap exactly with this prospecting list.
+
+KEY INSIGHT: The "analytical chemistry software" LinkedIn search returned only 19 total ads — very low saturation. Waters Corporation dominated it. This suggests ACS's analytical chemistry readership is being dramatically underserved by LinkedIn-first marketing strategies, and companies that shift budget toward C&EN face very little competitive pressure in that channel.
+
+THREE PRIORITY ACTIONS FOR THIS WEEK:
+1. Call SPECTRO — academic campaign is mid-flight, window open now
+2. Reach LUMICKS with journal-specific proposal — 5 simultaneous angles means they haven't found their best message yet, good moment to offer channel diversification
+3. Contact PolarisQB this week — announcement cycle just opened
+
+Answer questions helpfully and specifically. If asked about pitch strategy, outreach timing, or how to frame conversations, give direct, practical guidance. Keep responses concise and actionable. Never mention you are Claude or reference Anthropic.`;
+
+async function sendMsg() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  appendMsg(msg, 'user');
+  input.value = '';
+  document.getElementById('sendBtn').disabled = true;
+
+  const thinking = appendMsg('...', 'assistant');
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: BRIEF_CONTEXT,
+        messages: [{ role: 'user', content: msg }]
+      })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Unable to retrieve response.';
+    thinking.querySelector('.chat-bubble').textContent = reply;
+  } catch(e) {
+    thinking.querySelector('.chat-bubble').textContent = 'Connection error. Please try again.';
+  }
+  document.getElementById('sendBtn').disabled = false;
+  scrollChat();
+}
+
+function sendChip(el) {
+  document.getElementById('chatInput').value = el.textContent;
+  sendMsg();
+}
+
+function appendMsg(text, role) {
+  const body = document.getElementById('chatBody');
+  const div = document.createElement('div');
+  div.className = `chat-msg ${role}`;
+  div.innerHTML = `<div class="chat-bubble">${text}</div>`;
+  body.appendChild(div);
+  scrollChat();
+  return div;
+}
+
+function scrollChat() {
+  const b = document.getElementById('chatBody');
+  b.scrollTop = b.scrollHeight;
+}
+</script>
+</body>
+</html>
